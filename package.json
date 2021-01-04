@@ -1,0 +1,42 @@
+{
+  "name": "groupomania",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "license": "ISC",
+  "scripts": {
+    "build": "babel ./src --out-dir ./build",
+    "start": "nodemon --exec babel-node server.js",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Frederic Duchesne",
+  "dependencies": {
+    "@mysql/xdevapi": "8.0.22",
+    "bcrypt": "^5.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jshint": "^2.12.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
+    "password-validator": "^5.1.1",
+    "standard": "^16.0.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/runtime": "^7.12.5",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.16.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.0",
+    "eslint-plugin-react": "^7.21.5",
+    "nodemon": "^2.0.6",
+    "prettier": "^2.2.1"
+  }
+}
