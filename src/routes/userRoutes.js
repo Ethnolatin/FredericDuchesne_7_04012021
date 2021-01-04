@@ -8,8 +8,5 @@ const router = Router()
 // applique à la route signup le middleware pwValidation qui vérifie la sureté du mot de passe
 router.post('/signup', pwValidation, userCtrl.signup)
 router.post('/login', userCtrl.login)
-router.get('/', (req, res) => {
-    res.send('Salut user !')
-})
 
 module.exports = router

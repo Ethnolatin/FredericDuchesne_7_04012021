@@ -5,7 +5,8 @@ import userRoutes from './src/routes/userRoutes'
 import dbConnect from './src/models/db.connect'
 // const path = require('path');
 
-// se connecte à la base 'groupomania' sur mysql grâce à l'identifiant et au mot de passe fournis
+// se connecte à la base 'groupomania' sur mysql
+// grâce à l'identifiant et au mot de passe fournis dans un fichier .env
 dbConnect
 
 const app = express()

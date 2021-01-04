@@ -9,7 +9,7 @@ const dbConnect = mysql.createConnection({
 
 dbConnect.connect((err) => {
     if (err) throw err
-    console.log('Connecté à la base de données !')
+    console.log('Connected to', dbConnect.config.database, 'database!')
 })
 
 module.exports = dbConnect
