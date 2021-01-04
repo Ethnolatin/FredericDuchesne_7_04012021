@@ -2,7 +2,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
-import dbConnect from '../models/db.connect'
+import dbConnect from '../models/dbConnect'
 
 // ajoute un nouvel utilisateur à la base de données
 exports.signup = (req, res) => {
