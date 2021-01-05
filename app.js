@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import articleRoutes from './src/routes/articleRoutes'
+import articlesRoutes from './src/routes/articlesRoutes'
 import userRoutes from './src/routes/userRoutes'
 import dbConnect from './src/models/dbConnect'
 // const path = require('path');
@@ -34,7 +34,7 @@ app.use(bodyParser.json())
 // gère la ressource 'images' de manière statique
 // app.use('/images', express.static(path.join(__dirname, 'images')));
 // route par défaut pour les articles
-app.use('/api/article', articleRoutes)
+app.use('/api/articles', articlesRoutes)
 // renforce l'authentification sur les routes relatives au user
 app.use('/api/auth', userRoutes)
 

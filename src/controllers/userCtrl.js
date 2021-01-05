@@ -17,8 +17,6 @@ exports.signup = (req, res) => {
         })
         // ajoute l'utilisateur à la base de données
         dbConnect.query('INSERT INTO users SET ?', user, (error, result) => {
-            console.log("error: ", error)
-            console.log("resultat: ", result)
             if (error) {return res.status(400).json({ error })}
             return res.status(201).json({ message: 'Utilisateur créé !' })
         })

@@ -1,12 +1,12 @@
-function Article({ userId, postTitle, postText, postImageUrl }) {
+function Article({ userId, title, text, imageUrl }) {
     this.userId = userId
-    this.postTitle = postTitle
-    this.postText = postText
-    this.postImageUrl = postImageUrl
+    this.title = title
+    this.text = text
+    this.imageUrl = imageUrl
     this.likes = 0
     this.dislikes = 0
-    this.usersLiked = []
-    this.usersDisliked = []
+    this.usersLiked = null
+    this.usersDisliked = null
 }
 
 module.exports = Article
