@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
         // extrait le token du header 'authorization'
         // const token = req.headers.authorization.split(' ')[1]
         const token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYwOTg2NDM2MSwiZXhwIjoxNjA5OTUwNzYxfQ.30drwYSXPm4-48HBaJjHM215SvSyX1mavZbp3mAMiKE'
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYwOTk3MjUwMCwiZXhwIjoxNjEwODM2NTAwfQ.IV6wLKZSMM3iuFMNBHCDe1Rrl1k0Yauz-hI2Dlnvmn0'
         // décode le token
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
         const { userId } = decodedToken

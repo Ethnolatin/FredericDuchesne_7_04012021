@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-// import fs from 'fs'
+import fs from 'fs'
 import Article from '../models/Article'
 import dbConnect from '../models/dbConnect'
 import likesManagement from '../likesManagement'
@@ -9,7 +8,7 @@ exports.createArticle = (req, res) => {
     const articleObject = req.body
     const article = new Article({
         ...articleObject,
-        // imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     })
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
@@ -33,9 +32,17 @@ exports.getOneArticle = (req, res) => {
 }
 
 exports.modifyArticle = (req, res) => {
+    // gère l'éventuelle image
+    console.log('req.file: ', req.file)
+    const articleObject = req.file ? 
+        { ...JSON.parse(req.body),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } :
+        { ...req.body }
+    // met l'article à jour
     dbConnect.query(
         'UPDATE articles SET title = ?, text = ?, imageUrl = ? WHERE id = ?',
-        [req.body.title, req.body.text, req.body.imageUrl, req.params.id],
+        [articleObject.title, articleObject.text, articleObject.imageUrl, req.params.id],
         (error, result) => {
             if (error) {return res.status(400).json({ error })}
             res.status(201).json({ message: 'Article modifié !' })
@@ -44,13 +51,25 @@ exports.modifyArticle = (req, res) => {
 }
 
 exports.deleteArticle = (req, res) => {
-    dbConnect.query('DELETE FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
-        if (error) {return res.status(400).json({ error })}
-        res.status(201).json({ message: 'Article supprimé !' })
+    dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
+        if (error) {return res.status(500).json({ error })}
+        // détecte et supprime l'éventuelle image
+        if (result.imageUrl) {
+            const filename = result.imageUrl.split('/images/')[1]
+            fs.unlink(`images/${filename}`, (err) => {
+                if (err) {return res.status(400).json({ error })}
+                res.status(200).json({ message: 'Image supprimée !' })
+            })
+        }
+        // supprime l'article
+        dbConnect.query('DELETE FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
+            if (error) {return res.status(400).json({ error })}
+            res.status(201).json({ message: 'Article supprimé !' })
+        })
     })
 }
 
-// définit le statut "like" d'un article
+// gère le statut "like" d'un article
 exports.likeArticle = (req, res) => {
     // récupère l'article concerné
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
