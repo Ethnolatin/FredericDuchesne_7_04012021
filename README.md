@@ -10,6 +10,6 @@ Pour faire fonctionner le projet, vous devez demander à duchesne.fred@gmail.com
 
 1. Cloner le projet.
 2. Ajouter le fichier `.env` (fourni séparément) dans le dossier `backend/`.
-3. Exécuter `npm install` depuis le terminal du dossier `backend/`.
-4. Exécuter `npm start`depuis le terminal du dossier `backend/`.
-5.
+3. Exécuter `npm install` puis `npm start` depuis le terminal du dossier `backend/`.
+4. Exécuter `npm install` puis `npm start` depuis le terminal du dossier `frontend/`.
+5. Se rendre sur `http://localhost:4200/`.
