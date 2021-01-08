@@ -173,19 +173,20 @@ hr {
   padding: 5px;
 }
 
-.in-out button {
+.in-out a {
   color: rgba(0,0,0, .7);
+  background-color: white;
+  font-weight: bold;
   text-decoration: none;
-  margin-left: 17px;
+  margin: 0 8px;
   border: 1px solid rgba(0,0,0, .7);
   border-radius: 2px;
   padding: 2px;
   /* transition: all .4s ease-out; */
 }
 
-.in-out button:hover {
+.in-out a:hover {
   cursor: pointer;
-  font-weight: bold;
   background-color: #ffd7d7;
   /* border: 1px solid rgba(0,0,0, 1); */
 }

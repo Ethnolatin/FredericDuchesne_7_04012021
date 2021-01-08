@@ -19,7 +19,6 @@ const loginInputs = [
   
 const Login = ({
     inputs, 
-    inUpClick, 
     submitForm, 
     validateField
 }) => (
@@ -31,15 +30,15 @@ const Login = ({
 			submitForm={submitForm}
 			validateField={validateField}
 		/>
-		<SignupLink inUpClick={inUpClick} />
+		<SignupLink />
     </div>
 );
   
-const SignupLink = ({inUpClick}) => (
+const SignupLink = () => (
     <div className="signup-link">
 		<p className="in-out"> 
 			Pas encore inscrit ? {" "}
-			<button onClick={inUpClick}>Inscrivez-vous ici</button>
+			<a href="http://localhost:4200/signup" >Inscrivez-vous ici</a>
 		</p>
     </div>
 );
@@ -72,7 +71,6 @@ export class LoginWrapper extends React.Component {
         return (
             <Login 
                 inputs={this.state.loginInputs}
-                inUpClick={this.inUpClick}
                 submitForm={this.submitForm}
                 validateField={this.validateField}
             />

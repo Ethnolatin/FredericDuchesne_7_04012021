@@ -37,7 +37,6 @@ const signupInputs = [
  
 const Signup = ({
     inputs, 
-    inUpClick, 
     submitForm, 
     validateField
 }) => (
@@ -49,15 +48,15 @@ const Signup = ({
 			submitForm={submitForm}
 			validateField={validateField}
 		/>
-		<LoginLink inUpClick={inUpClick} />
+		<LoginLink />
     </div>
 );
   
-const LoginLink = ({inUpClick}) => (
+const LoginLink = () => (
     <div className="signup-link">
 		<p className="in-out"> 
 			Déjà inscrit ? {" "}
-			<button onClick={inUpClick}>Identifiez-vous ici</button>
+			<a href="http://localhost:4200" >Identifiez-vous ici</a>
 		</p>
     </div>
 );
@@ -90,7 +89,6 @@ export class SignupWrapper extends React.Component {
         return (
             <Signup 
                 inputs={this.state.signupInputs}
-                inUpClick={this.inUpClick}
                 submitForm={this.submitForm}
                 validateField={this.validateField}
             />
