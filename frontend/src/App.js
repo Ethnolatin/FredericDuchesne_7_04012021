@@ -1,15 +1,28 @@
 import React from "react"
-import logo from './logo.svg'
+import logo from './images/logo.svg'
+import groupomaniaWhite from './images/groupomaniaWhite.png'
+import {LoginWrapper} from './login'
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link
+} from "react-router-dom"
 import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-      </header>
-    </div>
-  )
+export default function App() {
+	return (
+		<Router>
+			<div className="container">
+				<header>
+				</header>
+				<main>
+					<img src={logo} className="homeLogo" alt="logo" />
+					<img src={groupomaniaWhite} className="homeLogoText" alt="Groupomania" />
+					<LoginWrapper />
+				</main>
+			</div>
+		</Router>
+	
+	)
 }
-
-export default App
