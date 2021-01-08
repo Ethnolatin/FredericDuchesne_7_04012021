@@ -40,7 +40,7 @@ const Signup = ({
     submitForm, 
     validateField
 }) => (
-    <div className="signup" >
+    <div className="login" >
 		<h1>Inscription</h1>
 		<hr />
 		<Form 
