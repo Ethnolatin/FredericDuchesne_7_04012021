@@ -7,6 +7,7 @@ const Form = ({
 }) => {
     const inputsMapped = inputs.map((input) => (
 		<Input 
+			key={Date.now}
 			label={input.label} 
 			type={input.type}
 			show={input.show}
