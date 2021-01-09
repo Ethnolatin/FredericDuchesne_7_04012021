@@ -7,10 +7,9 @@ const Form = ({
 }) => {
     const inputsMapped = inputs.map((input) => (
 		<Input 
-			key={Date.now}
+			key={input.id+Date.now}
 			label={input.label} 
 			type={input.type}
-			show={input.show}
 			validated={input.validated}
 			id={input.id}
 			validateField={validateField}
@@ -39,12 +38,11 @@ const Submit = () => (
 const Input = ({
     label, 
     type, 
-    show, 
     validated, 
     id, 
     validateField
 }) => (
-    <div className={show ? "field field-in" : "field"}>
+    <div className= "field">
 		<label className="label">{label}
 			<i className={validated ? "fa fa-check animate-check" : ""} aria-hidden="true"></i>
 		</label>
@@ -52,9 +50,9 @@ const Input = ({
 		<input 
 			className="input" 
 			type={type}
-			onBlur={()=>{validateField(Event, id);}}
+			onBlur={(e)=>{validateField(e, id);}}
 		/>
     </div>
 );
 
-export default (Form)
+export default (Form);

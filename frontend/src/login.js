@@ -5,13 +5,11 @@ const loginInputs = [
 	{
 		label: "Courriel",
 		type: "email",
-		show: true,
 		validated: "",
 		id: "a"
 	}, {
 		label: "Mot de passe",
 		type: "password",
-		show: true,
 		validated: "",
 		id: "b"
 	}

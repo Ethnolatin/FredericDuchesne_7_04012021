@@ -2,7 +2,8 @@ import React from "react"
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
-import {LoginWrapper} from './login'
+import {Login} from './loginForm'
+// import {LoginWrapper} from './login'
 import {SignupWrapper} from './signup'
 import {
 	BrowserRouter as Router,
@@ -23,7 +24,7 @@ export default function App() {
 						<div>
 							<img src={logo} className="homeLogo" alt="logo" />
 							<img src={groupomaniaWhite} className="logoText" alt="Groupomania" />
-							<LoginWrapper />
+							<Login />
 						</div>
 					)}/>
 					<Route path="/signup/" render={()=> (
