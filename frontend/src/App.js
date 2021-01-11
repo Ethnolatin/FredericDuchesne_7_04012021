@@ -3,8 +3,7 @@ import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
 import {Login} from './loginForm'
-// import {LoginWrapper} from './login'
-import {SignupWrapper} from './signup'
+import {Signup} from './signupForm'
 import {
 	BrowserRouter as Router,
 	Route,
@@ -30,7 +29,7 @@ export default function App() {
 					<Route path="/signup/" render={()=> (
 						<div>
 							<img src={iconTextWhite} className="logoText" alt="logo Groupomania" />
-							<SignupWrapper />
+							<Signup />
 						</div>
 					)}/>
 				</main>
