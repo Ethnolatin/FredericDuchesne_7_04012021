@@ -1,11 +1,13 @@
 import React from 'react'
+import {ajaxPost} from './ajax'
 export class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			email: '',
 			password:'',
-			pwlType: 'password'
+			pwlType: 'password',
+			errorMessage: '',
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -20,8 +22,16 @@ export class Login extends React.Component {
 	}
 
 	handleSubmit(event) {
-		event.preventDefault();
-		console.log('Les identifiants ont été soumis : ' + (this.state.email) + '+' + (this.state.password));
+		event.preventDefault()
+		const loginData = {"email": this.state.email, "password": this.state.password}
+		ajaxPost('http://localhost:3000/api/auth/login', loginData)
+			.then((response)=> {
+				console.log('Les identifiants ont été soumis : ' + JSON.stringify(response))
+			})
+			.catch((err) => {
+				this.setState({'errorMessage' : 'Identifiant ou mot de passe non reconnus'})
+				console.log({err})
+			})
 	}
 	
 	handleClick(pw) {
@@ -74,6 +84,7 @@ export class Login extends React.Component {
             		</div>
 				</div>
 				<hr />
+                <div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
 				<button type='submit' className='submit-button' >Valider</button>
 				<p className='in-out'> 
 					Pas encore inscrit ? {' '}

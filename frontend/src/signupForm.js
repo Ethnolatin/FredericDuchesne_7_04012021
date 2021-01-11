@@ -1,4 +1,5 @@
 import React from 'react'
+import {ajaxPost} from './ajax'
 
 export class Signup extends React.Component {
 	constructor(props) {
@@ -11,7 +12,7 @@ export class Signup extends React.Component {
             passwordCtrl: '',
             pwType: 'password',
             pwcType: 'password',
-            pwError: false
+            errorMessage: ''
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -28,10 +29,27 @@ export class Signup extends React.Component {
 	handleSubmit(event) {
         event.preventDefault();
         if (this.state.password !== this.state.passwordCtrl) {
-            this.setState({pwError: true})
+            this.setState({errorMessage: 'Les deux mots de passe sont différents'})
         } else {
-            this.setState({pwError: false})
-            console.log('Les infos ont été envoyées : ' + (this.state.firstName) + '+' + (this.state.lastName) + '+' + (this.state.email) + '+' + (this.state.password))
+            this.setState({errorMessage: ''})
+            event.preventDefault()
+            const signupData = {
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                email: this.state.email,
+                password: this.state.password
+            }
+            console.log('signupData: ', signupData)
+            ajaxPost('http://localhost:3000/api/auth/signup', signupData)
+                .then((response)=> {
+                    console.log(response.message)
+                })
+                .catch((err) => {
+                    this.setState({errorMessage: err})
+                    console.log(err.code)
+                })
+            
+        
         }
 
 	}
@@ -45,7 +63,7 @@ export class Signup extends React.Component {
 	render () {
 		return (
 			<form onSubmit={this.handleSubmit} className='login'>
-				<h1>Bienvenue !</h1>
+				<h1>Inscription</h1>
 				<hr />
 				<div className='field'>
 					<label className='label'>Prénom</label>
@@ -134,8 +152,8 @@ export class Signup extends React.Component {
             		</div>
 				</div>
 				<hr />
+                <div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
 				<button type='submit' className='submit-button' >Valider</button>
-                <div>{this.state.pwError ? 'Les deux mots de passe sont différents' : ""}</div>
                 <p className='in-out'> 
                     Déjà inscrit ? {' '}
                     <a href='http://localhost:4200' >Identifiez-vous ici</a>
