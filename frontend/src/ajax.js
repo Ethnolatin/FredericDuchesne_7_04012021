@@ -1,4 +1,20 @@
-// import React from 'react'
+// Exécute un appel AJAX GET
+export function ajaxGet(url) {
+	return new Promise((resolve, reject) => {
+		const request = new XMLHttpRequest();
+		request.open("GET", url);
+		request.onreadystatechange = () => {
+			if (request.readyState === 4) {
+				if (request.status >= 200 && request.status < 400) {
+					resolve(JSON.parse(request.responseText));
+				} else {
+					reject(request.status + " " + request.statusText + " " + url);
+				};
+			};
+		};
+		request.send();
+	});
+}
 
 // Exécute un appel AJAX POST
 export function ajaxPost(url, data) {

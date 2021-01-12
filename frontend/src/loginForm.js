@@ -29,7 +29,7 @@ export class Login extends React.Component {
 				console.log('Les identifiants ont été soumis : ' + JSON.stringify(response))
 			})
 			.catch((err) => {
-				this.setState({'errorMessage' : 'Identifiant ou mot de passe non reconnus'})
+				this.setState({'errorMessage' : 'Identifiant ou mot de passe non reconnu'})
 				console.log({err})
 			})
 	}
