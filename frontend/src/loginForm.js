@@ -29,7 +29,7 @@ export class Login extends React.Component {
 				console.log('Les identifiants ont été soumis : ' + JSON.stringify(response))
 			})
 			.catch((err) => {
-				this.setState({'errorMessage' : 'Identifiant ou mot de passe non reconnu'})
+				this.setState({'errorMessage' : 'Connexion impossible'})
 				console.log({err})
 			})
 	}
@@ -88,7 +88,7 @@ export class Login extends React.Component {
 				<button type='submit' className='submit-button' >Valider</button>
 				<p className='in-out'> 
 					Pas encore inscrit ? {' '}
-					<a href='http://localhost:4200/signup' >Inscrivez-vous ici</a>
+					<a href='/signup' >Inscrivez-vous ici</a>
 				</p>
 			</form>
 		)

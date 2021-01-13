@@ -1,4 +1,5 @@
 import React from 'react'
+import {Card, Button} from 'react-bootstrap'
 import {ajaxGet} from './ajax'
 
 export class Homepage extends React.Component {
@@ -31,18 +32,26 @@ export class Homepage extends React.Component {
         const articlesCollection = this.state.articlesCollection
         return (
             <div>
-                <div>Articles</div>
-                <ul>
-                    {
-                        articlesCollection.map((article) => 
-                            <li key={article.Id}>{article.title}<br />{article.text} </li>
+                {
+                    articlesCollection.map((article) => {
+                        return(
+                            <Card key={article.Id}>
+                                <Card.Header>Posté par user.firstName user.lastName le timeStamp</Card.Header> {/* format timestamp : j mmm aa */}
+                                <Card.Body>
+                                    <Card.Title>{article.title}</Card.Title>
+                                    <Card.Img variant="top" src={article.imageUrl} alt="" />
+                                    <Card.Text>{article.text}</Card.Text>
+                                    <hr />
+                                    <Button><i className="fas fa-ellipsis-h"></i></Button>
+                                </Card.Body>
+                                <Card.Footer className="text-muted">thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}</Card.Footer>
+                            </Card>
                         )
-                    }
-                </ul>
+                    })
+                }
             </div>
         )
     }
-
 
     render() {
         const articlesList = this.articlesList()

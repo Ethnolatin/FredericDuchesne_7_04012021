@@ -1,46 +1,55 @@
-import React from "react"
+import React from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { Container, Row } from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css'
+
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
-import {Login} from './loginForm'
-import {Signup} from './signupForm'
+import { Login } from './loginForm'
+import { Signup } from './signupForm'
 import {Homepage} from './homepage'
-import {
-	BrowserRouter as Router,
-	Route,
-	/* Switch,
-	Link */
-} from "react-router-dom"
-import './App.css'
 
 export default function App() {
+
+	
 	return (
 		<Router>
-			<div className="container">
+			<Container>
 				<header>
 				</header>
 				<main>
-					<Route exact={true} path="/" render={()=> (
-						<div>
-							<img src={logo} className="homeLogo" alt="logo" />
-							<img src={groupomaniaWhite} className="logoText" alt="Groupomania" />
-							<Login />
-						</div>
-					)}/>
-					<Route path="/signup/" render={()=> (
-						<div>
-							<img src={iconTextWhite} className="logoText" alt="logo Groupomania" />
-							<Signup />
-						</div>
-					)}/>
-					<Route path="/groupomania/" render={()=> (
+					<Row className='auth'>
+						<Route exact={true} path='/login/' component={login}/>
+						<Route exact={true} path='/signup/' component={signup}/>
+					</Row>
+					<Row>
+					<Route exact={true} path='/' render={()=> (
 						<div>
 							<Homepage />
 						</div>
 					)}/>
+					</Row>
 				</main>
-			</div>
+				
+			</Container>
 		</Router>
 	
 	)
 }
+
+const login = ({ match }) => (
+	<div>
+		<img src={logo} className='homeLogo' alt='logo' />
+		<img src={groupomaniaWhite} className='logoText' alt='Groupomania' />
+		<Login />
+	</div>	
+)
+
+const signup = ({ match }) => (
+	<div>
+		<img src={iconTextWhite} className='logoText' alt='logo Groupomania' />
+		<Signup />
+	</div>	
+)

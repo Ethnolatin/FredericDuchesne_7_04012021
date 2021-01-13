@@ -35,10 +35,12 @@ exports.login = (req, res) => {
         .then(valid => {
             // si non valide, renvoie une erreur
             if (!valid) {return res.status(401).json({ message: 'Mot de passe non valide...' })}
-            // si valide, renvoie l'identifiant userId depuis la base de données
+            // si valide, renvoie l'Id, le prénom et le nom depuis la base de données
             // et un jeton Web JSON signé et encodé à l'aide d'une clé secrète
             return (res.status(200).json({
                 userId: resultUser.Id,
+                userFirstName: resultUser.firstName,
+                userLastName: resultUser.lastName,
                 token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '240h' })
             }))
         })

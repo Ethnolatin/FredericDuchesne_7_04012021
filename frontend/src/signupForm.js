@@ -156,7 +156,7 @@ export class Signup extends React.Component {
 				<button type='submit' className='submit-button' >Valider</button>
                 <p className='in-out'> 
                     Déjà inscrit ? {' '}
-                    <a href='http://localhost:4200' >Identifiez-vous ici</a>
+                    <a href='/login' >Identifiez-vous ici</a>
                 </p>
 			</form>
 		)

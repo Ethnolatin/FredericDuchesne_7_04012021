@@ -1,11 +1,25 @@
-.container {
+body {
   background-color: #282c34;
-  text-align: center;
+  max-width: 640px;
+  margin: auto;
+}
+
+/*-------------------- LOGIN/SIGNUP --------------------*/
+
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+
+.auth {
+  justify-content: center;
+  line-height: 1.1;
+  font-family: 'quicksand';
+  color: white;
 }
 
 .homeLogo {
+  display: block;
   max-width: 25vh;
-  margin-bottom: -2rem;
+  margin: auto;
+  margin-bottom: -1rem;
   pointer-events: none;
 }
 
@@ -21,15 +35,6 @@
   }
 }
 
-main {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
 @keyframes homeLogo-spin {
   from {
     transform: rotate(0deg);
@@ -39,17 +44,6 @@ main {
   }
 }
 
-
-/*-------------------- LOGIN/SIGNUP --------------------*/
-
-@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
-
-@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css);
-
-body {
-  background-color: #282c34;
-  font-family: 'quicksand';
-}
 
 hr {
   border: 0;
@@ -75,6 +69,7 @@ hr {
 }
 
 .login h1 {
+  margin-top: 0.6rem;
   font-size: 1.5rem;
 }
 
@@ -103,7 +98,7 @@ hr {
 }
 
 .label {
-  margin-left: 5px;
+  margin: 0 0 0 5px;
 }
 
 .submit-button {
@@ -171,4 +166,43 @@ hr {
 
 .noErrorMessage {
   height: 1.1rem;
+}
+
+/*-------------------- HOMEPAGE --------------------*/
+
+.card-header {
+  font-size: 0.8rem;
+}
+
+.card-body {
+  background-color: #282c34;
+  color: white;
+}
+
+.card-text {
+  max-height: 3rem;
+  margin-bottom: 0.5rem;
+  overflow-y: hidden;
+}
+
+.btn {
+  display: block;
+  background-color: #282c34;
+  border-color: white;
+  color: white;
+  padding: 0 0.5rem;
+  margin: auto;
+  margin-top: -1.8rem;
+  
+}
+
+.btn:hover {
+  background-color: #ffd7d7;
+  border-color: #ffd7d7;
+  color: black;
+}
+
+.card-footer {
+  background-color:  #c3cfda;
+  font-size: 0.8rem;
 }
