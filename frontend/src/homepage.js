@@ -1,6 +1,7 @@
 import React from 'react'
-import {Card, Button} from 'react-bootstrap'
-import {ajaxGet} from './ajax'
+import { Card, Button } from 'react-bootstrap'
+import { ajaxGet } from './ajax'
+import Navigation from './navigation'
 
 export class Homepage extends React.Component {
 	constructor(props) {
@@ -32,23 +33,28 @@ export class Homepage extends React.Component {
         const articlesCollection = this.state.articlesCollection
         return (
             <div>
-                {
-                    articlesCollection.map((article) => {
-                        return(
-                            <Card key={article.Id}>
-                                <Card.Header>Posté par user.firstName user.lastName le timeStamp</Card.Header> {/* format timestamp : j mmm aa */}
-                                <Card.Body>
-                                    <Card.Title>{article.title}</Card.Title>
-                                    <Card.Img variant="top" src={article.imageUrl} alt="" />
-                                    <Card.Text>{article.text}</Card.Text>
-                                    <hr />
-                                    <Button><i className="fas fa-ellipsis-h"></i></Button>
-                                </Card.Body>
-                                <Card.Footer className="text-muted">thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}</Card.Footer>
-                            </Card>
-                        )
-                    })
-                }
+                <Navigation />
+                <main>
+                    {
+                        articlesCollection.map((article) => {
+                            return(
+                                <Card key={article.Id}>
+                                    <Card.Header>
+                                        Posté par user.firstName user.lastName le timeStamp  {/* format timestamp : j mmm aa */}
+                                        </Card.Header>
+                                    <Card.Body>
+                                        <Card.Title>{article.title}</Card.Title>
+                                        <Card.Img variant="top" src={article.imageUrl} alt="" />
+                                        <Card.Text>{article.text}</Card.Text>
+                                        <hr />
+                                        <Button><i className="fas fa-ellipsis-h"></i></Button>
+                                    </Card.Body>
+                                    <Card.Footer className="text-muted">thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}</Card.Footer>
+                                </Card>
+                            )
+                        })
+                    }
+                </main>
             </div>
         )
     }

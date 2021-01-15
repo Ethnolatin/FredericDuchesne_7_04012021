@@ -9,7 +9,7 @@ import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
 import { Login } from './loginForm'
 import { Signup } from './signupForm'
-import {Homepage} from './homepage'
+import { Homepage } from './homepage'
 
 export default function App() {
 
@@ -17,25 +17,19 @@ export default function App() {
 	return (
 		<Router>
 			<Container>
-				<header>
-				</header>
-				<main>
-					<Row className='auth'>
-						<Route exact={true} path='/login/' component={login}/>
-						<Route exact={true} path='/signup/' component={signup}/>
-					</Row>
-					<Row>
-					<Route exact={true} path='/' render={()=> (
-						<div>
-							<Homepage />
-						</div>
-					)}/>
-					</Row>
-				</main>
-				
+				<Row className='auth'>
+					<Route exact={true} path='/login/' component={login}/>
+					<Route exact={true} path='/signup/' component={signup}/>
+				</Row>
+				<Row>
+				<Route exact={true} path='/' render={()=> (
+					<div>
+						<Homepage />
+					</div>
+				)}/>
+				</Row>
 			</Container>
 		</Router>
-	
 	)
 }
 

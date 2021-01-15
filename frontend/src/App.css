@@ -185,15 +185,17 @@ hr {
   overflow-y: hidden;
 }
 
+.card-body .btn {
+  margin: auto;
+  margin-top: -1.8rem;
+}
+
 .btn {
   display: block;
+  padding: 0 0.5rem;
   background-color: #282c34;
   border-color: white;
   color: white;
-  padding: 0 0.5rem;
-  margin: auto;
-  margin-top: -1.8rem;
-  
 }
 
 .btn:hover {
@@ -205,4 +207,12 @@ hr {
 .card-footer {
   background-color:  #c3cfda;
   font-size: 0.8rem;
+}
+
+.navbar-brand img {
+  max-height: 2rem;
+}
+
+.navbar .btn {
+  margin-left: auto;
 }

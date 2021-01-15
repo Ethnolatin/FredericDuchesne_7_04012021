@@ -39,17 +39,15 @@ export class Signup extends React.Component {
                 email: this.state.email,
                 password: this.state.password
             }
-            console.log('signupData: ', signupData)
             ajaxPost('http://localhost:3000/api/auth/signup', signupData)
-                .then((response)=> {
-                    console.log(response.message)
+			.then((response)=> {
+				this.setState({...response})
+				window.location = '/'
                 })
                 .catch((err) => {
                     this.setState({errorMessage: err})
                     console.log(err.code)
                 })
-            
-        
         }
 
 	}
