@@ -9,12 +9,13 @@ export class Homepage extends React.Component {
 		super(props)
 		this.state = {
             articlesCollection: [],
-            article: [],
+            article: '',
             showModal: false
         }
 
 		this.getArticles = this.getArticles.bind(this);
         this.articlesList = this.articlesList.bind(this);
+        this.modalDisplay = this.modalDisplay.bind(this);
     }
 
     componentDidMount() {
@@ -31,7 +32,9 @@ export class Homepage extends React.Component {
         })
     }
 
-    modalDisplay = () => this.setState({showModal: true})
+    modalDisplay = (selectedArticle) => {
+        this.setState({showModal: true, article: selectedArticle})
+    }
 
     modalClose = () => this.setState({showModal: false})
 
@@ -52,7 +55,7 @@ export class Homepage extends React.Component {
                                     <Card.Img variant="top" src={article.imageUrl} alt="" />
                                     <Card.Text>{article.text}</Card.Text>
                                     <hr />
-                                    <Button onClick={() => this.modalDisplay()} >
+                                    <Button onClick={() => this.modalDisplay(article)} >
                                         <i className="fas fa-ellipsis-h"></i>
                                     </Button>
                                 </Card.Body>
@@ -61,9 +64,9 @@ export class Homepage extends React.Component {
 
                             <Modal show={this.state.showModal} onHide={this.modalClose} animation={false}>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>{article.title}</Modal.Title>
+                                    <Modal.Title>{this.state.article.title}</Modal.Title>
                                 </Modal.Header>
-                                <Modal.Body>{article.text}</Modal.Body>
+                                <Modal.Body>{this.state.article.text}</Modal.Body>
                                 <Modal.Footer>
                                     <Button>
                                         Modifier

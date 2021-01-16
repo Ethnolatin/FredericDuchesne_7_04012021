@@ -16,8 +16,8 @@ export class Login extends React.Component {
             pwCtrlType: 'password',
 			errorMessage: '',
 			userId: '',
-			userFirstName: '',
-			userLastName: '',
+			firstName: '',
+			lastName: '',
 			loginPage: true,
 			loggedIn: false,
 		}
@@ -33,6 +33,7 @@ export class Login extends React.Component {
 		const value = target.value
 		this.setState({[name]:value})
 	}
+
 	loginSubmit(event) {
 		event.preventDefault()
 		const loginData = {"email": this.state.email, "password": this.state.password}

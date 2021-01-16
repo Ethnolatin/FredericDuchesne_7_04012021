@@ -12,12 +12,10 @@ export default function App() {
 		<Router>
 			<Container >
 				<Row className='auth'>
-					<Route exact path='/login/'><Login /></Route>
+					<Route exact path='/login' component={Login} />
 				</Row>
 				<Row>
-					<Route exact path='/'>
-						<Homepage />
-					</Route>
+					<Route exact path='/' component={Homepage} />
 				</Row>
 			</Container>
 		</Router>
