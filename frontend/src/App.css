@@ -190,11 +190,12 @@ hr {
   margin-top: -1.8rem;
 }
 
-.btn {
+.btn, .btn:focus, .btn::before, .btn::after {
   display: block;
   padding: 0 0.5rem;
   background-color: #282c34;
   border-color: white;
+  box-shadow: none;
   color: white;
 }
 
