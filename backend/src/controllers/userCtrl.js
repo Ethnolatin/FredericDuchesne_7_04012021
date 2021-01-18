@@ -39,9 +39,9 @@ exports.login = (req, res) => {
             // et un jeton Web JSON signé et encodé à l'aide d'une clé secrète
             return (res.status(200).json({
                 userId: resultUser.Id,
-                userFirstName: resultUser.firstName,
-                userLastName: resultUser.lastName,
-                token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '240h' })
+                firstName: resultUser.firstName,
+                lastName: resultUser.lastName,
+                token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '2400h' })
             }))
         })
         .catch((err) => res.status(500).json({ err }))

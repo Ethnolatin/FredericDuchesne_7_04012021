@@ -9,15 +9,16 @@ export class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			userId: '',
+			token: '',
+			firstName: '',
+			lastName: '',
 			email: '',
 			password:'',
             passwordCtrl: '',
 			pwType: 'password',
             pwCtrlType: 'password',
 			errorMessage: '',
-			userId: '',
-			firstName: '',
-			lastName: '',
 			loginPage: true,
 			loggedIn: false,
 		}
@@ -54,7 +55,6 @@ export class Login extends React.Component {
             this.setState({errorMessage: 'Les deux mots de passe sont différents'})
         } else {
             this.setState({errorMessage: ''})
-            event.preventDefault()
             const signupData = {
                 firstName: this.state.firstName,
                 lastName: this.state.lastName,
@@ -63,7 +63,8 @@ export class Login extends React.Component {
             }
             ajaxPost('http://localhost:3000/api/auth/signup', signupData)
 			.then((response)=> {
-				this.setState({...response})
+				console.log(response)
+				this.setState({...response, loggedIn: true})
 				window.location = '/'
                 })
                 .catch((err) => {
