@@ -8,7 +8,10 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-            userId: this.props.userId,
+            userId: 1,                          // remplacer la valeur par défaut par ''
+            token: '',
+            firstName: 'Frédéric',              // remplacer la valeur par défaut par ''
+            lastName: 'Duchesne',               // remplacer la valeur par défaut par ''
             articlesCollection: [],
             article: '',
             showArticleModal: false,
@@ -17,16 +20,12 @@ export class Homepage extends React.Component {
             newArticleText: ''
         }
 
-        console.log(this.state.userId)
-
 		this.getArticles = this.getArticles.bind(this);
 		this.createArticle = this.createArticle.bind(this);
         this.articlesList = this.articlesList.bind(this);
         this.articleModalDisplay = this.articleModalDisplay.bind(this);
         this.articleModalClose = this.articleModalClose.bind(this);
         this.createModalClose = this.createModalClose.bind(this);
-        this.saveSandbox = this.saveSandbox.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
 
@@ -47,12 +46,14 @@ export class Homepage extends React.Component {
     createArticle = (event) => {
         event.preventDefault();
         const articleData = {
-            userId: 1,                     //   remplacer "1" par le userId //
+            userId: this.state.userId,
             title: this.state.newArticleTitle,
             text: this.state.newArticleText
         }
         ajaxPost ('http://localhost:3000/api/articles/', articleData)
-        .then ((response) => {console.log(response.message)
+        .then ((response) => {
+            console.log(response.message)
+            this.createModalClose()
         })
         .catch((err) => {
             console.log({err})
@@ -63,18 +64,11 @@ export class Homepage extends React.Component {
         this.setState({showArticleModal: true, article: selectedArticle})
     }
 
-    articleModalClose = () => this.setState({showArticleModal: false})
-    createModalClose = () => this.setState({showCreateModal: false})
+    createModalDisplay = () => this.setState({showCreateModal: true})
 
-    saveSandbox(event) {
-        console.log("Hello World");
-        console.log('new article: ', this.state.newArticleTitle + this.state.newArticleText);
-    }
-    
-    handleSubmit(event) {
-        event.preventDefault()
-        console.log('value: ', event.target.value)
-    }
+    articleModalClose = () => this.setState({showArticleModal: false})
+
+    createModalClose = () => this.setState({showCreateModal: false})
 
     handleInputChange(event) {
 		const target = event.target
@@ -88,6 +82,11 @@ export class Homepage extends React.Component {
         return (
             <div>
                 <Navigation />
+                <header>
+                    <p>{this.state.firstName} {this.state.lastName}</p>
+                    <Button onClick={() => this.createModalDisplay()} >Ecrire un article</Button>
+
+                </header>
                 <main>{
                     articlesCollection.map((article) => {
                         return(<>
@@ -124,10 +123,10 @@ export class Homepage extends React.Component {
 
                             <Modal show={this.state.showCreateModal} onHide={this.createModalClose} animation={false}>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Créer un article</Modal.Title>
+                                    <Modal.Title>Ecrivez un article :</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
-                                    <Form noValidate onSubmit={this.handleSubmit}>
+                                    <Form noValidate>
                                         <Form.Group controlId='title'>
                                             <Form.Label>Titre</Form.Label>
                                             <Form.Control

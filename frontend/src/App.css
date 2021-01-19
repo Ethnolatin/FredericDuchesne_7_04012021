@@ -1,3 +1,12 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 1rem;
+  background-color: #343a40;
+  color: white;
+}
+
 body {
   background-color: #282c34;
   max-width: 640px;

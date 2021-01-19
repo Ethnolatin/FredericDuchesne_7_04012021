@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Navbar} from 'react-bootstrap'
+import { Button, Navbar } from 'react-bootstrap'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 
 export default function Navigation() {
@@ -13,7 +13,6 @@ export default function Navigation() {
                     className="d-inline-block align-top"
                 />{' '}
             </Navbar.Brand>
-            {/* <Navbar.Link href="">Home</Navbar.Link> */}
             <Button href="/login"><i className="fas fa-sign-out-alt"></i></Button>
       </Navbar>
     )

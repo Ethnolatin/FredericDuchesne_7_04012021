@@ -37,7 +37,7 @@ export class Login extends React.Component {
 
 	loginSubmit(event) {
 		event.preventDefault()
-		const loginData = {"email": this.state.email, "password": this.state.password}
+		const loginData = {email: this.state.email, password: this.state.password}
 		ajaxPost('http://localhost:3000/api/auth/login', loginData)
 			.then((response)=> {
 				this.setState({...response, loggedIn: true})
