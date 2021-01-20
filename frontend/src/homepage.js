@@ -1,20 +1,21 @@
 import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
-import { userContext } from './userContext'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
+import { AuthContext } from './authContext'
 import { ajaxGet, ajaxPost } from './ajax'
 import Navigation from './navigation'
 
 export class Homepage extends React.Component {
+    static contextType = AuthContext
 	constructor(props) {
 		super(props)
 		this.state = {
-            userId: 1,                      // remplacer la valeur par défaut par ''
+            userId: '',
             token: '',
-            firstName: 'toto',              // remplacer la valeur par défaut par ''
-            lastName: 'titi',               // remplacer la valeur par défaut par ''
+            firstName: '',
+            lastName: '',
             articlesCollection: [],
             article: '',
             showArticleModal: false,
@@ -34,11 +35,17 @@ export class Homepage extends React.Component {
 
 
     componentDidMount() {
+        this.setState({
+            userId: this.context.userId,
+            token: this.context.token,
+            firstName: this.context.firstName,
+            lastName: this.context.lastName
+        })
         this.getArticles()
     }
 
     getArticles = () => {
-        ajaxGet ('http://localhost:3000/api/articles/')
+        ajaxGet ('http://localhost:3000/api/articles/', this.context.token)
         .then ((response) => {
             this.setState({articlesCollection: response})
         })
@@ -55,7 +62,7 @@ export class Homepage extends React.Component {
             title: this.state.newArticleTitle,
             text: this.state.newArticleText
         }
-        ajaxPost ('http://localhost:3000/api/articles/', articleData)
+        ajaxPost ('http://localhost:3000/api/articles/', articleData, this.state.token)
         .then ((response) => {
             console.log(response.message)
             this.createModalClose()
@@ -82,7 +89,7 @@ export class Homepage extends React.Component {
         this.setState({[name]:value})
     }
 
-    articlesList= () => {
+    articlesList = () => {
         const articlesCollection = this.state.articlesCollection.reverse()
         const calendarStrings = {
             lastDay : '[hier à] H[h]mm',
@@ -100,11 +107,14 @@ export class Homepage extends React.Component {
                 </header>
                 <main>{
                     articlesCollection.map((article) => {
+                        const writer = (article.writerId === this.state.userId.toString() ? 
+                            'moi' : 
+                            article.writerName)
                         return(<>
                             <Card key={article.Id}>
                                 <Card.Header>
                                     Publié par{' '}
-                                    <b>{article.writerName}{' '}</b>
+                                    <b>{writer}{' '}</b>
                                     <Moment
                                         locale='fr'
                                         calendar={calendarStrings}
@@ -182,8 +192,6 @@ export class Homepage extends React.Component {
     }
 
     render() {
-        console.log('contexType: ', Homepage.contextType)
-        console.log('this.context: ', this.context)
         const articlesList = this.articlesList()
         return (
             <>

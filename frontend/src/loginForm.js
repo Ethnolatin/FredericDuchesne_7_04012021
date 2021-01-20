@@ -1,5 +1,5 @@
 import React from 'react'
-import { userContext } from './userContext'
+import { AuthContext } from './authContext'
 import {ajaxPost} from './ajax'
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
@@ -10,7 +10,6 @@ export class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			user: {},
 			userId: '',
 			token: '',
 			firstName: '',
@@ -38,12 +37,11 @@ export class Login extends React.Component {
 	}
 
 	loginSubmit(event) {
-		event.preventDefault()
+		event && event.preventDefault()
 		const loginData = {email: this.state.email, password: this.state.password}
 		ajaxPost('http://localhost:3000/api/auth/login', loginData)
 			.then((response)=> {
-				this.setState({user: {userId: response.userId, token: response.token}, loggedIn: true})
-				console.log(this.state.user, this.state.loggedIn)
+				this.setState({...response, loggedIn: true})
 			})
 			.catch((err) => {
 				this.setState({errorMessage: err})
@@ -52,7 +50,7 @@ export class Login extends React.Component {
 	}
 
 	signupSubmit(event) {
-        event.preventDefault();
+		event && event.preventDefault()
         if (this.state.password !== this.state.passwordCtrl) {
             this.setState({errorMessage: 'Les deux mots de passe sont différents'})
         } else {
@@ -65,9 +63,9 @@ export class Login extends React.Component {
             }
             ajaxPost('http://localhost:3000/api/auth/signup', signupData)
 			.then((response)=> {
-				console.log(response)
-				this.setState({...response, loggedIn: true})
-				window.location = '/'
+				this.setState({...response})
+				console.log(this.status)
+				this.loginSubmit()
                 })
                 .catch((err) => {
                     this.setState({errorMessage: err})
@@ -201,31 +199,35 @@ export class Login extends React.Component {
 		</>)
 		const handleSubmit = loginPage ? this.loginSubmit : this.signupSubmit
 
-		const value = this.state.user
+		const value = {
+			userId: this.state.userId,
+			token: this.state.token,
+			firstName: this.state.firstName,
+			lastName: this.state.lastName
+		}
 
 		return (
-			!this.state.loggedIn ? (
-				<div className='auth'>
-					{headerLogo}	
-					<form onSubmit={handleSubmit} className='loginForm'>
-						<h1>{title}</h1>
-						<hr />
-						{formFields}
-						<hr />
-						<div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
-						<button type='submit' className='submit-button' >Valider</button>
-						<p className='in-out'> 
-							{footerMessage}
-							<span onClick={() => this.setState({loginPage: !this.state.loginPage})} >{toggleButton}</span>
-						</p>
-					</form>
-				</div>
-			) : (
-				<userContext.Provider value={value}>
-					{console.log('provider: ', {value})}
+			<AuthContext.Provider value={value}>
+				{!this.state.loggedIn ? (
+					<div className='auth'>
+						{headerLogo}	
+						<form onSubmit={handleSubmit} className='loginForm'>
+							<h1>{title}</h1>
+							<hr />
+							{formFields}
+							<hr />
+							<div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
+							<button type='submit' className='submit-button' >Valider</button>
+							<p className='in-out'> 
+								{footerMessage}
+								<span onClick={() => this.setState({loginPage: !this.state.loginPage})} >{toggleButton}</span>
+							</p>
+						</form>
+					</div>
+				) : (
 					<Homepage/>
-				</userContext.Provider>
-			)
+				)}
+			</AuthContext.Provider>
 		)
 	}
 }

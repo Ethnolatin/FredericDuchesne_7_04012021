@@ -5,9 +5,9 @@ import jwt from 'jsonwebtoken'
 module.exports = (req, res, next) => {
     try {
         // extrait le token du header 'authorization'
-        // const token = req.headers.authorization.split(' ')[1]
-        const token =
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxMDg4NDg2MywiZXhwIjoxNjE5NTI0ODYzfQ.ihxgEGwfNagMOJKfmEoOQ8I5-amE3JuhWydqRYh-N0E'
+        const token = req.headers.authorization.split(' ')[1]
+        // const token =
+        //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTYxMDg4NDg2MywiZXhwIjoxNjE5NTI0ODYzfQ.ihxgEGwfNagMOJKfmEoOQ8I5-amE3JuhWydqRYh-N0E'
         // décode le token
         const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET')
         const { userId } = decodedToken

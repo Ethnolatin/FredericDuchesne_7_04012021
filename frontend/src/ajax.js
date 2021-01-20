@@ -1,8 +1,9 @@
 // Exécute un appel AJAX GET
-export function ajaxGet(url) {
+export function ajaxGet(url, token) {
 	return new Promise((resolve, reject) => {
 		const request = new XMLHttpRequest();
 		request.open("GET", url);
+		request.setRequestHeader('Authorization', 'Bearer ' + token)
 		request.onreadystatechange = () => {
 			if (request.readyState === 4) {
 				if (request.status >= 200 && request.status < 400) {
@@ -17,10 +18,11 @@ export function ajaxGet(url) {
 }
 
 // Exécute un appel AJAX POST
-export function ajaxPost(url, data) {
+export function ajaxPost(url, data, token) {
 	return new Promise((resolve, reject) => {
 		const request = new XMLHttpRequest();
 		request.open("POST", url);
+		request.setRequestHeader('Authorization', 'Bearer ' + token)
 		request.onreadystatechange = () => {
 			if (request.readyState === 4) {
 				if (request.status >= 200 && request.status < 400) {
@@ -37,10 +39,11 @@ export function ajaxPost(url, data) {
 }
 
 // Exécute un appel AJAX PUT
-export function ajaxPut(url, data) {
+export function ajaxPut(url, data, token) {
 	return new Promise((resolve, reject) => {
 		const request = new XMLHttpRequest();
 		request.open("PUT", url);
+		request.setRequestHeader('Authorization', 'Bearer ' + token)
 		request.onreadystatechange = () => {
 			if (request.readyState === 4) {
 				if (request.status >= 200 && request.status < 400) {
