@@ -2,6 +2,8 @@ import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import { userContext } from './userContext'
+import Moment from 'react-moment'
+import 'moment/locale/fr'
 import { ajaxGet, ajaxPost } from './ajax'
 import Navigation from './navigation'
 
@@ -9,10 +11,10 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-            userId: 1,                          // remplacer la valeur par défaut par ''
+            userId: 1,                      // remplacer la valeur par défaut par ''
             token: '',
-            firstName: 'Frédéric',              // remplacer la valeur par défaut par ''
-            lastName: 'Duchesne',               // remplacer la valeur par défaut par ''
+            firstName: 'toto',              // remplacer la valeur par défaut par ''
+            lastName: 'titi',               // remplacer la valeur par défaut par ''
             articlesCollection: [],
             article: '',
             showArticleModal: false,
@@ -48,7 +50,8 @@ export class Homepage extends React.Component {
     createArticle = (event) => {
         event.preventDefault();
         const articleData = {
-            userId: this.state.userId,
+            writerId: this.state.userId,
+            writerName: this.state.firstName + ' ' + this.state.lastName,
             title: this.state.newArticleTitle,
             text: this.state.newArticleText
         }
@@ -78,9 +81,15 @@ export class Homepage extends React.Component {
 		const value = target.value
         this.setState({[name]:value})
     }
-    
-	articlesList= () => {
+
+    articlesList= () => {
         const articlesCollection = this.state.articlesCollection.reverse()
+        const calendarStrings = {
+            lastDay : '[hier à] H[h]mm',
+            sameDay : '[aujourd\'hui à] H[h]mm',
+            lastWeek : 'dddd [dernier à] H[h]mm',
+            sameElse : '[le] dddd D MMMM YYYY [à] H[h]mm'
+        }
         return (
             <div>
                 <Navigation />
@@ -94,8 +103,14 @@ export class Homepage extends React.Component {
                         return(<>
                             <Card key={article.Id}>
                                 <Card.Header>
-                                    Posté par user.firstName user.lastName le timeStamp  {/* format timestamp : j mmm aa */}
-                                    </Card.Header>
+                                    Publié par{' '}
+                                    <b>{article.writerName}{' '}</b>
+                                    <Moment
+                                        locale='fr'
+                                        calendar={calendarStrings}
+                                        date={article.timeStamp}
+                                    />
+                                </Card.Header>
                                 <Card.Body>
                                     <Card.Title>{article.title}</Card.Title>
                                     <Card.Img variant="top" src={article.imageUrl} alt="" />
