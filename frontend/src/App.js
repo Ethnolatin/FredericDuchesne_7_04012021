@@ -11,11 +11,11 @@ export default function App() {
 	return (
 		<Router>
 			<Container >
-				<Row className='auth'>
-					<Route exact path='/login' component={Login} />
-				</Row>
 				<Row>
 					<Route exact path='/' component={Homepage} />
+				</Row>
+				<Row className='auth'>
+					<Route exact path='/login' component={Login} />
 				</Row>
 			</Container>
 		</Router>

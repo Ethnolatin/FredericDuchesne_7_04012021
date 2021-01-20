@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
+import { userContext } from './userContext'
 import { ajaxGet, ajaxPost } from './ajax'
 import Navigation from './navigation'
 
@@ -28,6 +29,7 @@ export class Homepage extends React.Component {
         this.createModalClose = this.createModalClose.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
     }
+
 
     componentDidMount() {
         this.getArticles()
@@ -76,7 +78,7 @@ export class Homepage extends React.Component {
 		const value = target.value
         this.setState({[name]:value})
     }
-
+    
 	articlesList= () => {
         const articlesCollection = this.state.articlesCollection.reverse()
         return (
@@ -165,8 +167,14 @@ export class Homepage extends React.Component {
     }
 
     render() {
+        console.log('contexType: ', Homepage.contextType)
+        console.log('this.context: ', this.context)
         const articlesList = this.articlesList()
-        return articlesList
+        return (
+            <>
+            {articlesList}
+            </>
+        )
     }
 
 }

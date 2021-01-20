@@ -1,14 +1,16 @@
 import React from 'react'
+import { userContext } from './userContext'
 import {ajaxPost} from './ajax'
-
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
+import { Homepage } from './homepage'
 
 export class Login extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+			user: {},
 			userId: '',
 			token: '',
 			firstName: '',
@@ -40,8 +42,8 @@ export class Login extends React.Component {
 		const loginData = {email: this.state.email, password: this.state.password}
 		ajaxPost('http://localhost:3000/api/auth/login', loginData)
 			.then((response)=> {
-				this.setState({...response, loggedIn: true})
-				window.location = '/'
+				this.setState({user: {userId: response.userId, token: response.token}, loggedIn: true})
+				console.log(this.state.user, this.state.loggedIn)
 			})
 			.catch((err) => {
 				this.setState({errorMessage: err})
@@ -199,23 +201,31 @@ export class Login extends React.Component {
 		</>)
 		const handleSubmit = loginPage ? this.loginSubmit : this.signupSubmit
 
+		const value = this.state.user
 
 		return (
-			<div className='auth'>
-			{headerLogo}	
-			<form onSubmit={handleSubmit} className='loginForm'>
-				<h1>{title}</h1>
-				<hr />
-				{formFields}
-				<hr />
-                <div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
-				<button type='submit' className='submit-button' >Valider</button>
-				<p className='in-out'> 
-					{footerMessage}
-					<span onClick={() => this.setState({loginPage: !this.state.loginPage})} >{toggleButton}</span>
-				</p>
-			</form>
-			</div>
+			!this.state.loggedIn ? (
+				<div className='auth'>
+					{headerLogo}	
+					<form onSubmit={handleSubmit} className='loginForm'>
+						<h1>{title}</h1>
+						<hr />
+						{formFields}
+						<hr />
+						<div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
+						<button type='submit' className='submit-button' >Valider</button>
+						<p className='in-out'> 
+							{footerMessage}
+							<span onClick={() => this.setState({loginPage: !this.state.loginPage})} >{toggleButton}</span>
+						</p>
+					</form>
+				</div>
+			) : (
+				<userContext.Provider value={value}>
+					{console.log('provider: ', {value})}
+					<Homepage/>
+				</userContext.Provider>
+			)
 		)
 	}
 }
