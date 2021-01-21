@@ -24,13 +24,13 @@ export class Homepage extends React.Component {
             newArticleText: ''
         }
 
-		this.getArticles = this.getArticles.bind(this);
-		this.createArticle = this.createArticle.bind(this);
-        this.articlesList = this.articlesList.bind(this);
-        this.articleModalDisplay = this.articleModalDisplay.bind(this);
-        this.articleModalClose = this.articleModalClose.bind(this);
-        this.createModalClose = this.createModalClose.bind(this);
-        this.handleInputChange = this.handleInputChange.bind(this);
+		this.getArticles = this.getArticles.bind(this)
+		this.createArticle = this.createArticle.bind(this)
+        this.articlesList = this.articlesList.bind(this)
+        this.articleModalDisplay = this.articleModalDisplay.bind(this)
+        this.articleModalClose = this.articleModalClose.bind(this)
+        this.createModalClose = this.createModalClose.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this)
     }
 
 
@@ -55,7 +55,7 @@ export class Homepage extends React.Component {
     }
 
     createArticle = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         const articleData = {
             writerId: this.state.userId,
             writerName: this.state.firstName + ' ' + this.state.lastName,
@@ -123,11 +123,11 @@ export class Homepage extends React.Component {
                                 </Card.Header>
                                 <Card.Body>
                                     <Card.Title>{article.title}</Card.Title>
-                                    <Card.Img variant="top" src={article.imageUrl} alt="" />
+                                    <Card.Img variant='top' src={article.imageUrl} alt='' />
                                     <Card.Text>{article.text}</Card.Text>
                                     <hr />
                                     <Button onClick={() => this.articleModalDisplay(article)} >
-                                        <i className="fas fa-ellipsis-h"></i>
+                                        <i className='fas fa-ellipsis-h'></i>
                                     </Button>
                                 </Card.Body>
                                 <Card.Footer>thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}</Card.Footer>
@@ -158,7 +158,7 @@ export class Homepage extends React.Component {
                                             <Form.Label>Titre</Form.Label>
                                             <Form.Control
                                                 className='input'
-                                                type="text"
+                                                type='text'
                                                 name='newArticleTitle'
                                                 value={this.state.newArticleTitle}
                                                 onChange={this.handleInputChange}
@@ -170,7 +170,7 @@ export class Homepage extends React.Component {
                                             <Form.Label>Texte</Form.Label>
                                             <Form.Control
                                                 className='input'
-                                                type="text"
+                                                type='text'
                                                 name='newArticleText'
                                                 value={this.state.newArticleText}
                                                 onChange={this.handleInputChange}

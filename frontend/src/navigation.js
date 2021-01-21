@@ -5,15 +5,15 @@ import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 export default function Navigation() {
 
     return(
-        <Navbar bg="dark" variant="dark" sticky="top">
-            <Navbar.Brand href="/">
+        <Navbar bg='dark' variant='dark' sticky='top'>
+            <Navbar.Brand href='/'>
                 <img
-                    alt=""
+                    alt=''
                     src={iconTextWhite}
-                    className="d-inline-block align-top"
+                    className='d-inline-block align-top'
                 />{' '}
             </Navbar.Brand>
-            <Button href="/login"><i className="fas fa-sign-out-alt"></i></Button>
+            <Button href='/login'><i className='fas fa-sign-out-alt'></i></Button>
       </Navbar>
     )
 }

@@ -24,9 +24,9 @@ export class Login extends React.Component {
 			loggedIn: false,
 		}
 
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.loginSubmit = this.loginSubmit.bind(this);
-		this.signupSubmit = this.signupSubmit.bind(this);
+		this.handleInputChange = this.handleInputChange.bind(this)
+		this.loginSubmit = this.loginSubmit.bind(this)
+		this.signupSubmit = this.signupSubmit.bind(this)
 	}
 
 	handleInputChange(event) {
@@ -216,7 +216,7 @@ export class Login extends React.Component {
 							<hr />
 							{formFields}
 							<hr />
-							<div className={this.state.errorMessage === "" ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
+							<div className={this.state.errorMessage === '' ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
 							<button type='submit' className='submit-button' >Valider</button>
 							<p className='in-out'> 
 								{footerMessage}
