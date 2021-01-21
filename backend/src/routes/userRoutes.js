@@ -1,12 +1,12 @@
 import { Router } from 'express'
-import pwValidation from '../middleware/pw-valid'
 import userCtrl from '../controllers/userCtrl'
+// import pwValidation from '../middleware/pw-valid'
 
 const router = Router()
 
 // définit les routes relatives à l'utilisateur
-// applique à la route signup le middleware pwValidation qui vérifie la sureté du mot de passe
-router.post('/signup', pwValidation, userCtrl.signup)
+// router.post('/signup', pwValidation, userCtrl.signup)
+router.post('/signup', userCtrl.signup)
 router.post('/login', userCtrl.login)
 
 module.exports = router

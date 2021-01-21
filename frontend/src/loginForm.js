@@ -5,6 +5,7 @@ import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
 import { Homepage } from './homepage'
+import { pwSchema } from './pwSchema'
 
 export class Login extends React.Component {
 	constructor(props) {
@@ -51,7 +52,15 @@ export class Login extends React.Component {
 
 	signupSubmit(event) {
 		event && event.preventDefault()
-        if (this.state.password !== this.state.passwordCtrl) {
+		const password = this.state.password
+        if (!pwSchema.validate(password)) {
+            this.setState({errorMessage: 'Format de mot de passe non valide'})
+			alert(`Format de mot de passe requis :
+- au moins 8 caractères
+- au moins une majuscule
+- au moins une minuscule
+- au moins un chiffre`)
+		} else if (password !== this.state.passwordCtrl) {
             this.setState({errorMessage: 'Les deux mots de passe sont différents'})
         } else {
             this.setState({errorMessage: ''})
@@ -69,7 +78,7 @@ export class Login extends React.Component {
                 })
                 .catch((err) => {
                     this.setState({errorMessage: err})
-                    console.log(err.code)
+                    console.log(err)
                 })
         }
 	}
@@ -118,10 +127,9 @@ export class Login extends React.Component {
 					type='email'
 					name='email'
 					value={this.state.email}
+					pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
 					onChange={this.handleInputChange}
 					id='email'
-					pattern='[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$'
-					title='pseudo@domaine.ext'
 					required
 					placeholder='pseudo@domaine.ext'
 				/>

@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/User'
@@ -41,7 +40,7 @@ exports.login = (req, res) => {
                 userId: resultUser.Id,
                 firstName: resultUser.firstName,
                 lastName: resultUser.lastName,
-                token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '2400h' })
+                token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' })
             }))
         })
         .catch((err) => res.status(500).json({ err }))

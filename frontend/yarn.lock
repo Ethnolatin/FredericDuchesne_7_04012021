@@ -7608,7 +7608,7 @@
   "resolved" "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
-"moment@^2.29.0", "moment@^2.29.1", "moment@>= 2.9.0":
+"moment@^2.29.0", "moment@^2.29.1":
   "integrity" "sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ=="
   "resolved" "https://registry.npmjs.org/moment/-/moment-2.29.1.tgz"
   "version" "2.29.1"
@@ -8205,6 +8205,11 @@
   "integrity" "sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ="
   "resolved" "https://registry.yarnpkg.com/pascalcase/-/pascalcase-0.1.1.tgz"
   "version" "0.1.1"
+
+"password-validator@^5.1.1":
+  "integrity" "sha512-PsnXRlCHzZGviGro9iJXo76vj7Y7Txd0OyJhLsF4pCpsDn53iIuhX5h0mYr93KqkNrc7Htk4jocaYFGVjG/Ohw=="
+  "resolved" "https://registry.npmjs.org/password-validator/-/password-validator-5.1.1.tgz"
+  "version" "5.1.1"
 
 "path-browserify@0.0.1":
   "integrity" "sha512-BapA40NHICOS+USX9SN4tyhq+A2RrN/Ws5F0Z5aMHDp98Fl86lX8Oti8B7uN93L4Ifv4fHOEA+pQw87gmMO/lQ=="

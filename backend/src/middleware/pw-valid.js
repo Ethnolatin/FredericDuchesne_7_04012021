@@ -1,5 +1,4 @@
-/* eslint-disable no-throw-literal */
-const passwordSchema = require('../models/Password')
+import passwordSchema from '../models/Password'
 
 // vérifie que le mot de passe est sûr
 module.exports = (req, res, next) => {
@@ -9,7 +8,8 @@ module.exports = (req, res, next) => {
         } else {
             next()
         }
-    } catch (error) {
+    }
+    catch (error) {
         res.status(401).json({ error })
     }
 }
