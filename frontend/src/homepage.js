@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
 import { AuthContext } from './authContext'
-import { ajaxGet, ajaxPost } from './ajax'
+import { ajaxGet, ajaxPost, ajaxPut } from './ajax'
 import Navigation from './navigation'
 
 export class Homepage extends React.Component {
@@ -12,23 +12,26 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+            Id: '',
             userId: '',
             token: '',
             firstName: '',
             lastName: '',
             articlesCollection: [],
-            article: '',
+            article: {},
             showArticleModal: false,
             showCreateModal: false,
             newArticleTitle: '',
-            newArticleText: ''
+            newArticleText: '',
+            articleModification: false
         }
 
-		this.getArticles = this.getArticles.bind(this)
+		this.getAllArticles = this.getAllArticles.bind(this)
 		this.createArticle = this.createArticle.bind(this)
         this.articlesList = this.articlesList.bind(this)
         this.articleModalDisplay = this.articleModalDisplay.bind(this)
         this.articleModalClose = this.articleModalClose.bind(this)
+        this.createModalDisplay = this.createModalDisplay.bind(this)
         this.createModalClose = this.createModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
@@ -41,10 +44,10 @@ export class Homepage extends React.Component {
             firstName: this.context.firstName,
             lastName: this.context.lastName
         })
-        this.getArticles()
+        this.getAllArticles()
     }
 
-    getArticles = () => {
+    getAllArticles = () => {
         ajaxGet ('http://localhost:3000/api/articles/', this.context.token)
         .then ((response) => {
             this.setState({articlesCollection: response})
@@ -62,7 +65,7 @@ export class Homepage extends React.Component {
             title: this.state.newArticleTitle,
             text: this.state.newArticleText
         }
-        ajaxPost ('http://localhost:3000/api/articles/', articleData, this.state.token)
+        ajaxPost ('http://localhost:3000/api/articles/', articleData, this.context.token)
         .then ((response) => {
             console.log(response.message)
             this.createModalClose()
@@ -70,17 +73,70 @@ export class Homepage extends React.Component {
         .catch((err) => {
             console.log({err})
         })
-    } 
-
-    articleModalDisplay = (selectedArticle) => {
-        this.setState({showArticleModal: true, article: selectedArticle})
     }
 
-    createModalDisplay = () => this.setState({showCreateModal: true})
+    modifyArticle = (event) => {
+        event.preventDefault()
+        const Id = this.state.Id
+        const articleData = {
+            title: this.state.newArticleTitle,
+            text: this.state.newArticleText
+        }
+        ajaxPut ('http://localhost:3000/api/articles/' + Id, articleData, this.context.token)
+        .then ((response) => {
+            console.log(response.message)
+            this.createModalClose()
+        })
+        .catch((err) => {
+            console.log({err})
+        })
+    }
 
-    articleModalClose = () => this.setState({showArticleModal: false})
 
-    createModalClose = () => this.setState({showCreateModal: false})
+    articleModalDisplay = (selectedArticle) => {
+        this.setState({
+            showArticleModal: true,
+            article: selectedArticle
+        })
+    }
+
+    articleModalClose = () => {
+        this.setState({
+            showArticleModal: false,
+            article: {}
+        })
+    }
+
+    createModalDisplay = () => {
+        this.setState({
+            showCreateModal: true
+        })
+    }
+
+    createModalClose = () => {
+        this.setState({
+            showCreateModal: false
+        })
+    }
+
+    modify(selectedArticle) {
+        this.setState({
+            articleModification: true,
+            Id: selectedArticle.Id,
+            newArticleTitle: selectedArticle.title,
+            newArticleText: selectedArticle.text
+        })
+        this.createModalDisplay()
+    }
+
+    newArticle() {
+        this.setState({
+            newArticleTitle: '',
+            newArticleText: '',
+            articleModification: false
+        })
+        this.createModalDisplay()
+    }
 
     handleInputChange(event) {
 		const target = event.target
@@ -97,19 +153,19 @@ export class Homepage extends React.Component {
             lastWeek : 'dddd [dernier à] H[h]mm',
             sameElse : '[le] dddd D MMMM YYYY [à] H[h]mm'
         }
+		const publishArticle = this.state.articleModification ? this.modifyArticle : this.createArticle
+
         return (
             <div>
                 <Navigation />
                 <header>
                     <p>{this.state.firstName} {this.state.lastName}</p>
-                    <Button onClick={() => this.createModalDisplay()} >Ecrire un article</Button>
-
+                    <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
                 </header>
                 <main>{
                     articlesCollection.map((article) => {
-                        const writer = (article.writerId === this.state.userId.toString() ? 
-                            'moi' : 
-                            article.writerName)
+                        const myArticle = article.writerId === this.state.userId.toString()
+                        const writer = myArticle ? 'moi' : article.writerName
                         return(<>
                             <Card key={article.Id}>
                                 <Card.Header>
@@ -130,7 +186,15 @@ export class Homepage extends React.Component {
                                         <i className='fas fa-ellipsis-h'></i>
                                     </Button>
                                 </Card.Body>
-                                <Card.Footer>thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}</Card.Footer>
+                                <Card.Footer>
+                                thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}
+                                    {myArticle && (<>
+                                        <Button onClick={() => this.modify(article)} >Modifier</Button>
+                                        <Button >
+                                            Supprimer
+                                        </Button>
+                                    </>)}
+                                </Card.Footer>
                             </Card>
 
                             <Modal show={this.state.showArticleModal} onHide={this.articleModalClose} animation={false}>
@@ -139,23 +203,18 @@ export class Homepage extends React.Component {
                                 </Modal.Header>
                                 <Modal.Body>{this.state.article.text}</Modal.Body>
                                 <Modal.Footer>
-                                    <Button>
-                                        Modifier
-                                    </Button>
-                                    <Button >
-                                        Supprimer
-                                    </Button>
+                                    
                                 </Modal.Footer>
                             </Modal>
 
                             <Modal show={this.state.showCreateModal} onHide={this.createModalClose} animation={false}>
                                 <Modal.Header closeButton>
-                                    <Modal.Title>Ecrivez un article :</Modal.Title>
+                                    <Modal.Title>{this.state.articleModification ? 'Modifiez votre article :' : 'Ecrivez un article :' }</Modal.Title>
                                 </Modal.Header>
                                 <Modal.Body >
                                     <Form noValidate>
                                         <Form.Group controlId='title'>
-                                            <Form.Label>Titre</Form.Label>
+                                            <Form.Label>Titre :</Form.Label>
                                             <Form.Control
                                                 className='input'
                                                 type='text'
@@ -167,8 +226,8 @@ export class Homepage extends React.Component {
                                         </Form.Group> 
                                         <hr />
                                         <Form.Group controlId='text'>
-                                            <Form.Label>Texte</Form.Label>
-                                            <Form.Control
+                                            <Form.Label>Texte :</Form.Label>
+                                            <Form.Control as='textarea'
                                                 className='input'
                                                 type='text'
                                                 name='newArticleText'
@@ -180,8 +239,8 @@ export class Homepage extends React.Component {
                                     </Form>
                                 </Modal.Body>
                                 <Modal.Footer>
-                                    <Button onClick={this.createArticle} >Publier</Button>
-                                    <Button onClick={this.createModalClose} >Fermer</Button>
+                                    <Button onClick={publishArticle}>Publier</Button>
+                                    <Button onClick={this.createModalClose}>Fermer</Button>
                                 </Modal.Footer>
                             </Modal>
                         </>)
