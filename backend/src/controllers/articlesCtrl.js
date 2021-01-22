@@ -18,6 +18,7 @@ exports.createArticle = (req, res) => {
     })
 }
 
+// récupère tous les articles en
 exports.getAllArticles = (req, res) => {
     dbConnect.query('SELECT * FROM articles', (error, result) => {
         if (error) {return res.status(400).json({ error })}
@@ -25,6 +26,7 @@ exports.getAllArticles = (req, res) => {
     })
 }
 
+// récupère un article en fonction de son Id
 exports.getOneArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(400).json({ error })}
@@ -32,6 +34,7 @@ exports.getOneArticle = (req, res) => {
     })
 }
 
+// modifie un article en fonction de son Id
 exports.modifyArticle = (req, res) => {
     // gère l'éventuelle image
     console.log('req.file: ', req.file)
@@ -51,6 +54,7 @@ exports.modifyArticle = (req, res) => {
     )
 }
 
+// supprime un article en fonction de son Id
 exports.deleteArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(500).json({ error })}
@@ -58,7 +62,7 @@ exports.deleteArticle = (req, res) => {
         if (result.imageUrl) {
             const filename = result.imageUrl.split('/images/')[1]
             fs.unlink(`images/${filename}`, (err) => {
-                if (err) {return res.status(400).json({ error })}
+                if (err) {return res.status(402).json({ error })}
                 res.status(200).json({ message: 'Image supprimée !' })
             })
         }
