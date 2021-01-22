@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
 import { AuthContext } from './authContext'
-import { ajaxGet, ajaxPost, ajaxPut } from './ajax'
+import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from './ajax'
 import Navigation from './navigation'
 
 export class Homepage extends React.Component {
@@ -69,6 +69,7 @@ export class Homepage extends React.Component {
         .then ((response) => {
             console.log(response.message)
             this.createModalClose()
+            this.getAllArticles()
         })
         .catch((err) => {
             console.log({err})
@@ -86,12 +87,24 @@ export class Homepage extends React.Component {
         .then ((response) => {
             console.log(response.message)
             this.createModalClose()
+            this.getAllArticles()
         })
         .catch((err) => {
             console.log({err})
         })
     }
 
+    deleteArticle = (selectedArticle) => {
+        const Id = selectedArticle.Id
+        ajaxDelete ('http://localhost:3000/api/articles/' + Id, this.context.token)
+        .then ((response) => {
+            console.log(response.message)
+            this.getAllArticles()
+        })
+        .catch((err) => {
+            console.log({err})
+        })
+    }
 
     articleModalDisplay = (selectedArticle) => {
         this.setState({
@@ -183,17 +196,21 @@ export class Homepage extends React.Component {
                                     <Card.Text>{article.text}</Card.Text>
                                     <hr />
                                     <Button onClick={() => this.articleModalDisplay(article)} >
-                                        <i className='fas fa-ellipsis-h'></i>
+                                        <i className='fas fa-ellipsis-h'/>
                                     </Button>
                                 </Card.Body>
                                 <Card.Footer>
-                                thumb-up : {article.likes} - thumb-down : {article.dislikes} - score : {article.likes - article.dislikes}
-                                    {myArticle && (<>
-                                        <Button onClick={() => this.modify(article)} >Modifier</Button>
-                                        <Button >
-                                            Supprimer
-                                        </Button>
-                                    </>)}
+                                    <div className='thumbs'>
+                                        <i className='far fa-thumbs-up up'/>{article.likes}{' '}
+                                        <i className='far fa-thumbs-down down'/>{article.dislikes}{' '}
+                                         - score : {article.likes - article.dislikes}
+                                    </div>
+                                    {myArticle && (
+                                        <div className='card-footer-buttons'>
+                                            <Button onClick={() => this.modify(article)} ><i className='fas fa-edit'/></Button>
+                                            <Button onClick={() => this.deleteArticle(article)} ><i className='fas fa-trash-alt'/></Button>
+                                        </div>
+                                    )}
                                 </Card.Footer>
                             </Card>
 

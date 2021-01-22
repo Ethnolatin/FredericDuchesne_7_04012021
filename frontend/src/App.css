@@ -225,6 +225,12 @@ hr {
   font-size: 0.8rem;
 }
 
+.card-footer-buttons {
+  width: 5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
 .card-footer .btn {
   font-size: 0.8rem;
 }

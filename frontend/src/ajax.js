@@ -58,3 +58,22 @@ export function ajaxPut(url, data, token) {
 		request.send(data)
 	})
 }
+
+// Exécute un appel AJAX DELETE
+export function ajaxDelete(url, token) {
+	return new Promise((resolve, reject) => {
+		const request = new XMLHttpRequest()
+		request.open('DELETE', url)
+		request.setRequestHeader('Authorization', 'Bearer ' + token)
+		request.onreadystatechange = () => {
+			if (request.readyState === 4) {
+				if (request.status >= 200 && request.status < 400) {
+					resolve(JSON.parse(request.responseText))
+				} else {
+					reject(request.status + ' ' + request.statusText + ' ' + url)
+				}
+			}
+		}
+		request.send()
+	})
+}
