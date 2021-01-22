@@ -6,6 +6,7 @@ import 'moment/locale/fr'
 import { AuthContext } from './authContext'
 import { ajaxGet, ajaxPost, ajaxPut } from './ajax'
 import Navigation from './navigation'
+import { Login } from './loginForm'
 
 export class Homepage extends React.Component {
     static contextType = AuthContext
@@ -38,16 +39,18 @@ export class Homepage extends React.Component {
 
 
     componentDidMount() {
+        console.log('context: ', this.context)
         this.setState({
             userId: this.context.userId,
             token: this.context.token,
             firstName: this.context.firstName,
             lastName: this.context.lastName
         })
-        this.getAllArticles()
+        this.context.token && this.getAllArticles()
     }
 
     getAllArticles = () => {
+        console.log('GET request')
         ajaxGet ('http://localhost:3000/api/articles/', this.context.token)
         .then ((response) => {
             this.setState({articlesCollection: response})
@@ -145,7 +148,8 @@ export class Homepage extends React.Component {
         this.setState({[name]:value})
     }
 
-    articlesList = () => {
+    articlesList() {
+        console.log('state: ', this.state)
         const articlesCollection = this.state.articlesCollection.reverse()
         const calendarStrings = {
             lastDay : '[hier à] H[h]mm',
@@ -251,12 +255,10 @@ export class Homepage extends React.Component {
     }
 
     render() {
-        const articlesList = this.articlesList()
-        return (
-            <>
-            {articlesList}
-            </>
-        )
+        const pageToOpen = this.context.token ? this.articlesList() : <Login/>
+        return (<>
+            {pageToOpen}
+        </>)
     }
 
 }

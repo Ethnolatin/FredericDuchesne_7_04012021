@@ -22,7 +22,6 @@ export class Login extends React.Component {
             pwCtrlType: 'password',
 			errorMessage: '',
 			loginPage: true,
-			loggedIn: false,
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this)
@@ -42,7 +41,7 @@ export class Login extends React.Component {
 		const loginData = {email: this.state.email, password: this.state.password}
 		ajaxPost('http://localhost:3000/api/auth/login', loginData)
 			.then((response)=> {
-				this.setState({...response, loggedIn: true})
+				this.setState({...response})
 			})
 			.catch((err) => {
 				this.setState({errorMessage: err})
@@ -207,7 +206,7 @@ export class Login extends React.Component {
 		</>)
 		const handleSubmit = loginPage ? this.loginSubmit : this.signupSubmit
 
-		const value = {
+		const contextValue = {
 			userId: this.state.userId,
 			token: this.state.token,
 			firstName: this.state.firstName,
@@ -215,8 +214,10 @@ export class Login extends React.Component {
 		}
 
 		return (
-			<AuthContext.Provider value={value}>
-				{!this.state.loggedIn ? (
+			<AuthContext.Provider value={contextValue}>
+				{console.log('state dans login: ', this.state)}
+				{console.log('context dans login: ', this.context)}
+				{!this.state.token ? (
 					<div className='auth'>
 						{headerLogo}	
 						<form onSubmit={handleSubmit} className='loginForm'>
