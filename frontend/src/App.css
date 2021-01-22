@@ -11,6 +11,8 @@ header {
 }
 
 body {
+  display: flex;
+  justify-content: center;
   background-color: #282c34;
   max-width: 640px;
   margin: auto;
@@ -21,7 +23,6 @@ body {
 @import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
 
 .auth {
-  justify-content: center;
   line-height: 1.1;
   font-family: 'quicksand';
 }
@@ -223,6 +224,12 @@ hr {
   align-items: baseline;
   background-color:  #c3cfda;
   font-size: 0.8rem;
+}
+
+.card-footer-buttons {
+  width: 5rem;
+  display: flex;
+  justify-content: space-between;
 }
 
 .card-footer .btn {

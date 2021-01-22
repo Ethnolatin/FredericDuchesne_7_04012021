@@ -215,9 +215,9 @@ export class Login extends React.Component {
 
 		return (
 			<AuthContext.Provider value={contextValue}>
-				{console.log('state dans login: ', this.state)}
-				{console.log('context dans login: ', this.context)}
-				{!this.state.token ? (
+				{ contextValue.token ? (
+					<Homepage/>
+					) : (
 					<div className='auth'>
 						{headerLogo}	
 						<form onSubmit={handleSubmit} className='loginForm'>
@@ -233,8 +233,6 @@ export class Login extends React.Component {
 							</p>
 						</form>
 					</div>
-				) : (
-					<Homepage/>
 				)}
 			</AuthContext.Provider>
 		)

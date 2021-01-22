@@ -14,7 +14,7 @@ export default function App() {
 				<Row>
 					<Route exact path='/' component={Homepage} />
 				</Row>
-				<Row className='auth'>
+				<Row>
 					<Route exact path='/login' component={Login} />
 				</Row>
 			</Container>
