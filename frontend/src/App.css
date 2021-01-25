@@ -236,6 +236,20 @@ hr {
   font-size: 0.8rem;
 }
 
+.thumbs {
+  width: 9rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.fas.fa-thumbs-up::before {
+  color: green;
+}
+
+.fas.fa-thumbs-down::before {
+  color: red;
+}
+
 .navbar-brand img {
   max-height: 2rem;
 }
