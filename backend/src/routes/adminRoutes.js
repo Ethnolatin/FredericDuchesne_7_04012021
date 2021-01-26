@@ -1,0 +1,12 @@
+import { Router } from 'express'
+import auth from '../middleware/auth'
+import adminCtrl from '../controllers/adminCtrl'
+
+const router = Router()
+
+// définit les routes relatives à l'administrateur et leur applique
+// le middleware 'auth' qui renforce l'authentification
+router.get('/', auth, adminCtrl.getAllUsers)
+router.delete('/:id', auth, adminCtrl.deleteUser)
+
+module.exports = router

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
+import Table from 'react-bootstrap/Table'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
 import { AuthContext } from './authContext'
@@ -18,7 +19,8 @@ export class Homepage extends React.Component {
             token: '',
             firstName: '',
             lastName: '',
-            admin: false,
+            admin: 0,
+            users: [],
             articlesCollection: [],
             article: {},
             showArticleModal: false,
@@ -33,13 +35,12 @@ export class Homepage extends React.Component {
 		this.getAllArticles = this.getAllArticles.bind(this)
 		this.createArticle = this.createArticle.bind(this)
         this.articlesList = this.articlesList.bind(this)
-        // this.usersList = this.usersList.bind(this)
         this.articleModalDisplay = this.articleModalDisplay.bind(this)
         this.articleModalClose = this.articleModalClose.bind(this)
         this.createModalDisplay = this.createModalDisplay.bind(this)
         this.createModalClose = this.createModalClose.bind(this)
-        // this.adminModalDisplay = this.adminModalDisplay.bind(this)
-        // this.adminModalClose = this.adminModalClose.bind(this)
+        this.adminModalDisplay = this.adminModalDisplay.bind(this)
+        this.adminModalClose = this.adminModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
@@ -121,7 +122,27 @@ export class Homepage extends React.Component {
         .catch((err) => {
             console.log({err})
         })
+    }
 
+    getAllUsers = () => {
+        ajaxGet ('http://localhost:3000/api/admin/', this.context.token)
+        .then ((response) => {
+            this.setState({users: response})
+        })
+        .catch((err) => {
+            console.log({err})
+        })
+    }
+
+    deleteUser = (selectedUser) => {
+        const Id = selectedUser.Id
+        ajaxDelete ('http://localhost:3000/api/admin/' + Id, this.context.token)
+        .then ((response) => {
+            this.getAllUsers()
+        })
+        .catch((err) => {
+            console.log({err})
+        })
     }
 
     articleModalDisplay = (selectedArticle) => {
@@ -147,6 +168,20 @@ export class Homepage extends React.Component {
     createModalClose = () => {
         this.setState({
             showCreateModal: false
+        })
+    }
+
+    adminModalDisplay = () => {
+        this.setState({
+            showAdminModal: true
+        })
+        this.getAllUsers()
+    }
+
+    adminModalClose = () => {
+        this.setState({
+            showAdminModal: false,
+            users: []
         })
     }
 
@@ -222,7 +257,7 @@ export class Homepage extends React.Component {
                         <p>{this.state.firstName} {this.state.lastName}</p>
                         { this.state.admin === 1 && <i className="fas fa-user-cog"/> }
                         { this.state.admin === 2 && (
-                            <Button><i className="fas fa-user-cog"/></Button> )}
+                            <Button onClick={() => this.adminModalDisplay()} ><i className="fas fa-user-cog"/></Button> )}
                     </div>
                     <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
                 </header>
@@ -266,8 +301,16 @@ export class Homepage extends React.Component {
                                             <div><b>Score : {article.likes - article.dislikes}</b></div>
                                         </div>
                                         <div className='card-footer-buttons'>
-                                            {(myArticle || this.state.admin !== 0 ) && (<Button onClick={() => this.deleteArticle(article)} ><i className='fas fa-trash-alt'/></Button>)}
-                                            {myArticle && (<Button onClick={() => this.modifyArticle(article)} ><i className='fas fa-edit'/></Button>)}
+                                            {(myArticle || this.state.admin !== 0 ) && (
+                                                <Button onClick={() => this.deleteArticle(article)} >
+                                                    <i className='fas fa-trash-alt'/>
+                                                </Button>
+                                            )}
+                                            {myArticle && (
+                                                <Button onClick={() => this.modifyArticle(article)} >
+                                                    <i className='fas fa-edit'/>
+                                                </Button>
+                                            )}
                                         </div>
                                     </Card.Footer>
                                 </Card>
@@ -317,6 +360,38 @@ export class Homepage extends React.Component {
                                         <Button onClick={publishArticle}>Publier</Button>
                                         <Button onClick={this.createModalClose}>Fermer</Button>
                                     </Modal.Footer>
+                                </Modal>
+
+                                <Modal show={this.state.showAdminModal} onHide={this.adminModalClose} animation={false}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Liste des utilisateurs :</Modal.Title>
+                                    </Modal.Header>
+                                        <Modal.Body>
+                                            <Table striped hover size="sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Prénom</th>
+                                                        <th>Nom</th>
+                                                        <th className='trash'></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {this.state.users.map(user => {
+                                                        return (
+                                                            <tr key={user.Id}>
+                                                                <td>{user.firstName}</td>
+                                                                <td>{user.lastName}</td>
+                                                                <td>
+                                                                    <Button onClick={() => this.deleteUser(user)}>
+                                                                        <i className='fas fa-trash-alt'/>
+                                                                    </Button>
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })}
+                                                </tbody>
+                                            </Table>
+                                        </Modal.Body>
                                 </Modal>
                             </div>
                         )

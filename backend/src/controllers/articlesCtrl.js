@@ -18,7 +18,7 @@ exports.createArticle = (req, res) => {
     })
 }
 
-// récupère tous les articles en
+// récupère tous les articles
 exports.getAllArticles = (req, res) => {
     dbConnect.query('SELECT * FROM articles', (error, result) => {
         if (error) {return res.status(400).json({ error })}
