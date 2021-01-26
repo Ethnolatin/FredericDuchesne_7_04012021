@@ -15,6 +15,7 @@ export class Login extends React.Component {
 			token: '',
 			firstName: '',
 			lastName: '',
+			admin: false,
 			email: '',
 			password:'',
             passwordCtrl: '',
@@ -210,7 +211,8 @@ export class Login extends React.Component {
 			userId: this.state.userId,
 			token: this.state.token,
 			firstName: this.state.firstName,
-			lastName: this.state.lastName
+			lastName: this.state.lastName,
+			admin: this.state.admin
 		}
 
 		return (

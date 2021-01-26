@@ -18,10 +18,12 @@ export class Homepage extends React.Component {
             token: '',
             firstName: '',
             lastName: '',
+            admin: false,
             articlesCollection: [],
             article: {},
             showArticleModal: false,
             showCreateModal: false,
+            showAdminModal: false,
             newArticleTitle: '',
             newArticleText: '',
             articleModification: false,
@@ -31,27 +33,29 @@ export class Homepage extends React.Component {
 		this.getAllArticles = this.getAllArticles.bind(this)
 		this.createArticle = this.createArticle.bind(this)
         this.articlesList = this.articlesList.bind(this)
+        // this.usersList = this.usersList.bind(this)
         this.articleModalDisplay = this.articleModalDisplay.bind(this)
         this.articleModalClose = this.articleModalClose.bind(this)
         this.createModalDisplay = this.createModalDisplay.bind(this)
         this.createModalClose = this.createModalClose.bind(this)
+        // this.adminModalDisplay = this.adminModalDisplay.bind(this)
+        // this.adminModalClose = this.adminModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
 
     componentDidMount() {
-        console.log('context: ', this.context)
         this.setState({
             userId: this.context.userId,
             token: this.context.token,
             firstName: this.context.firstName,
-            lastName: this.context.lastName
+            lastName: this.context.lastName,
+            admin: this.context.admin
         })
         this.context.token && this.getAllArticles()
     }
 
     getAllArticles = () => {
-        console.log('GET request')
         ajaxGet ('http://localhost:3000/api/articles/', this.context.token)
         .then ((response) => {
             this.setState({articlesCollection: response})
@@ -71,7 +75,6 @@ export class Homepage extends React.Component {
         }
         ajaxPost ('http://localhost:3000/api/articles/', articleData, this.context.token)
         .then ((response) => {
-            console.log(response.message)
             this.createModalClose()
             this.getAllArticles()
         })
@@ -89,7 +92,6 @@ export class Homepage extends React.Component {
         }
         ajaxPut ('http://localhost:3000/api/articles/' + Id, articleData, this.context.token)
         .then ((response) => {
-            console.log(response.message)
             this.createModalClose()
             this.getAllArticles()
         })
@@ -102,7 +104,6 @@ export class Homepage extends React.Component {
         const Id = selectedArticle.Id
         ajaxDelete ('http://localhost:3000/api/articles/' + Id, this.context.token)
         .then ((response) => {
-            console.log(response.message)
             this.getAllArticles()
         })
         .catch((err) => {
@@ -115,7 +116,6 @@ export class Homepage extends React.Component {
         const Id = selectedArticle.Id
         ajaxPost ('http://localhost:3000/api/articles/' + Id + '/like', likeData, this.context.token)
         .then ((response) => {
-            console.log('thumb response: ', response)
             this.getAllArticles()
         })
         .catch((err) => {
@@ -177,7 +177,6 @@ export class Homepage extends React.Component {
     }
 
     handleThumbUpChange(selectedArticle, likeOption) {
-        console.log('likeOption: ', likeOption)
         let like
         switch (likeOption) {
             case 3:
@@ -188,12 +187,10 @@ export class Homepage extends React.Component {
                 break
             default: return
         }
-        console.log('like: ', like)
         this.likeArticle(selectedArticle, like)
     }
 
     handleThumbDownChange(selectedArticle, likeOption) {
-        console.log('likeOption: ', likeOption)
         let like
         switch (likeOption) {
             case 3:
@@ -204,12 +201,10 @@ export class Homepage extends React.Component {
                 break
             default: return
         }
-        console.log('like: ', like)
         this.likeArticle(selectedArticle, like)
     }
 
     articlesList() {
-        console.log('state: ', this.state)
         const articlesCollection = this.state.articlesCollection.reverse()
         const calendarStrings = {
             lastDay : '[hier à] H[h]mm',
@@ -223,7 +218,12 @@ export class Homepage extends React.Component {
             <div>
                 <Navigation />
                 <header>
-                    <p>{this.state.firstName} {this.state.lastName}</p>
+                    <div className='user'>
+                        <p>{this.state.firstName} {this.state.lastName}</p>
+                        { this.state.admin === 1 && <i className="fas fa-user-cog"/> }
+                        { this.state.admin === 2 && (
+                            <Button><i className="fas fa-user-cog"/></Button> )}
+                    </div>
                     <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
                 </header>
                 <main>{
@@ -265,12 +265,10 @@ export class Homepage extends React.Component {
                                             <div onClick={() => this.handleThumbDownChange(article, likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
                                             <div><b>Score : {article.likes - article.dislikes}</b></div>
                                         </div>
-                                        {myArticle && (
-                                            <div className='card-footer-buttons'>
-                                                <Button onClick={() => this.modifyArticle(article)} ><i className='fas fa-edit'/></Button>
-                                                <Button onClick={() => this.deleteArticle(article)} ><i className='fas fa-trash-alt'/></Button>
-                                            </div>
-                                        )}
+                                        <div className='card-footer-buttons'>
+                                            {(myArticle || this.state.admin !== 0 ) && (<Button onClick={() => this.deleteArticle(article)} ><i className='fas fa-trash-alt'/></Button>)}
+                                            {myArticle && (<Button onClick={() => this.modifyArticle(article)} ><i className='fas fa-edit'/></Button>)}
+                                        </div>
                                     </Card.Footer>
                                 </Card>
 

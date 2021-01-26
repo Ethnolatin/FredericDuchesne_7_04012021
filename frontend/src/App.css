@@ -10,6 +10,15 @@ header {
   color: white;
 }
 
+header p {
+  margin-right: 1rem;
+}
+
+.user {
+  display: flex;
+  align-items: baseline;
+}
+
 body {
   display: flex;
   justify-content: center;
@@ -229,6 +238,7 @@ hr {
 .card-footer-buttons {
   width: 5rem;
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
 }
 
@@ -240,6 +250,10 @@ hr {
   width: 9rem;
   display: flex;
   justify-content: space-between;
+}
+
+.thumbs .far {
+  cursor: pointer;
 }
 
 .fas.fa-thumbs-up::before {
