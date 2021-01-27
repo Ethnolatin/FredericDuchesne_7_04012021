@@ -276,6 +276,16 @@ hr {
   margin-left: auto;
 }
 
+.admin {
+  width: 20%;
+  text-align: center;
+}
+
 .trash {
-  width: 2rem;
+  width: 10%;
+}
+
+.checkbox {
+  display: flex;
+  margin: auto;
 }

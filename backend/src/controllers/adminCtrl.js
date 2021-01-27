@@ -20,3 +20,15 @@ exports.deleteUser = (req, res) => {
         })
     })
 }
+
+// modifie le statut admin d'un utilisateur en fonction de son Id
+exports.updateUser = (req, res) => {
+    dbConnect.query(
+        'UPDATE users SET admin = ? WHERE id = ?',
+        [req.body.admin, req.params.id],
+        (error, response) => {
+            if (error) {return res.status(400).json({ error })}
+            res.status(201).json({ message: 'Statut modifié !' })
+        }
+    )
+}

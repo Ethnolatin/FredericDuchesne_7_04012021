@@ -145,6 +145,21 @@ export class Homepage extends React.Component {
         })
     }
 
+    updateUser = (selectedUser) => {
+        const Id = selectedUser.Id
+        const userData = {
+            admin: !selectedUser.admin * 1
+        }
+        ajaxPut ('http://localhost:3000/api/admin/' + Id, userData, this.context.token)
+        .then ((response) => {
+            console.log(response)
+            this.getAllUsers()
+        })
+        .catch((err) => {
+            console.log({err})
+        })
+    }
+
     articleModalDisplay = (selectedArticle) => {
         this.setState({
             showArticleModal: true,
@@ -255,9 +270,9 @@ export class Homepage extends React.Component {
                 <header>
                     <div className='user'>
                         <p>{this.state.firstName} {this.state.lastName}</p>
-                        { this.state.admin === 1 && <i className="fas fa-user-cog"/> }
+                        { this.state.admin === 1 && <i className='fas fa-user-cog'/> }
                         { this.state.admin === 2 && (
-                            <Button onClick={() => this.adminModalDisplay()} ><i className="fas fa-user-cog"/></Button> )}
+                            <Button onClick={() => this.adminModalDisplay()} ><i className='fas fa-user-cog'/></Button> )}
                     </div>
                     <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
                 </header>
@@ -270,8 +285,8 @@ export class Homepage extends React.Component {
                             : article.usersDisliked.includes(this.state.userId) ? 2
                             : 3
                         )
-                        const thumbUp = likeOption === 1 ? <i className="fas fa-thumbs-up"/> : <i className='far fa-thumbs-up'/>
-                        const thumbDown = likeOption === 2 ? <i className="fas fa-thumbs-down"/> : <i className='far fa-thumbs-down'/>
+                        const thumbUp = likeOption === 1 ? <i className='fas fa-thumbs-up'/> : <i className='far fa-thumbs-up'/>
+                        const thumbDown = likeOption === 2 ? <i className='fas fa-thumbs-down'/> : <i className='far fa-thumbs-down'/>
 
                         return(
                             <div key={article.Id}>
@@ -367,20 +382,29 @@ export class Homepage extends React.Component {
                                         <Modal.Title>Liste des utilisateurs :</Modal.Title>
                                     </Modal.Header>
                                         <Modal.Body>
-                                            <Table striped hover size="sm">
+                                            <Table striped hover size='sm'>
                                                 <thead>
                                                     <tr>
                                                         <th>Prénom</th>
                                                         <th>Nom</th>
+                                                        <th className='admin'>Admin</th>
                                                         <th className='trash'></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {this.state.users.map(user => {
-                                                        return (
+                                                        return (user.Id !== this.state.userId &&
                                                             <tr key={user.Id}>
                                                                 <td>{user.firstName}</td>
                                                                 <td>{user.lastName}</td>
+                                                                <td>
+                                                                    <input
+                                                                        className = 'checkbox'
+                                                                        type='checkbox'
+                                                                        defaultChecked={user.admin}
+                                                                        onChange={() => this.updateUser(user)}
+                                                                    />
+                                                                </td>
                                                                 <td>
                                                                     <Button onClick={() => this.deleteUser(user)}>
                                                                         <i className='fas fa-trash-alt'/>
