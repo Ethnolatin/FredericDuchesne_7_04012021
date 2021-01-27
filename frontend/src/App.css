@@ -276,6 +276,20 @@ hr {
   margin-left: auto;
 }
 
-.trash {
-  width: 2rem;
+.table th, .table td {
+  border-top: none;
+}
+
+.thAdmin {
+  width: 20%;
+  text-align: center;
+}
+
+.thTrash {
+  width: 10%;
+}
+
+.tdCheckbox {
+  display: flex;
+  justify-content: center;
 }
