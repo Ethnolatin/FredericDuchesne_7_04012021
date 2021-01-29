@@ -10,9 +10,10 @@ exports.createArticle = (req, res) => {
     const articleObject = req.body
     const article = new Article({
         ...articleObject,
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     })
     // gère l'éventuelle image
-    if (req.file) {article.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
+    // if (req.file) {article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
         console.log('article: ', article)
