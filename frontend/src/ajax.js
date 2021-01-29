@@ -34,6 +34,7 @@ export function ajaxPost(url, data, token) {
 		}
 		request.setRequestHeader('Content-Type', 'application/json')
 		data = JSON.stringify(data)
+		console.log('data: ', data)
 		request.send(data)
 	})
 }
