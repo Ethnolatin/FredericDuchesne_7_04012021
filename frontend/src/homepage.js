@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
+import Image from 'react-bootstrap/Image'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
 import { AuthContext } from './authContext'
@@ -28,6 +29,7 @@ export class Homepage extends React.Component {
             showAdminModal: false,
             newArticleTitle: '',
             newArticleText: '',
+            image: '',
             articleModification: false,
             like: undefined
         }
@@ -334,7 +336,10 @@ export class Homepage extends React.Component {
                                     <Modal.Header closeButton>
                                         <Modal.Title>{this.state.article.title}</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>{this.state.article.text}</Modal.Body>
+                                    <Modal.Body>
+                                        <Image src={this.state.article.image} width="100%" height="100%" alt={this.state.article.title}/>
+                                        {this.state.article.text}
+                                    </Modal.Body>
                                     <Modal.Footer>
                                         
                                     </Modal.Footer>
