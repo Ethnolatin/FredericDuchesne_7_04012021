@@ -10,7 +10,7 @@ exports.createArticle = (req, res) => {
         ...articleObject,
     })
     // gère l'éventuelle image
-    if (req.file) {article.imageUrl = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
+    if (req.file) {article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
         if (error) {return res.status(400).json({ error })}
@@ -40,13 +40,13 @@ exports.modifyArticle = (req, res) => {
     console.log('req.file: ', req.file)
     const articleObject = req.file ? 
         { ...JSON.parse(req.body),
-        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } :
         { ...req.body }
     // met l'article à jour
     dbConnect.query(
-        'UPDATE articles SET title = ?, text = ?, imageUrl = ? WHERE id = ?',
-        [articleObject.title, articleObject.text, articleObject.imageUrl, req.params.id],
+        'UPDATE articles SET title = ?, text = ?, image = ? WHERE id = ?',
+        [articleObject.title, articleObject.text, articleObject.image, req.params.id],
         (error, result) => {
             if (error) {return res.status(400).json({ error })}
             res.status(201).json({ message: 'Article modifié !' })
@@ -59,8 +59,8 @@ exports.deleteArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(500).json({ error })}
         // détecte et supprime l'éventuelle image
-        if (result.imageUrl) {
-            const filename = result.imageUrl.split('/images/')[1]
+        if (result.image) {
+            const filename = result.image.split('/images/')[1]
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) {return res.status(402).json({ error })}
                 res.status(200).json({ message: 'Image supprimée !' })

@@ -1,9 +1,9 @@
-function Article({ writerId, writerName, title, text, imageUrl }) {
+function Article({ writerId, writerName, title, text, image }) {
     this.writerId = writerId
     this.writerName = writerName
     this.title = title
     this.text = text
-    this.imageUrl = imageUrl
+    this.image = image
     this.timeStamp = new Date()
     this.likes = 0
     this.dislikes = 0

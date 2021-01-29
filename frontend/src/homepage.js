@@ -302,7 +302,7 @@ export class Homepage extends React.Component {
                                     </Card.Header>
                                     <Card.Body>
                                         <Card.Title>{article.title}</Card.Title>
-                                        <Card.Img variant='top' src={article.imageUrl} alt='' />
+                                        <Card.Img variant='top' src={article.image} alt='' />
                                         <Card.Text>{article.text}</Card.Text>
                                         <hr />
                                         <Button onClick={() => this.articleModalDisplay(article)} >
