@@ -1,10 +1,10 @@
 import express from 'express'
 import bodyParser from 'body-parser'
+import path from 'path'
 import articlesRoutes from './src/routes/articlesRoutes'
 import userRoutes from './src/routes/userRoutes'
 import adminRoutes from './src/routes/adminRoutes'
 import dbConnect from './src/models/dbConnect'
-// const path = require('path')
 
 // se connecte à la base 'groupomania' sur mysql
 // grâce à l'identifiant et au mot de passe fournis dans un fichier .env
@@ -33,12 +33,12 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 // gère la ressource 'images' de manière statique
-// app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/images', express.static(path.join(__dirname, 'images')))
 // route par défaut pour les articles
 app.use('/api/articles', articlesRoutes)
 // route par défaut pour l'admin'
 app.use('/api/admin', adminRoutes)
 // renforce l'authentification sur les routes relatives au user
 app.use('/api/auth', userRoutes)
-
+  
 module.exports = app

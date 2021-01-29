@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
+import Image from 'react-bootstrap/Image'
 import Moment from 'react-moment'
 import 'moment/locale/fr'
 import { AuthContext } from './authContext'
@@ -28,6 +29,8 @@ export class Homepage extends React.Component {
             showAdminModal: false,
             newArticleTitle: '',
             newArticleText: '',
+            image: '',
+            imagePrevieuwUrl: '',
             articleModification: false,
             like: undefined
         }
@@ -42,6 +45,7 @@ export class Homepage extends React.Component {
         this.adminModalDisplay = this.adminModalDisplay.bind(this)
         this.adminModalClose = this.adminModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleImageInput = this.handleImageInput.bind(this)
     }
 
 
@@ -74,8 +78,14 @@ export class Homepage extends React.Component {
             title: this.state.newArticleTitle,
             text: this.state.newArticleText
         }
-        ajaxPost ('http://localhost:3000/api/articles/', articleData, this.context.token)
+        console.log('articleData: ', articleData)
+        console.log('image: ', this.state.image)
+        const formData = new FormData()
+        formData.append('article', articleData)
+        formData.append('image', this.state.image)
+        ajaxPost ('http://localhost:3000/api/articles/', formData, this.context.token)
         .then ((response) => {
+            console.log('response: ', response)
             this.createModalClose()
             this.getAllArticles()
         })
@@ -214,6 +224,7 @@ export class Homepage extends React.Component {
         this.setState({
             newArticleTitle: '',
             newArticleText: '',
+            image: '',
             articleModification: false
         })
         this.createModalDisplay()
@@ -224,6 +235,17 @@ export class Homepage extends React.Component {
 		const name = target.name
 		const value = target.value
         this.setState({[name]:value})
+    }
+
+    handleImageInput(event) {
+        const file = event.target.files[0]
+        console.log('file: ', file)
+        this.setState({image: file})        
+        // const reader = new FileReader()
+        // reader.onload = () => {
+        //     this.setstate({imagePrevieuwUrl: reader.result})
+        // }
+        // reader.readAsDataURL(file)
     }
 
     handleThumbUpChange(selectedArticle, likeOption) {
@@ -302,7 +324,7 @@ export class Homepage extends React.Component {
                                     </Card.Header>
                                     <Card.Body>
                                         <Card.Title>{article.title}</Card.Title>
-                                        <Card.Img variant='top' src={article.imageUrl} alt='' />
+                                        <Card.Img variant='top' src={article.image} alt='' />
                                         <Card.Text>{article.text}</Card.Text>
                                         <hr />
                                         <Button onClick={() => this.articleModalDisplay(article)} >
@@ -334,7 +356,10 @@ export class Homepage extends React.Component {
                                     <Modal.Header closeButton>
                                         <Modal.Title>{this.state.article.title}</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>{this.state.article.text}</Modal.Body>
+                                    <Modal.Body>
+                                        <Image src={this.state.article.image} width="100%" height="100%" alt={this.state.article.title}/>
+                                        {this.state.article.text}
+                                    </Modal.Body>
                                     <Modal.Footer>
                                         
                                     </Modal.Footer>
@@ -345,7 +370,7 @@ export class Homepage extends React.Component {
                                         <Modal.Title>{this.state.articleModification ? 'Modifiez votre article :' : 'Ecrivez un article :' }</Modal.Title>
                                     </Modal.Header>
                                     <Modal.Body >
-                                        <Form noValidate>
+                                        <Form noValidate encType='multipart/form-data'> 
                                             <Form.Group controlId='title'>
                                                 <Form.Label>Titre :</Form.Label>
                                                 <Form.Control
@@ -357,6 +382,16 @@ export class Homepage extends React.Component {
                                                     required
                                                 />
                                             </Form.Group> 
+                                            <hr />
+                                            <Form.Group>
+                                                <Form.Label>Image :</Form.Label>
+                                                <Form.File
+                                                    className='input'
+                                                    type='file'
+                                                    name='image'
+                                                    onChange={this.handleImageInput}
+                                                />
+                                            </Form.Group>
                                             <hr />
                                             <Form.Group controlId='text'>
                                                 <Form.Label>Texte :</Form.Label>
@@ -401,6 +436,7 @@ export class Homepage extends React.Component {
                                                                     <input
                                                                         className='inputCheckbox'
                                                                         type='checkbox'
+                                                                        aria-label='admin'
                                                                         defaultChecked={user.admin}
                                                                         onChange={() => this.updateUser(user)}
                                                                     />
