@@ -1,14 +1,13 @@
 import React from 'react'
-import { Card, Button, Form } from 'react-bootstrap'
-import Modal from 'react-bootstrap/Modal'
-import Table from 'react-bootstrap/Table'
-import Image from 'react-bootstrap/Image'
-import Moment from 'react-moment'
-import 'moment/locale/fr'
+import { Button } from 'react-bootstrap'
 import { AuthContext } from './authContext'
 import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from './ajax'
 import Navigation from './navigation'
 import { Login } from './loginForm'
+import { AllArticles } from './articlesDisplay/allArticles'
+import { SingleArticle } from './articlesDisplay/singleArticle'
+import { CreateModal } from './modals/createModal'
+import { AdminModal } from './modals/adminModal'
 
 export class Homepage extends React.Component {
     static contextType = AuthContext
@@ -35,7 +34,8 @@ export class Homepage extends React.Component {
         }
 
 		this.getAllArticles = this.getAllArticles.bind(this)
-		this.createArticle = this.createArticle.bind(this)
+        this.createArticle = this.createArticle.bind(this)
+        this.modifyArticle = this.modifyArticle.bind(this)
         this.articlesList = this.articlesList.bind(this)
         this.articleModalDisplay = this.articleModalDisplay.bind(this)
         this.articleModalClose = this.articleModalClose.bind(this)
@@ -44,6 +44,8 @@ export class Homepage extends React.Component {
         this.adminModalDisplay = this.adminModalDisplay.bind(this)
         this.adminModalClose = this.adminModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleThumbUpChange = this.handleThumbUpChange.bind(this)
+        this.handleThumbDownChange = this.handleThumbDownChange.bind(this)
     }
 
 
@@ -258,12 +260,6 @@ export class Homepage extends React.Component {
 
     articlesList() {
         const articlesCollection = this.state.articlesCollection.reverse()
-        const calendarStrings = {
-            lastDay : '[hier à] H[h]mm',
-            sameDay : '[aujourd\'hui à] H[h]mm',
-            lastWeek : 'dddd [dernier à] H[h]mm',
-            sameElse : '[le] dddd D MMMM YYYY [à] H[h]mm'
-        }
 		const publishArticle = this.state.articleModification ? this.updateArticle : this.createArticle
 
         return (
@@ -280,148 +276,43 @@ export class Homepage extends React.Component {
                 </header>
                 <main>{
                     articlesCollection.map((article) => {
-                        const myArticle = article.writerId === this.state.userId.toString()
-                        const writer = myArticle ? 'moi' : article.writerName
-                        const likeOption = (
-                            article.usersLiked.includes(this.state.userId) ? 1 
-                            : article.usersDisliked.includes(this.state.userId) ? 2
-                            : 3
-                        )
-                        const thumbUp = likeOption === 1 ? <i className='fas fa-thumbs-up'/> : <i className='far fa-thumbs-up'/>
-                        const thumbDown = likeOption === 2 ? <i className='fas fa-thumbs-down'/> : <i className='far fa-thumbs-down'/>
-
                         return(
                             <div key={article.Id}>
-                                <Card >
-                                    <Card.Header>
-                                        Publié par{' '}
-                                        <b>{writer}{' '}</b>
-                                        <Moment
-                                            locale='fr'
-                                            calendar={calendarStrings}
-                                            date={article.timeStamp}
-                                        />
-                                    </Card.Header>
-                                    <Card.Body>
-                                        <Card.Title>{article.title}</Card.Title>
-                                        <Card.Img variant='top' src={article.image} alt='' />
-                                        <Card.Text>{article.text}</Card.Text>
-                                        <hr />
-                                        <Button onClick={() => this.articleModalDisplay(article)} >
-                                            <i className='fas fa-ellipsis-h'/>
-                                        </Button>
-                                    </Card.Body>
-                                    <Card.Footer>
-                                        <div className='thumbs'>
-                                            <div onClick={() => this.handleThumbUpChange(article, likeOption)}>{thumbUp}{article.likes}{' '}</div>
-                                            <div onClick={() => this.handleThumbDownChange(article, likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
-                                            <div><b>Score : {article.likes - article.dislikes}</b></div>
-                                        </div>
-                                        <div className='card-footer-buttons'>
-                                            {(myArticle || this.state.admin !== 0 ) && (
-                                                <Button onClick={() => this.deleteArticle(article)} >
-                                                    <i className='fas fa-trash-alt'/>
-                                                </Button>
-                                            )}
-                                            {myArticle && (
-                                                <Button onClick={() => this.modifyArticle(article)} >
-                                                    <i className='fas fa-edit'/>
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </Card.Footer>
-                                </Card>
+                                <AllArticles
+                                    articleModalDisplay={this.articleModalDisplay}
+                                    handleThumbUpChange={this.handleThumbUpChange}
+                                    handleThumbDownChange={this.handleThumbDownChange}
+                                    deleteArticle={this.deleteArticle}
+                                    modifyArticle={this.modifyArticle}
+                                    article={article}
+                                    userId={this.state.userId}
+                                    admin={this.state.admin}
+                                />
 
-                                <Modal show={this.state.showArticleModal} onHide={this.articleModalClose} animation={false}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>{this.state.article.title}</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        <Image src={this.state.article.image} width="100%" height="100%" alt={this.state.article.title}/>
-                                        {this.state.article.text}
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        
-                                    </Modal.Footer>
-                                </Modal>
+                                <SingleArticle
+                                    articleModalClose={this.articleModalClose}
+                                    showArticleModal={this.state.showArticleModal}
+                                    article={this.state.article}
+                                />
+                                
+                                <CreateModal
+                                    createModalClose={this.createModalClose}
+                                    handleInputChange={this.handleInputChange}
+                                    showCreateModal={this.state.showCreateModal}
+                                    articleModification={this.state.articleModification}
+                                    newArticleTitle={this.state.newArticleTitle}
+                                    newArticleText={this.state.newArticleText}
+                                    publishArticle={publishArticle}
+                                />
 
-                                <Modal show={this.state.showCreateModal} onHide={this.createModalClose} animation={false}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>{this.state.articleModification ? 'Modifiez votre article :' : 'Ecrivez un article :' }</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body >
-                                        <Form noValidate>
-                                            <Form.Group controlId='title'>
-                                                <Form.Label>Titre :</Form.Label>
-                                                <Form.Control
-                                                    className='input'
-                                                    type='text'
-                                                    name='newArticleTitle'
-                                                    value={this.state.newArticleTitle}
-                                                    onChange={this.handleInputChange}
-                                                    required
-                                                />
-                                            </Form.Group> 
-                                            <hr />
-                                            <Form.Group controlId='text'>
-                                                <Form.Label>Texte :</Form.Label>
-                                                <Form.Control as='textarea'
-                                                    className='input'
-                                                    type='text'
-                                                    name='newArticleText'
-                                                    value={this.state.newArticleText}
-                                                    onChange={this.handleInputChange}
-                                                    required
-                                                />
-                                            </Form.Group> 
-                                        </Form>
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button onClick={publishArticle}>Publier</Button>
-                                        <Button onClick={this.createModalClose}>Fermer</Button>
-                                    </Modal.Footer>
-                                </Modal>
-
-                                <Modal show={this.state.showAdminModal} onHide={this.adminModalClose} animation={false}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Liste des utilisateurs :</Modal.Title>
-                                    </Modal.Header>
-                                        <Modal.Body>
-                                            <Table striped hover size='sm'>
-                                                <thead>
-                                                    <tr>
-                                                        <th>Prénom</th>
-                                                        <th>Nom</th>
-                                                        <th className='admin'>Admin</th>
-                                                        <th className='trash'></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {this.state.users.map(user => {
-                                                        return (user.Id !== this.state.userId &&
-                                                            <tr key={user.Id}>
-                                                                <td>{user.firstName}</td>
-                                                                <td>{user.lastName}</td>
-                                                                <td>
-                                                                    <input
-                                                                        className = 'checkbox'
-                                                                        type='checkbox'
-                                                                        defaultChecked={user.admin}
-                                                                        onChange={() => this.updateUser(user)}
-                                                                    />
-                                                                </td>
-                                                                <td>
-                                                                    <Button onClick={() => this.deleteUser(user)}>
-                                                                        <i className='fas fa-trash-alt'/>
-                                                                    </Button>
-                                                                </td>
-                                                            </tr>
-                                                        )
-                                                    })}
-                                                </tbody>
-                                            </Table>
-                                        </Modal.Body>
-                                </Modal>
+                                <AdminModal
+                                    adminModalClose={this.adminModalClose}
+                                    updateUser={this.updateUser}
+                                    deleteUser={this.deleteUser}
+                                    showAdminModal={this.state.showAdminModal}
+                                    users={this.state.users}
+                                    userId={this.state.userId}
+                                />
                             </div>
                         )
                     })
@@ -436,5 +327,4 @@ export class Homepage extends React.Component {
             {pageToOpen}
         </>)
     }
-
 }
