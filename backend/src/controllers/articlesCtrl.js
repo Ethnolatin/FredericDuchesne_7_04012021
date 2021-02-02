@@ -5,6 +5,8 @@ import likesManagement from '../likesManagement'
 
 // crée un nouvel article
 exports.createArticle = (req, res) => {
+    console.log('req.body: ', req.body)
+    console.log('req.file: ', req.file)
     const articleObject = req.body
     const article = new Article({
         ...articleObject,

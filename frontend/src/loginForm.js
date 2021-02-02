@@ -1,6 +1,6 @@
 import React from 'react'
 import { AuthContext } from './authContext'
-import {ajaxPost} from './ajax'
+import axios from 'axios'
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
@@ -39,10 +39,16 @@ export class Login extends React.Component {
 
 	loginSubmit(event) {
 		event && event.preventDefault()
-		const loginData = {email: this.state.email, password: this.state.password}
-		ajaxPost('http://localhost:3000/api/auth/login', loginData)
-			.then((response)=> {
-				this.setState({...response})
+		axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/auth/login',
+            data: {
+                email: this.state.email,
+                password: this.state.password
+            },
+        })
+        .then((response)=> {
+				this.setState({...response.data})
 			})
 			.catch((err) => {
 				this.setState({errorMessage: err})
@@ -64,16 +70,18 @@ export class Login extends React.Component {
             this.setState({errorMessage: 'Les deux mots de passe sont différents'})
         } else {
             this.setState({errorMessage: ''})
-            const signupData = {
-                firstName: this.state.firstName,
-                lastName: this.state.lastName,
-                email: this.state.email,
-                password: this.state.password
-            }
-            ajaxPost('http://localhost:3000/api/auth/signup', signupData)
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/auth/signup',
+				data: {
+					firstName: this.state.firstName,
+					lastName: this.state.lastName,
+					email: this.state.email,
+					password: this.state.password
+				},
+			})
 			.then((response)=> {
-				this.setState({...response})
-				console.log(this.status)
+				this.setState({...response.data})
 				this.loginSubmit()
                 })
                 .catch((err) => {

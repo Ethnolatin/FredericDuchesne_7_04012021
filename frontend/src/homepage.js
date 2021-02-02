@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import { AuthContext } from './authContext'
-import { ajaxGet, ajaxPost, ajaxPut, ajaxDelete } from './ajax'
+import axios from 'axios'
 import Navigation from './navigation'
 import { Login } from './loginForm'
 import { AllArticles } from './articlesDisplay/allArticles'
@@ -61,9 +61,16 @@ export class Homepage extends React.Component {
     }
 
     getAllArticles = () => {
-        ajaxGet ('http://localhost:3000/api/articles/', this.context.token)
+        axios({
+            method: 'get',
+            url: 'http://localhost:3000/api/articles/',
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
-            this.setState({articlesCollection: response})
+            console.log(response)
+            this.setState({articlesCollection: response.data})
         })
         .catch((err) => {
             console.log({err})
@@ -72,14 +79,20 @@ export class Homepage extends React.Component {
 
     createArticle = (event) => {
         event.preventDefault()
-        const articleData = {
-            writerId: this.state.userId,
-            writerName: this.state.firstName + ' ' + this.state.lastName,
-            title: this.state.newArticleTitle,
-            text: this.state.newArticleText
-        }
-        ajaxPost ('http://localhost:3000/api/articles/', articleData, this.context.token)
-        .then ((response) => {
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/articles/',
+            data: {
+                writerId: this.state.userId,
+                writerName: this.state.firstName + ' ' + this.state.lastName,
+                title: this.state.newArticleTitle,
+                text: this.state.newArticleText
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
+        .then (() => {
             this.createModalClose()
             this.getAllArticles()
         })
@@ -90,12 +103,17 @@ export class Homepage extends React.Component {
 
     updateArticle = (event) => {
         event.preventDefault()
-        const Id = this.state.Id
-        const articleData = {
-            title: this.state.newArticleTitle,
-            text: this.state.newArticleText
-        }
-        ajaxPut ('http://localhost:3000/api/articles/' + Id, articleData, this.context.token)
+        axios({
+            method: 'put',
+            url: 'http://localhost:3000/api/articles/' + this.state.Id,
+            data: {
+                title: this.state.newArticleTitle,
+                text: this.state.newArticleText
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
             this.createModalClose()
             this.getAllArticles()
@@ -106,8 +124,17 @@ export class Homepage extends React.Component {
     }
 
     deleteArticle = (selectedArticle) => {
-        const Id = selectedArticle.Id
-        ajaxDelete ('http://localhost:3000/api/articles/' + Id, this.context.token)
+        axios({
+            method: 'delete',
+            url: 'http://localhost:3000/api/articles/' + selectedArticle.Id,
+            data: {
+                title: this.state.newArticleTitle,
+                text: this.state.newArticleText
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
             this.getAllArticles()
         })
@@ -117,9 +144,17 @@ export class Homepage extends React.Component {
     }
 
     likeArticle = (selectedArticle, like) => {
-        const likeData = {userId: this.state.userId, like: like}
-        const Id = selectedArticle.Id
-        ajaxPost ('http://localhost:3000/api/articles/' + Id + '/like', likeData, this.context.token)
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/articles/' + selectedArticle.Id + '/like',
+            data: {
+                userId: this.state.userId,
+                like: like
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
             this.getAllArticles()
         })
@@ -129,9 +164,15 @@ export class Homepage extends React.Component {
     }
 
     getAllUsers = () => {
-        ajaxGet ('http://localhost:3000/api/admin/', this.context.token)
+        axios({
+            method: 'get',
+            url: 'http://localhost:3000/api/admin/',
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
-            this.setState({users: response})
+            this.setState({users: response.data})
         })
         .catch((err) => {
             console.log({err})
@@ -139,8 +180,13 @@ export class Homepage extends React.Component {
     }
 
     deleteUser = (selectedUser) => {
-        const Id = selectedUser.Id
-        ajaxDelete ('http://localhost:3000/api/admin/' + Id, this.context.token)
+        axios({
+            method: 'delete',
+            url: 'http://localhost:3000/api/admin/' + selectedUser.Id,
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
         .then ((response) => {
             this.getAllUsers()
         })
@@ -150,13 +196,17 @@ export class Homepage extends React.Component {
     }
 
     updateUser = (selectedUser) => {
-        const Id = selectedUser.Id
-        const userData = {
-            admin: !selectedUser.admin * 1
-        }
-        ajaxPut ('http://localhost:3000/api/admin/' + Id, userData, this.context.token)
-        .then ((response) => {
-            console.log(response)
+        axios({
+            method: 'put',
+            url: 'http://localhost:3000/api/admin/' + selectedUser.Id,
+            data: {
+                admin: !selectedUser.admin * 1
+            },
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
+        .then (() => {
             this.getAllUsers()
         })
         .catch((err) => {
