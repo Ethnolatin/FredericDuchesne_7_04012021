@@ -5,8 +5,6 @@ import likesManagement from '../likesManagement'
 
 // crée un nouvel article
 exports.createArticle = (req, res) => {
-    console.log('req.body: ', req.body)
-    console.log('req.file: ', req.file)
     const articleObject = req.body
     const article = new Article({
         ...articleObject,
@@ -16,7 +14,6 @@ exports.createArticle = (req, res) => {
     // if (req.file) {article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
-        console.log('article: ', article)
         if (error) {return res.status(400).json({ error })}
         res.status(201).json({ message: 'Article enregistré !' })
     })
@@ -41,7 +38,6 @@ exports.getOneArticle = (req, res) => {
 // modifie un article en fonction de son Id
 exports.modifyArticle = (req, res) => {
     // gère l'éventuelle image
-    console.log('req.file: ', req.file)
     const articleObject = req.file ? 
         { ...req.body,
         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
@@ -63,11 +59,11 @@ exports.deleteArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(500).json({ error })}
         // détecte et supprime l'éventuelle image
-        if (result.image) {
-            const filename = result.image.split('/images/')[1]
+        if (result[0].image) {
+            const filename = result[0].image.split('/images/')[1]
             fs.unlink(`images/${filename}`, (err) => {
                 if (err) {return res.status(402).json({ error })}
-                res.status(200).json({ message: 'Image supprimée !' })
+                else {console.log('Image supprimée...')}
             })
         }
         // supprime l'article

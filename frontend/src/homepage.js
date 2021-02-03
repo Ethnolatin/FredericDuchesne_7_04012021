@@ -72,7 +72,6 @@ export class Homepage extends React.Component {
             }
         })
         .then ((response) => {
-            console.log(response)
             this.setState({articlesCollection: response.data})
         })
         .catch((err) => {
