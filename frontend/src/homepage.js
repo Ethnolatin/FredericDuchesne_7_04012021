@@ -29,6 +29,7 @@ export class Homepage extends React.Component {
             newArticleTitle: '',
             newArticleText: '',
             image: '',
+            currentImage: '',
             imagePrevieuwUrl: '',
             articleModification: false,
             like: undefined
@@ -81,15 +82,16 @@ export class Homepage extends React.Component {
 
     createArticle = (event) => {
         event.preventDefault()
+        const formData = new FormData()
+        formData.append('image', this.state.image)
+        formData.append('writerId', this.state.userId)
+        formData.append('writerName', this.state.firstName + ' ' + this.state.lastName)
+        formData.append('title', this.state.newArticleTitle)
+        formData.append('text', this.state.newArticleText)
         axios({
             method: 'post',
             url: 'http://localhost:3000/api/articles/',
-            data: {
-                writerId: this.state.userId,
-                writerName: this.state.firstName + ' ' + this.state.lastName,
-                title: this.state.newArticleTitle,
-                text: this.state.newArticleText
-            },
+            data: formData,
             headers: {
                 'Authorization': 'Bearer ' + this.context.token,
             }
@@ -105,18 +107,19 @@ export class Homepage extends React.Component {
 
     updateArticle = (event) => {
         event.preventDefault()
+        const formData = new FormData()
+        formData.append('image', this.state.image)
+        formData.append('title', this.state.newArticleTitle)
+        formData.append('text', this.state.newArticleText)
         axios({
             method: 'put',
             url: 'http://localhost:3000/api/articles/' + this.state.Id,
-            data: {
-                title: this.state.newArticleTitle,
-                text: this.state.newArticleText
-            },
+            data: formData,
             headers: {
                 'Authorization': 'Bearer ' + this.context.token,
             }
         })
-        .then ((response) => {
+        .then (() => {
             this.createModalClose()
             this.getAllArticles()
         })
@@ -261,7 +264,8 @@ export class Homepage extends React.Component {
             articleModification: true,
             Id: selectedArticle.Id,
             newArticleTitle: selectedArticle.title,
-            newArticleText: selectedArticle.text
+            newArticleText: selectedArticle.text,
+            currentImage: selectedArticle.image
         })
         this.createModalDisplay()
     }
@@ -289,7 +293,8 @@ export class Homepage extends React.Component {
         this.setState({image: file})        
         // const reader = new FileReader()
         // reader.onload = () => {
-        //     this.setstate({imagePrevieuwUrl: reader.result})
+        //     console.log(reader.result)
+            // this.setstate({imagePrevieuwUrl: reader.result})
         // }
         // reader.readAsDataURL(file)
     }
@@ -362,10 +367,12 @@ export class Homepage extends React.Component {
                                 <CreateModal
                                     createModalClose={this.createModalClose}
                                     handleInputChange={this.handleInputChange}
+                                    handleImageInput={this.handleImageInput}
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
                                     newArticleTitle={this.state.newArticleTitle}
                                     newArticleText={this.state.newArticleText}
+                                    currentImage={this.state.currentimage}
                                     publishArticle={publishArticle}
                                 />
 

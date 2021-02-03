@@ -43,7 +43,7 @@ exports.modifyArticle = (req, res) => {
     // gère l'éventuelle image
     console.log('req.file: ', req.file)
     const articleObject = req.file ? 
-        { ...JSON.parse(req.body),
+        { ...req.body,
         image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
         } :
         { ...req.body }

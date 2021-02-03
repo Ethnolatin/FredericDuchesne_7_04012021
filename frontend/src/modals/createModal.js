@@ -8,6 +8,7 @@ export class CreateModal extends React.PureComponent {
 
         this.createModalClose = this.createModalClose.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
+        this.handleImageInput = this.handleImageInput.bind(this)
     }
 
     createModalClose = () => {
@@ -18,8 +19,12 @@ export class CreateModal extends React.PureComponent {
         this.props.handleInputChange(event)
     }
 
-    render () {
-        const { showCreateModal, articleModification, newArticleTitle, newArticleText, publishArticle } = this.props
+    handleImageInput = (event) => {
+        this.props.handleImageInput(event)
+    }
+
+render () {
+        const { showCreateModal, articleModification, newArticleTitle, newArticleText, currentImage, publishArticle } = this.props
         return (
             <Modal show={showCreateModal} onHide={this.createModalClose} animation={false}>
                 <Modal.Header closeButton>
@@ -38,6 +43,16 @@ export class CreateModal extends React.PureComponent {
                                 required
                             />
                         </Form.Group> 
+                        <hr />
+                        <Form.Group>
+                            <Form.Label>Image :{currentImage}</Form.Label>
+                            <Form.File
+                                className='input'
+                                type='file'
+                                name='image'
+                                onChange={this.handleImageInput}
+                            />
+                        </Form.Group>
                         <hr />
                         <Form.Group controlId='text'>
                             <Form.Label>Texte :</Form.Label>
