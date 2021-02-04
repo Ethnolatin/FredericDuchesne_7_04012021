@@ -68,7 +68,9 @@ export class AllArticles extends React.Component {
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{article.title}</Card.Title>
-                    <Card.Img variant='top' src={article.image} alt='' />
+                    {article.image && 
+                        <Card.Img src={article.image} alt={article.title} />
+                    }
                     <Card.Text>{article.text}</Card.Text>
                     <hr />
                     <Button onClick={() => this.articleModalDisplay(article)} >
