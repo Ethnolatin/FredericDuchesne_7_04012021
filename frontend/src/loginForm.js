@@ -28,6 +28,7 @@ export class Login extends React.Component {
 		this.handleInputChange = this.handleInputChange.bind(this)
 		this.loginSubmit = this.loginSubmit.bind(this)
 		this.signupSubmit = this.signupSubmit.bind(this)
+		this.pwSecurity = this.pwSecurity.bind(this)
 	}
 
 	handleInputChange(event) {
@@ -51,25 +52,16 @@ export class Login extends React.Component {
 				this.setState({...response.data})
 			})
 			.catch((err) => {
-				this.setState({errorMessage: err})
+				this.setState({errorMessage: 'Identifiants non reconnus'})
 				console.log({err})
 			})
 	}
 
 	signupSubmit(event) {
 		event && event.preventDefault()
-		const password = this.state.password
-        if (!pwSchema.validate(password)) {
-            this.setState({errorMessage: 'Format de mot de passe non valide'})
-			alert(`Format de mot de passe requis :
-- au moins 8 caractères
-- au moins une majuscule
-- au moins une minuscule
-- au moins un chiffre`)
-		} else if (password !== this.state.passwordCtrl) {
-            this.setState({errorMessage: 'Les deux mots de passe sont différents'})
-        } else {
-            this.setState({errorMessage: ''})
+		if (this.state.password !== this.state.passwordCtrl) {
+			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
+		} else {
 			axios({
 				method: 'post',
 				url: 'http://localhost:3000/api/auth/signup',
@@ -83,19 +75,31 @@ export class Login extends React.Component {
 			.then((response)=> {
 				this.setState({...response.data})
 				this.loginSubmit()
-                })
-                .catch((err) => {
-                    this.setState({errorMessage: err})
-                    console.log(err)
-                })
-        }
+				})
+			.catch((err) => {
+				this.setState({errorMessage: 'Erreur - Utilisateur non créé...'})
+				console.log(err)
+			})
+		}
 	}
 
 	handleClick(pw) {
 		this.state[pw] === 'password' ? 
 			this.setState({[pw]: 'text'}) :
 			this.setState({[pw]: 'password'})
-    }
+	}
+	
+	pwSecurity() {
+		if (!pwSchema.validate(this.state.password)) {
+			alert(`Format de mot de passe non sécurisé !
+
+Votre mot de passe doit contenir :
+- au moins 8 caractères
+- au moins une majuscule
+- au moins une minuscule
+- au moins un chiffre`)
+		}
+	}
 
 	render () {
 		const nameFields = (<>
@@ -176,6 +180,7 @@ export class Login extends React.Component {
 					type={this.state.pwCtrlType}
 					name='passwordCtrl'
 					value={this.state.passwordCtrl}
+					onFocus={this.pwSecurity}
 					onChange={this.handleInputChange}
 					id='passwordCtrl'
 					required
@@ -239,7 +244,7 @@ export class Login extends React.Component {
 							<button type='submit' className='submit-button' >Valider</button>
 							<p className='in-out'> 
 								{footerMessage}
-								<span onClick={() => this.setState({loginPage: !this.state.loginPage})} >{toggleButton}</span>
+								<span onClick={() => this.setState({loginPage: !this.state.loginPage, errorMessage: ''})} >{toggleButton}</span>
 							</p>
 						</form>
 					</div>
