@@ -22,7 +22,7 @@ export class SingleArticle extends React.Component {
                     <Modal.Title>{article.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Image src={article.image} width="100%" height="100%" alt={article.title}/>
+                    {article.image && <Image src={article.image} width="100%" height="100%" alt={article.title}/>}
                     {article.text}
                 </Modal.Body>
             </Modal>
