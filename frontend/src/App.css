@@ -17,6 +17,7 @@ header p {
 .user {
   display: flex;
   align-items: baseline;
+  max-width: 30%;
 }
 
 body {
@@ -219,13 +220,22 @@ hr {
   margin-top: -1.8rem;
 }
 
-.btn, .btn:focus, .btn::before, .btn::after {
+.btn, .btn:focus, .btn::before, .btn::after, .Dropdown-control.btn {
   display: block;
   padding: 0 0.5rem;
   background-color: #282c34;
   border-color: white;
   box-shadow: none;
   color: white;
+  font-size: 0.8rem;
+}
+
+.Dropdown-control.btn {
+  padding: 0 1.5rem 0 0.5rem;
+}
+
+.Dropdown-menu {
+  font-size: 0.8rem;
 }
 
 .btn:hover {

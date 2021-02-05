@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
+import Dropdown from 'react-dropdown'
+import Button from 'react-bootstrap/Button'
 import { AuthContext } from './authContext'
 import axios from 'axios'
 import Navigation from './navigation'
@@ -8,6 +9,7 @@ import { AllArticles } from './articlesDisplay/allArticles'
 import { SingleArticle } from './articlesDisplay/singleArticle'
 import { CreateModal } from './modals/createModal'
 import { AdminModal } from './modals/adminModal'
+import 'react-dropdown/style.css';
 
 export class Homepage extends React.Component {
     static contextType = AuthContext
@@ -32,7 +34,8 @@ export class Homepage extends React.Component {
             currentImage: '',
             imagePrevieuwUrl: '',
             articleModification: false,
-            like: undefined
+            like: undefined,
+            filter: 'date'
         }
 
 		this.getAllArticles = this.getAllArticles.bind(this)
@@ -49,6 +52,7 @@ export class Homepage extends React.Component {
         this.handleImageInput = this.handleImageInput.bind(this)
         this.handleThumbUpChange = this.handleThumbUpChange.bind(this)
         this.handleThumbDownChange = this.handleThumbDownChange.bind(this)
+        this._onSelect = this._onSelect.bind(this)
     }
 
 
@@ -72,7 +76,9 @@ export class Homepage extends React.Component {
             }
         })
         .then ((response) => {
-            this.setState({articlesCollection: response.data})
+            this.setState({
+                articlesCollection: response.data.reverse()
+            })
         })
         .catch((err) => {
             console.log({err})
@@ -288,7 +294,6 @@ export class Homepage extends React.Component {
 
     handleImageInput(event) {
         const file = event.target.files[0]
-        console.log('file: ', file)
         this.setState({image: file})        
         // const reader = new FileReader()
         // reader.onload = () => {
@@ -326,10 +331,44 @@ export class Homepage extends React.Component {
         this.likeArticle(selectedArticle, like)
     }
 
-    articlesList() {
-        const articlesCollection = this.state.articlesCollection.reverse()
-		const publishArticle = this.state.articleModification ? this.updateArticle : this.createArticle
+    _onSelect(option) {
+        switch(option.value) {
+            case 'date':
+                this.setState({
+                    articlesCollection: this.state.articlesCollection.sort((a, b) => {
+                        const x = new Date(a.timeStamp)
+                        const y = new Date(b.timeStamp)
+                        return y - x
+                    })
+                })
+                break
+            case 'likes':
+                this.setState({
+                    articlesCollection: this.state.articlesCollection.sort((a, b) => {
+                        return b.likes - a.likes
+                    })
+                })
+                
+                break
+            case 'auteur':
+                this.setState({
+                    articlesCollection: this.state.articlesCollection.sort((a, b) => {
+                        const x = a.writerName.toLowerCase()
+                        const y = b.writerName.toLowerCase()
+                        return x > y ? 1 : x < y ? -1 : 0
+                    })
+                })
+                break
+            default: 
+                return 
+        }
+    }
 
+    articlesList() {
+        const articlesCollection = this.state.articlesCollection
+        const publishArticle = this.state.articleModification ? this.updateArticle : this.createArticle
+        const options = ['date', 'likes', 'auteur']
+    
         return (
             <div>
                 <Navigation />
@@ -340,6 +379,7 @@ export class Homepage extends React.Component {
                         { this.state.admin === 2 && (
                             <Button onClick={() => this.adminModalDisplay()} ><i className='fas fa-user-cog'/></Button> )}
                     </div>
+                    <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
                 </header>
                 <main>{
