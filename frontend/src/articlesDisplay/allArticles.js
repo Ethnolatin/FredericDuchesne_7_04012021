@@ -68,10 +68,12 @@ export class AllArticles extends React.Component {
                 </Card.Header>
                 <Card.Body>
                     <Card.Title>{article.title}</Card.Title>
-                    {article.image && 
+                    { article.image &&
                         <Card.Img src={article.image} alt={article.title} />
                     }
-                    <Card.Text>{article.text}</Card.Text>
+                    { article.text &&
+                        <Card.Text>{article.text}</Card.Text>
+                    }
                     <hr />
                     <Button onClick={() => this.articleModalDisplay(article)} >
                         <i className='fas fa-ellipsis-h'/>

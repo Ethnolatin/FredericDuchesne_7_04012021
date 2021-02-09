@@ -28,14 +28,14 @@ export class Homepage extends React.Component {
             showArticleModal: false,
             showCreateModal: false,
             showAdminModal: false,
-            newArticleTitle: '',
-            newArticleText: '',
             image: '',
             currentImage: '',
-            imagePrevieuwUrl: '',
+            modifiedArticleImageFile: undefined,
+            newArticleImageFile: undefined,
+            imagePreviewUrl: undefined,
             articleModification: false,
             like: undefined,
-            filter: 'date'
+            filter: 'date',
         }
 
 		this.getAllArticles = this.getAllArticles.bind(this)
@@ -44,11 +44,11 @@ export class Homepage extends React.Component {
         this.articlesList = this.articlesList.bind(this)
         this.articleModalDisplay = this.articleModalDisplay.bind(this)
         this.articleModalClose = this.articleModalClose.bind(this)
-        this.createModalDisplay = this.createModalDisplay.bind(this)
-        this.createModalClose = this.createModalClose.bind(this)
+        this.displayCreateModal = this.displayCreateModal.bind(this)
+        this.closeCreateModal = this.closeCreateModal.bind(this)
         this.adminModalDisplay = this.adminModalDisplay.bind(this)
         this.adminModalClose = this.adminModalClose.bind(this)
-        this.handleInputChange = this.handleInputChange.bind(this)
+        this.publishArticle = this.publishArticle.bind(this)
         this.handleImageInput = this.handleImageInput.bind(this)
         this.handleThumbUpChange = this.handleThumbUpChange.bind(this)
         this.handleThumbDownChange = this.handleThumbDownChange.bind(this)
@@ -86,14 +86,16 @@ export class Homepage extends React.Component {
     }
 
     createArticle = (event) => {
-        event.preventDefault()
-        const image = this.state.image
+        event && event.preventDefault()
+        const newArticleTitle = localStorage.getItem('newArticleTitle')
+        const newArticleText = localStorage.getItem('newArticleText')
+        const newArticleImageFile = this.state.newArticleImageFile
         const formData = new FormData()
-        image && formData.append('image', this.state.image)
+        newArticleImageFile && formData.append('image', newArticleImageFile)
         formData.append('writerId', this.state.userId)
         formData.append('writerName', this.state.firstName + ' ' + this.state.lastName)
-        formData.append('title', this.state.newArticleTitle)
-        formData.append('text', this.state.newArticleText)
+        formData.append('title', newArticleTitle)
+        if (newArticleText) {formData.append('text', newArticleText)}
         axios({
             method: 'post',
             url: 'http://localhost:3000/api/articles/',
@@ -103,7 +105,8 @@ export class Homepage extends React.Component {
             }
         })
         .then (() => {
-            this.createModalClose()
+            this.closeCreateModal()
+            this.setState({savedImagePreviewUrl: undefined})
             this.getAllArticles()
         })
         .catch((err) => {
@@ -112,11 +115,14 @@ export class Homepage extends React.Component {
     }
 
     updateArticle = (event) => {
-        event.preventDefault()
+        event && event.preventDefault()
+        const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
+        const modifiedArticleText = localStorage.getItem('modifiedArticleText')
+        const modifiedArticleImage = this.state.modifiedArticleImageFile || this.state.currentImage
         const formData = new FormData()
-        formData.append('image', this.state.image)
-        formData.append('title', this.state.newArticleTitle)
-        formData.append('text', this.state.newArticleText)
+        formData.append('title', modifiedArticleTitle)
+        if (modifiedArticleText) {formData.append('text', modifiedArticleText)}
+        if (modifiedArticleImage) {formData.append('image', modifiedArticleImage)}
         axios({
             method: 'put',
             url: 'http://localhost:3000/api/articles/' + this.state.Id,
@@ -126,7 +132,7 @@ export class Homepage extends React.Component {
             }
         })
         .then (() => {
-            this.createModalClose()
+            this.closeCreateModal()
             this.getAllArticles()
         })
         .catch((err) => {
@@ -138,10 +144,6 @@ export class Homepage extends React.Component {
         axios({
             method: 'delete',
             url: 'http://localhost:3000/api/articles/' + selectedArticle.Id,
-            data: {
-                title: this.state.newArticleTitle,
-                text: this.state.newArticleText
-            },
             headers: {
                 'Authorization': 'Bearer ' + this.context.token,
             }
@@ -239,15 +241,41 @@ export class Homepage extends React.Component {
         })
     }
 
-    createModalDisplay = () => {
+    displayCreateModal = () => {
         this.setState({
             showCreateModal: true
         })
     }
 
-    createModalClose = () => {
+    closeCreateModal = () => {
+        if (this.state.articleModification) {
+            this.setState({
+                articleModification: false,
+                modifiedArticleImageFile: undefined,
+                modifiedArticleImage: '',
+            })
+            localStorage.removeItem('modifiedArticleTitle')
+            localStorage.removeItem('modifiedArticleText')
+        } else {
+            this.setState({
+                newArticleImageFile: undefined,
+
+            })
+            localStorage.removeItem('newArticleTitle')
+            localStorage.removeItem('newArticleText')
+        }
         this.setState({
-            showCreateModal: false
+            showCreateModal: false,
+            currentImage: '',
+            imagePreviewUrl: ''
+        })
+    }
+
+    saveCreateModal = () => {
+        this.setState({
+            showCreateModal: false,
+            savedImagePreviewUrl: this.state.imagePreviewUrl,
+            imagePreviewUrl: undefined
         })
     }
 
@@ -269,39 +297,22 @@ export class Homepage extends React.Component {
         this.setState({
             articleModification: true,
             Id: selectedArticle.Id,
-            newArticleTitle: selectedArticle.title,
-            newArticleText: selectedArticle.text,
             currentImage: selectedArticle.image
         })
-        this.createModalDisplay()
-    }
-
-    newArticle() {
-        this.setState({
-            newArticleTitle: '',
-            newArticleText: '',
-            image: '',
-            articleModification: false
-        })
-        this.createModalDisplay()
-    }
-
-    handleInputChange(event) {
-		const target = event.target
-		const name = target.name
-		const value = target.value
-        this.setState({[name]:value})
+        localStorage.setItem('modifiedArticleTitle', selectedArticle.title)
+        selectedArticle.text && localStorage.setItem('modifiedArticleText', selectedArticle.text)
+        this.displayCreateModal()
     }
 
     handleImageInput(event) {
         const file = event.target.files[0]
-        this.setState({image: file})        
-        // const reader = new FileReader()
-        // reader.onload = () => {
-        //     console.log(reader.result)
-            // this.setstate({imagePrevieuwUrl: reader.result})
-        // }
-        // reader.readAsDataURL(file)
+        const imageFile = this.state.articleModification ? {modifiedArticleImageFile: file} : {newArticleImageFile: file} 
+        this.setState(imageFile)
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            this.setState({imagePreviewUrl: [reader.result]})
+        }
+        reader.readAsDataURL(file)
     }
 
     handleThumbUpChange(selectedArticle, likeOption) {
@@ -330,6 +341,12 @@ export class Homepage extends React.Component {
             default: return
         }
         this.likeArticle(selectedArticle, like)
+    }
+
+    publishArticle() {
+        this.state.articleModification ?
+            this.updateArticle() :
+            this.createArticle()
     }
 
     _onSelect(option) {
@@ -367,7 +384,6 @@ export class Homepage extends React.Component {
 
     articlesList() {
         const articlesCollection = this.state.articlesCollection
-        const publishArticle = this.state.articleModification ? this.updateArticle : this.createArticle
         const options = ['date', 'likes', 'auteur']
     
         return (
@@ -381,7 +397,7 @@ export class Homepage extends React.Component {
                             <Button onClick={() => this.adminModalDisplay()} ><i className='fas fa-user-cog'/></Button> )}
                     </div>
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
-                    <Button onClick={() => this.newArticle()} >Ecrire un article</Button>
+                    <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>
                 </header>
                 <main>{
                     articlesCollection.map((article) => {
@@ -405,15 +421,15 @@ export class Homepage extends React.Component {
                                 />
                                 
                                 <CreateModal
-                                    createModalClose={this.createModalClose}
-                                    handleInputChange={this.handleInputChange}
+                                    closeCreateModal={this.closeCreateModal}
+                                    saveCreateModal={this.saveCreateModal}
                                     handleImageInput={this.handleImageInput}
+                                    publishArticle={this.publishArticle}
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
-                                    newArticleTitle={this.state.newArticleTitle}
-                                    newArticleText={this.state.newArticleText}
-                                    currentImage={this.state.currentimage}
-                                    publishArticle={publishArticle}
+                                    currentImage={this.state.currentImage}
+                                    imagePreviewUrl={this.state.imagePreviewUrl}
+                                    savedImagePreviewUrl={this.state.savedImagePreviewUrl}
                                 />
 
                                 <AdminModal
