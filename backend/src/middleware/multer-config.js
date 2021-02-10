@@ -4,6 +4,7 @@ const MIME_TYPES = {
     'image/jpg': 'jpg',
     'image/jpeg': 'jpg',
     'image/png': 'png',
+    'image/webp': 'webp',
 }
 
 // utilise 'multer' pour gérer les fichiers entrants dans les requêtes HTTP

@@ -36,12 +36,25 @@ exports.createArticle = (req, res) => {
 
 // modifie un article en fonction de son Id
 exports.modifyArticle = (req, res) => {
+    let articleObject
     // gère l'éventuelle image
-    const articleObject = req.file ? 
-        { ...req.body,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        } :
-        { ...req.body }
+    if (req.file) {
+        // supprime l'éventuelle image antérieure
+        if (req.body.oldImage) {
+            const imageName = req.body.oldImage.split('/images/')[1]
+            fs.unlink(`images/${imageName}`, (err) => {
+                if (err) {return res.status(402).json({ err })}
+                else {console.log('Image supprimée...')}
+            })
+        }
+        // ajoute la nouvelle image
+        articleObject = {
+            ...req.body,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        }
+    } else {
+        articleObject = { ...req.body }
+    }
     // met l'article à jour
     dbConnect.query(
         'UPDATE articles SET title = ?, text = ?, image = ? WHERE id = ?',
@@ -61,7 +74,7 @@ exports.deleteArticle = (req, res) => {
         if (result[0].image) {
             const filename = result[0].image.split('/images/')[1]
             fs.unlink(`images/${filename}`, (err) => {
-                if (err) {return res.status(402).json({ error })}
+                if (err) {return res.status(402).json({ err })}
                 else {console.log('Image supprimée...')}
             })
         }

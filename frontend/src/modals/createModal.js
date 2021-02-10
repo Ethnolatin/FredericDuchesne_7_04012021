@@ -89,7 +89,7 @@ render () {
                                 className='input'
                                 type='text'
                                 name={articleModification ? 'modifiedArticleTitle' : 'newArticleTitle' }
-                                value={localStorage.getItem(articleModification ? 'modifiedArticleTitle' : 'newArticleTitle')}
+                                value={localStorage.getItem(articleModification ? 'modifiedArticleTitle' : 'newArticleTitle') || ''}
                                 onChange={this.handleInputChange}
                                 required
                             />
@@ -112,7 +112,7 @@ render () {
                                 className='input'
                                 type='text'
                                 name={articleModification ? 'modifiedArticleText' : 'newArticleText' }
-                                value={localStorage.getItem(articleModification ? 'modifiedArticleText' : 'newArticleText')}
+                                value={localStorage.getItem(articleModification ? 'modifiedArticleText' : 'newArticleText') || ''}
                                 onChange={this.handleInputChange}
                                 required
                             />

@@ -116,13 +116,17 @@ export class Homepage extends React.Component {
 
     updateArticle = (event) => {
         event && event.preventDefault()
+        const currentImage = this.state.currentImage
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
         const modifiedArticleText = localStorage.getItem('modifiedArticleText')
-        const modifiedArticleImage = this.state.modifiedArticleImageFile || this.state.currentImage
+        const modifiedArticleImage = this.state.modifiedArticleImageFile || currentImage
         const formData = new FormData()
         formData.append('title', modifiedArticleTitle)
         if (modifiedArticleText) {formData.append('text', modifiedArticleText)}
-        if (modifiedArticleImage) {formData.append('image', modifiedArticleImage)}
+        if (modifiedArticleImage) {
+            formData.append('image', modifiedArticleImage)
+            if (currentImage) {formData.append('oldImage', currentImage)}
+        }
         axios({
             method: 'put',
             url: 'http://localhost:3000/api/articles/' + this.state.Id,
