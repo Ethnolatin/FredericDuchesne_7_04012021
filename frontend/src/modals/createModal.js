@@ -12,6 +12,7 @@ export class CreateModal extends React.PureComponent {
             modifiedArticleText: undefined,
             newArticleTitle: undefined,
             newArticleText: undefined,
+            previewImage: undefined,
         }
 
         this.closeCreateModal = this.closeCreateModal.bind(this)
@@ -19,6 +20,7 @@ export class CreateModal extends React.PureComponent {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.handleImageInput = this.handleImageInput.bind(this)
         this.checkTitle = this.checkTitle.bind(this)
+        this.noImage = this.noImage.bind(this)
     }
 
     closeCreateModal = () => {
@@ -55,6 +57,7 @@ export class CreateModal extends React.PureComponent {
                     saved ?
                         saved :
                         undefined
+        this.setState({previewImage: previewImage})
         return previewImage
     }
 
@@ -71,6 +74,10 @@ export class CreateModal extends React.PureComponent {
             alert("Votre article doit avoir un titre...")
             return
         } else this.publishArticle()
+    }
+
+    noImage = () => {
+        this.props.noImage()
     }
     
 render () {
@@ -97,6 +104,12 @@ render () {
                         <hr />
                         <Form.Group>
                             <Form.Label>Image :</Form.Label>
+                            <br />
+                            <Image src={this.definePreviewImage(articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl)} width='50%' height='50%' />
+                            {this.state.previewImage && <>
+                            <br />
+                                <Button onClick={this.noImage}>Supprimer l'image</Button>
+                            </>}
                             <Form.File
                                 className='input'
                                 type='file'
@@ -104,7 +117,6 @@ render () {
                                 onChange={this.handleImageInput}
                             />
                         </Form.Group>
-                        <Image src={this.definePreviewImage(articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl)} width='50%' height='50%' />
                         <hr />
                         <Form.Group controlId='text'>
                             <Form.Label>Texte :</Form.Label>

@@ -30,6 +30,7 @@ export class Homepage extends React.Component {
             showAdminModal: false,
             image: '',
             currentImage: '',
+            oldImage: '',
             modifiedArticleImageFile: undefined,
             newArticleImageFile: undefined,
             imagePreviewUrl: undefined,
@@ -50,6 +51,7 @@ export class Homepage extends React.Component {
         this.adminModalClose = this.adminModalClose.bind(this)
         this.publishArticle = this.publishArticle.bind(this)
         this.handleImageInput = this.handleImageInput.bind(this)
+        this.noImage = this.noImage.bind(this)
         this.handleThumbUpChange = this.handleThumbUpChange.bind(this)
         this.handleThumbDownChange = this.handleThumbDownChange.bind(this)
         this._onSelect = this._onSelect.bind(this)
@@ -116,17 +118,15 @@ export class Homepage extends React.Component {
 
     updateArticle = (event) => {
         event && event.preventDefault()
-        const currentImage = this.state.currentImage
+        console.log(this.state.oldImage)
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
         const modifiedArticleText = localStorage.getItem('modifiedArticleText')
-        const modifiedArticleImage = this.state.modifiedArticleImageFile || currentImage
+        const modifiedArticleImage = this.state.modifiedArticleImageFile || this.state.currentImage
         const formData = new FormData()
         formData.append('title', modifiedArticleTitle)
-        if (modifiedArticleText) {formData.append('text', modifiedArticleText)}
-        if (modifiedArticleImage) {
-            formData.append('image', modifiedArticleImage)
-            if (currentImage) {formData.append('oldImage', currentImage)}
-        }
+        modifiedArticleText && formData.append('text', modifiedArticleText)
+        modifiedArticleImage && formData.append('image', modifiedArticleImage)
+        this.state.oldImage && formData.append('oldImage', this.state.oldImage)
         axios({
             method: 'put',
             url: 'http://localhost:3000/api/articles/' + this.state.Id,
@@ -263,7 +263,6 @@ export class Homepage extends React.Component {
         } else {
             this.setState({
                 newArticleImageFile: undefined,
-
             })
             localStorage.removeItem('newArticleTitle')
             localStorage.removeItem('newArticleText')
@@ -271,7 +270,8 @@ export class Homepage extends React.Component {
         this.setState({
             showCreateModal: false,
             currentImage: '',
-            imagePreviewUrl: ''
+            imagePreviewUrl: '',
+            oldImage: ''
         })
     }
 
@@ -317,6 +317,23 @@ export class Homepage extends React.Component {
             this.setState({imagePreviewUrl: [reader.result]})
         }
         reader.readAsDataURL(file)
+    }
+
+    noImage() {
+        this.state.articleModification ?
+            this.setState({
+                modifiedArticleImageFile: undefined,
+                modifiedArticleImage: undefined
+            })
+            : this.setState({
+                newArticleImageFile: undefined,
+            })
+        this.setState({
+            oldImage: this.state.currentImage,
+            currentImage: undefined,
+            imagePreviewUrl: undefined,
+            savedImagePreviewUrl: undefined,
+        })
     }
 
     handleThumbUpChange(selectedArticle, likeOption) {
@@ -429,6 +446,7 @@ export class Homepage extends React.Component {
                                     saveCreateModal={this.saveCreateModal}
                                     handleImageInput={this.handleImageInput}
                                     publishArticle={this.publishArticle}
+                                    noImage={this.noImage}
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
                                     currentImage={this.state.currentImage}

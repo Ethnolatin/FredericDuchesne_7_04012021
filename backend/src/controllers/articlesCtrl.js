@@ -37,22 +37,21 @@ exports.createArticle = (req, res) => {
 // modifie un article en fonction de son Id
 exports.modifyArticle = (req, res) => {
     let articleObject
-    // gère l'éventuelle image
+    // supprime l'éventuelle image antérieure de backend/images
+    if (req.body.oldImage) {
+        const imageName = req.body.oldImage.split('/images/')[1]
+        fs.unlink(`images/${imageName}`, (err) => {
+            if (err) {return res.status(402).json({ err })}
+            else {console.log('Image supprimée...')}
+        })
+    }
+    // ajoute l'éventuelle nouvelle image dans backend/images
     if (req.file) {
-        // supprime l'éventuelle image antérieure
-        if (req.body.oldImage) {
-            const imageName = req.body.oldImage.split('/images/')[1]
-            fs.unlink(`images/${imageName}`, (err) => {
-                if (err) {return res.status(402).json({ err })}
-                else {console.log('Image supprimée...')}
-            })
-        }
-        // ajoute la nouvelle image
-        articleObject = {
+            articleObject = {
             ...req.body,
             image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-        }
-    } else {
+            }
+        } else {
         articleObject = { ...req.body }
     }
     // met l'article à jour
