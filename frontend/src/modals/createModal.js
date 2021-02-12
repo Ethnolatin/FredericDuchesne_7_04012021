@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 import Image from 'react-bootstrap/Image'
 import Modal from 'react-bootstrap/Modal'
+import Alert from 'react-bootstrap/Alert'
 
 export class CreateModal extends React.PureComponent {
 	constructor(props) {
@@ -13,6 +14,7 @@ export class CreateModal extends React.PureComponent {
             newArticleTitle: undefined,
             newArticleText: undefined,
             previewImage: undefined,
+            showAlert: false,
         }
 
         this.closeCreateModal = this.closeCreateModal.bind(this)
@@ -66,12 +68,13 @@ export class CreateModal extends React.PureComponent {
     }
 
     checkTitle() {
+        this.setState({showAlert: false})
         const articleModification = this.props.articleModification
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
         const newArticleTitle = localStorage.getItem('newArticleTitle')
         if ((articleModification && !modifiedArticleTitle) ||
         (!articleModification && !newArticleTitle)) {
-            alert("Votre article doit avoir un titre...")
+            this.setState({showAlert: true})
             return
         } else this.publishArticle()
     }
@@ -80,16 +83,19 @@ export class CreateModal extends React.PureComponent {
         this.props.noImage()
     }
     
-render () {
+    render () {
         const { showCreateModal, articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl } = this.props
-
-        return (
+        console.log(this.state.showAlert)
+        return (<>
             <Modal show={showCreateModal} onHide={this.closeCreateModal} backdrop='static' animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>{articleModification ? 'Modifiez votre article :' : 'Ecrivez un article :' }</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <Form noValidate>
+                        <Alert show={this.state.showAlert} variant='warning' >
+                            Votre article doit avoir un titre...
+                        </Alert>
                         <Form.Group controlId='title'>
                             <Form.Label>Titre :</Form.Label>
                             <Form.Control
@@ -132,12 +138,12 @@ render () {
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button onClick={this.checkTitle}>Publier</Button>
                     {!articleModification &&
                         <Button onClick={this.saveCreateModal}>Sauvegarder</Button>
                     }
+                    <Button onClick={this.checkTitle}>Publier</Button>
                 </Modal.Footer>
             </Modal>
-        )
+        </>)
     }
 }
