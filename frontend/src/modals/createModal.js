@@ -85,7 +85,6 @@ export class CreateModal extends React.PureComponent {
     
     render () {
         const { showCreateModal, articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl } = this.props
-        console.log(this.state.showAlert)
         return (<>
             <Modal show={showCreateModal} onHide={this.closeCreateModal} backdrop='static' animation={false}>
                 <Modal.Header closeButton>

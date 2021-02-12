@@ -1,49 +1,53 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import Moment from 'react-moment'
+import { DeleteAlert } from '../alerts'
+
 import 'moment/locale/fr'
 
 export class AllArticles extends React.Component {
 	constructor(props) {
 		super(props)
-
-        this.articleModalDisplay = this.articleModalDisplay.bind(this)
-        this.deleteArticle = this.deleteArticle.bind(this)
-        this.modifyArticle = this.modifyArticle.bind(this)
+        this.state = {showAlert: false}
     }
 
-    articleModalDisplay = (article) => {
-        this.props.articleModalDisplay(article)
+    articleModalDisplay = () => {
+        this.props.articleModalDisplay(this.props.article)
     }
 
-    handleThumbUpChange = (article, likeOption) => {
-        this.props.handleThumbUpChange(article, likeOption)
+    handleThumbUpChange = (likeOption) => {
+        this.props.handleThumbUpChange(this.props.article, likeOption)
     }
 
-    handleThumbDownChange = (article, likeOption) => {
-        this.props.handleThumbDownChange(article, likeOption)
+    handleThumbDownChange = (likeOption) => {
+        this.props.handleThumbDownChange(this.props.article, likeOption)
     }
 
-    deleteArticle = (article) => {
-        this.props.deleteArticle(article)
+    confirmDelete = () => {
+        this.setState({showAlert: true})
     }
 
-    modifyArticle = (article) => {
-        this.props.modifyArticle(article)
+    deleteItem = () => {
+        this.props.deleteArticle(this.props.article)
     }
 
-    clickHandler = (props) => {
-        const action = props.action
-        action(props)
+    modifyArticle = () => {
+        this.props.modifyArticle(this.props.article)
+    }
+
+    hideAlert = () => {
+        this.setState({showAlert: false})
     }
 
 
     render () {
         const { article, userId, admin} = this.props
         const likeOption = (
-            article.usersLiked.includes(userId) ? 1 
-            : article.usersDisliked.includes(userId) ? 2
-            : 3
+            article.usersLiked.includes(userId) ?
+                1
+                : article.usersDisliked.includes(userId) ?
+                    2
+                    : 3
         )
         const thumbUp = likeOption === 1 ? <i className='fas fa-thumbs-up'/> : <i className='far fa-thumbs-up'/>
         const thumbDown = likeOption === 2 ? <i className='fas fa-thumbs-down'/> : <i className='far fa-thumbs-down'/>
@@ -57,6 +61,12 @@ export class AllArticles extends React.Component {
         }
         return (
             <Card >
+                <DeleteAlert
+                    show={this.state.showAlert}
+                    item='article'
+                    deleteItem={this.deleteItem}
+                    hideAlert={this.hideAlert}
+                />
                 <Card.Header>
                     Publié par{' '}
                     <b>{writer}{' '}</b>
@@ -75,24 +85,24 @@ export class AllArticles extends React.Component {
                         <Card.Text>{article.text}</Card.Text>
                     }
                     <hr />
-                    <Button onClick={() => this.articleModalDisplay(article)} >
+                    <Button onClick={this.articleModalDisplay} >
                         <i className='fas fa-ellipsis-h'/>
                     </Button>
                 </Card.Body>
                 <Card.Footer>
                     <div className='thumbs'>
-                        <div onClick={() => this.handleThumbUpChange(article, likeOption)}>{thumbUp}{article.likes}{' '}</div>
-                        <div onClick={() => this.handleThumbDownChange(article, likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
+                        <div onClick={() => this.handleThumbUpChange(likeOption)}>{thumbUp}{article.likes}{' '}</div>
+                        <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
                         <div><b>Score : {article.likes - article.dislikes}</b></div>
                     </div>
                     <div className='card-footer-buttons'>
                         {(myArticle || admin !== 0 ) && (
-                            <Button onClick={() => this.deleteArticle(article)} >
+                            <Button onClick={this.confirmDelete} >
                                 <i className='fas fa-trash-alt'/>
                             </Button>
                         )}
                         {myArticle && (
-                            <Button onClick={() => this.modifyArticle(article)} >
+                            <Button onClick={this.modifyArticle} >
                                 <i className='fas fa-edit'/>
                             </Button>
                         )}
