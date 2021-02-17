@@ -63,7 +63,7 @@ export class AllArticles extends React.Component {
             <Card >
                 <DeleteAlert
                     show={this.state.showAlert}
-                    item='article'
+                    item={`l'article "${article.title}"`}
                     deleteItem={this.deleteItem}
                     hideAlert={this.hideAlert}
                 />

@@ -196,10 +196,10 @@ export class Homepage extends React.Component {
         })
     }
 
-    deleteUser = (selectedUser) => {
+    deleteUser = (selectedUserId) => {
         axios({
             method: 'delete',
-            url: 'http://localhost:3000/api/admin/' + selectedUser.Id,
+            url: 'http://localhost:3000/api/admin/' + selectedUserId,
             headers: {
                 'Authorization': 'Bearer ' + this.context.token,
             }

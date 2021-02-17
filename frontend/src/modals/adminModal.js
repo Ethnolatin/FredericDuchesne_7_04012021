@@ -2,10 +2,14 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 import Table from 'react-bootstrap/Table'
+import { DeleteAlert } from '../alerts'
 
 export class AdminModal extends React.Component {
 	constructor(props) {
 		super(props)
+        this.state = {
+            showAlert: false,
+        }
 
         this.adminModalClose = this.adminModalClose.bind(this)
     }
@@ -17,8 +21,20 @@ export class AdminModal extends React.Component {
         this.props.updateUser(user)
     }
 
-    deleteUser = (user) => {
-        this.props.deleteUser(user)
+    confirmDelete = (user) => {
+        localStorage.setItem('userId', user.Id)
+        localStorage.setItem('userName', user.firstName + ' ' + user.lastName)
+        this.setState({showAlert: true})
+    }
+
+    deleteItem = () => {
+        this.props.deleteUser(localStorage.getItem('userId'))
+    }
+
+    hideAlert = () => {
+        localStorage.removeItem('userId')
+        localStorage.removeItem('userName')
+        this.setState({showAlert: false})
     }
 
     render () {
@@ -28,6 +44,12 @@ export class AdminModal extends React.Component {
                 <Modal.Header closeButton>
                     <Modal.Title>Liste des utilisateurs :</Modal.Title>
                 </Modal.Header>
+                <DeleteAlert
+                    show={this.state.showAlert}
+                    item={localStorage.getItem('userName')}
+                    deleteItem={this.deleteItem}
+                    hideAlert={this.hideAlert}
+                />
                 <Modal.Body>
                     <Table striped hover size='sm'>
                         <thead>
@@ -53,7 +75,7 @@ export class AdminModal extends React.Component {
                                             />
                                         </td>
                                         <td>
-                                            <Button onClick={() => this.deleteUser(user)}>
+                                            <Button onClick={() => this.confirmDelete(user)}>
                                                 <i className='fas fa-trash-alt'/>
                                             </Button>
                                         </td>
