@@ -21,6 +21,7 @@ exports.getOneArticle = (req, res) => {
 
 // crée un nouvel article
 exports.createArticle = (req, res) => {
+    console.log('req.body: ', req.body)
     const articleObject = req.body
     const article = new Article({
         ...articleObject,

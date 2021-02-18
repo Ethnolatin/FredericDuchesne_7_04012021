@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import path from 'path'
 import articlesRoutes from './src/routes/articlesRoutes'
+import commentsRoutes from './src/routes/commentsRoutes'
 import userRoutes from './src/routes/userRoutes'
 import adminRoutes from './src/routes/adminRoutes'
 import dbConnect from './src/models/dbConnect'
@@ -26,16 +27,18 @@ app.use((req, res, next) => {
     next()
 })
 
-// utilise body-parser et sa méthode 'json' pour exploiter le corps d'une requête de type application/x-www-form-urlencoded
+// utilise body-parser pour exploiter le corps d'une requête de type application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// utilise body-parser et sa méthode 'json' pour transformer le corps de la requête en json exploitable
+// utilise body-parser pour transformer le corps de la requête en json exploitable
 app.use(bodyParser.json())
 
 // gère la ressource 'images' de manière statique
 app.use('/images', express.static(path.join(__dirname, 'images')))
 // route par défaut pour les articles
 app.use('/api/articles', articlesRoutes)
+// route par défaut pour les commentaires
+app.use('/api/comments', commentsRoutes)
 // route par défaut pour l'admin'
 app.use('/api/admin', adminRoutes)
 // renforce l'authentification sur les routes relatives au user

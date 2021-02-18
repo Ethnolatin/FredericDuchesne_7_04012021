@@ -6,7 +6,6 @@ import Navigation from './navigation'
 import { AuthContext } from './authContext'
 import { Login } from './loginForm'
 import { AllArticles } from './articlesDisplay/allArticles'
-import { SingleArticle } from './articlesDisplay/singleArticle'
 import { CreateModal } from './modals/createModal'
 import { AdminModal } from './modals/adminModal'
 import 'react-dropdown/style.css';
@@ -25,7 +24,6 @@ export class Homepage extends React.Component {
             users: [],
             articlesCollection: [],
             article: {},
-            showArticleModal: false,
             showCreateModal: false,
             showAdminModal: false,
             image: '',
@@ -43,8 +41,6 @@ export class Homepage extends React.Component {
         this.createArticle = this.createArticle.bind(this)
         this.modifyArticle = this.modifyArticle.bind(this)
         this.articlesList = this.articlesList.bind(this)
-        this.articleModalDisplay = this.articleModalDisplay.bind(this)
-        this.articleModalClose = this.articleModalClose.bind(this)
         this.displayCreateModal = this.displayCreateModal.bind(this)
         this.closeCreateModal = this.closeCreateModal.bind(this)
         this.adminModalDisplay = this.adminModalDisplay.bind(this)
@@ -231,17 +227,45 @@ export class Homepage extends React.Component {
         })
     }
 
-    articleModalDisplay = (selectedArticle) => {
-        this.setState({
-            showArticleModal: true,
-            article: selectedArticle
+    createComment = () => {
+        const articleId = localStorage.getItem('articleId');
+        const commentatorId = this.context.userId
+        const comment = localStorage.getItem('comment')
+        console.log('articleId: ', articleId)
+        console.log('commentatorId: ', commentatorId)
+        console.log('comment: ', comment)
+        const formData = new FormData()
+        formData.append('articleId', articleId)
+        formData.append('commentatorId', commentatorId)
+        formData.append('comment', comment)
+        axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/comments/',
+            data: formData,
+            headers: {
+                'Authorization': 'Bearer ' + this.context.token,
+            }
+        })
+        .then (() => {
+            this.closeCommentsModal()
+            this.setState({comment: undefined})
+        })
+        .catch((err) => {
+            console.log({err})
         })
     }
 
-    articleModalClose = () => {
+    displayCommentsModal = () => {
         this.setState({
-            showArticleModal: false,
-            article: {}
+            showCommentsModal: true,
+        })
+    }
+
+    closeCommentsModal = () => {
+        localStorage.removeItem('comment')
+        localStorage.removeItem('articleId')
+        this.setState({
+            showCommentsModal: false,
         })
     }
 
@@ -425,22 +449,16 @@ export class Homepage extends React.Component {
                         return(
                             <div key={article.Id}>
                                 <AllArticles
-                                    articleModalDisplay={this.articleModalDisplay}
                                     handleThumbUpChange={this.handleThumbUpChange}
                                     handleThumbDownChange={this.handleThumbDownChange}
                                     deleteArticle={this.deleteArticle}
                                     modifyArticle={this.modifyArticle}
+                                    createComment={this.createComment}
                                     article={article}
                                     userId={this.state.userId}
                                     admin={this.state.admin}
                                 />
 
-                                <SingleArticle
-                                    articleModalClose={this.articleModalClose}
-                                    showArticleModal={this.state.showArticleModal}
-                                    article={this.state.article}
-                                />
-                                
                                 <CreateModal
                                     closeCreateModal={this.closeCreateModal}
                                     saveCreateModal={this.saveCreateModal}

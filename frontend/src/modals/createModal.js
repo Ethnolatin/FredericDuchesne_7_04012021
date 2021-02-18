@@ -131,7 +131,6 @@ export class CreateModal extends React.PureComponent {
                                 name={articleModification ? 'modifiedArticleText' : 'newArticleText' }
                                 value={localStorage.getItem(articleModification ? 'modifiedArticleText' : 'newArticleText') || ''}
                                 onChange={this.handleInputChange}
-                                required
                             />
                         </Form.Group> 
                     </Form>

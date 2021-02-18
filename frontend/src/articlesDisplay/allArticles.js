@@ -1,6 +1,7 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import Moment from 'react-moment'
+import { SingleArticle } from './singleArticle'
 import { DeleteAlert } from '../alerts'
 
 import 'moment/locale/fr'
@@ -8,11 +9,23 @@ import 'moment/locale/fr'
 export class AllArticles extends React.Component {
 	constructor(props) {
 		super(props)
-        this.state = {showAlert: false}
+        this.state = {
+            showArticleModal: false,
+            showAlert: false}
     }
 
-    articleModalDisplay = () => {
-        this.props.articleModalDisplay(this.props.article)
+    articleModalDisplay = (selectedArticle) => {
+        this.setState({
+            showArticleModal: true,
+            article: selectedArticle
+        })
+    }
+
+    articleModalClose = () => {
+        this.setState({
+            showArticleModal: false,
+            article: {}
+        })
     }
 
     handleThumbUpChange = (likeOption) => {
@@ -39,7 +52,11 @@ export class AllArticles extends React.Component {
         this.setState({showAlert: false})
     }
 
+    createComment = () => {
+        this.props.createComment()
+    }
 
+    
     render () {
         const { article, userId, admin} = this.props
         const likeOption = (
@@ -59,7 +76,7 @@ export class AllArticles extends React.Component {
             lastWeek : 'dddd [dernier à] H[h]mm',
             sameElse : '[le] dddd D MMMM YYYY [à] H[h]mm'
         }
-        return (
+        return (<>
             <Card >
                 <DeleteAlert
                     show={this.state.showAlert}
@@ -109,6 +126,13 @@ export class AllArticles extends React.Component {
                     </div>
                 </Card.Footer>
             </Card>
-        )
+
+            <SingleArticle
+                articleModalClose={this.articleModalClose}
+                createComment={this.createComment}
+                showArticleModal={this.state.showArticleModal}
+                article={this.props.article}
+            />
+        </>)
     }
 }

@@ -6,7 +6,7 @@ import multer from '../middleware/multer-config'
 const router = Router()
 
 // définit les routes relatives aux articles et leur applique les middlewares :
-// - 'auth' renforce l'authentification sur les routes relatives aux articles
+// - 'auth' renforce l'authentification
 // - 'multer' accepte les téléchargements de fichier pour 'create' et 'modify'
 router.post('/:id/like', auth, articlesCtrl.likeArticle)
 router.post('/', auth, multer, articlesCtrl.createArticle)
