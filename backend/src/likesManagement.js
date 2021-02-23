@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 module.exports = (item, userId, like) => {
     const article = JSON.parse(JSON.stringify(item))[0]
     const usersLikedObject = JSON.parse(article.usersLiked)

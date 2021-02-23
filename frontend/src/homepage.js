@@ -8,7 +8,8 @@ import { Login } from './loginForm'
 import { AllArticles } from './articlesDisplay/allArticles'
 import { CreateModal } from './modals/createModal'
 import { AdminModal } from './modals/adminModal'
-import 'react-dropdown/style.css';
+import { getAllItems, createItem, updateItem, deleteItem } from './axios'
+import 'react-dropdown/style.css'
 
 export class Homepage extends React.Component {
     static contextType = AuthContext
@@ -35,6 +36,7 @@ export class Homepage extends React.Component {
             articleModification: false,
             like: undefined,
             filter: 'date',
+            isLoading: true,
         }
 
 		this.getAllArticles = this.getAllArticles.bind(this)
@@ -65,25 +67,15 @@ export class Homepage extends React.Component {
         this.context.token && this.getAllArticles()
     }
 
-    getAllArticles = () => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:3000/api/articles/',
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then ((response) => {
-            this.setState({
-                articlesCollection: response.data.reverse()
-            })
-        })
-        .catch((err) => {
-            console.log({err})
+    getAllArticles = async () => {
+        const list = await getAllItems('articles/', this.context.token)
+        return this.setState({
+            articlesCollection: list.reverse(),
+            isLoading: false
         })
     }
 
-    createArticle = (event) => {
+    createArticle = async (event) => {
         event && event.preventDefault()
         const newArticleTitle = localStorage.getItem('newArticleTitle')
         const newArticleText = localStorage.getItem('newArticleText')
@@ -93,26 +85,14 @@ export class Homepage extends React.Component {
         formData.append('writerId', this.state.userId)
         formData.append('writerName', this.state.firstName + ' ' + this.state.lastName)
         formData.append('title', newArticleTitle)
-        if (newArticleText) {formData.append('text', newArticleText)}
-        axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/articles/',
-            data: formData,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then (() => {
+        newArticleText && formData.append('text', newArticleText)
+        await createItem('articles/', this.context.token, formData)
             this.closeCreateModal()
             this.setState({savedImagePreviewUrl: undefined})
             this.getAllArticles()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
     }
 
-    updateArticle = (event) => {
+    updateArticle = async (event) => {
         event && event.preventDefault()
         console.log(this.state.oldImage)
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
@@ -123,37 +103,14 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        axios({
-            method: 'put',
-            url: 'http://localhost:3000/api/articles/' + this.state.Id,
-            data: formData,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then (() => {
+        await updateItem('articles/', this.context.token, formData, this.state.Id)
             this.closeCreateModal()
             this.getAllArticles()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
     }
 
-    deleteArticle = (selectedArticle) => {
-        axios({
-            method: 'delete',
-            url: 'http://localhost:3000/api/articles/' + selectedArticle.Id,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then ((response) => {
-            this.getAllArticles()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
+    deleteArticle = async (selectedArticle) => {
+        await deleteItem('articles/', this.context.token, selectedArticle.Id)
+        this.getAllArticles()
     }
 
     likeArticle = (selectedArticle, like) => {
@@ -176,58 +133,26 @@ export class Homepage extends React.Component {
         })
     }
 
-    getAllUsers = () => {
-        axios({
-            method: 'get',
-            url: 'http://localhost:3000/api/admin/',
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then ((response) => {
-            this.setState({users: response.data})
-        })
-        .catch((err) => {
-            console.log({err})
+    getAllUsers = async () => {
+        const list = await getAllItems('admin/', this.context.token)
+        console.log('list: ', list)
+        return this.setState({
+            users: list,
+            isLoading: false
         })
     }
 
-    deleteUser = (selectedUserId) => {
-        axios({
-            method: 'delete',
-            url: 'http://localhost:3000/api/admin/' + selectedUserId,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then ((response) => {
-            this.getAllUsers()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
+    deleteUser = async (selectedUserId) => {
+        await deleteItem('admin/', this.context.token, selectedUserId)
+        this.getAllUsers()
     }
 
-    updateUser = (selectedUser) => {
-        axios({
-            method: 'put',
-            url: 'http://localhost:3000/api/admin/' + selectedUser.Id,
-            data: {
-                admin: !selectedUser.admin * 1
-            },
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then (() => {
-            this.getAllUsers()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
+    updateUser = async (selectedUser) => {
+        await updateItem('admin/', this.context.token, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+        this.getAllUsers()
     }
 
-    createComment = () => {
+    createComment = async () => {
         const articleId = localStorage.getItem('articleId');
         const commentatorId = this.context.userId
         const comment = localStorage.getItem('comment')
@@ -238,20 +163,17 @@ export class Homepage extends React.Component {
         formData.append('articleId', articleId)
         formData.append('commentatorId', commentatorId)
         formData.append('comment', comment)
-        axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/comments/',
-            data: formData,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then (() => {
-            this.closeCommentsModal()
-            this.setState({comment: undefined})
-        })
-        .catch((err) => {
-            console.log({err})
+        await createItem('comments/', this.context.token, formData)
+        this.closeCommentsModal()
+        this.setState({comment: undefined})
+    }
+
+    getAllComments = async () => {
+        const list = await getAllItems('comments/', this.context.token)
+        console.log('list: ', list)
+        return this.setState({
+            allComments: list.reverse(),
+            isLoading: false
         })
     }
 
@@ -427,8 +349,10 @@ export class Homepage extends React.Component {
         }
     }
 
+
     articlesList() {
-        const articlesCollection = this.state.articlesCollection
+        const {isLoading, articlesCollection} = this.state
+        if (isLoading) {return <div className="App">Loading...</div>;}
         const options = ['date', 'likes', 'auteur']
     
         return (
@@ -448,6 +372,7 @@ export class Homepage extends React.Component {
                     articlesCollection.map((article) => {
                         return(
                             <div key={article.Id}>
+                                
                                 <AllArticles
                                     handleThumbUpChange={this.handleThumbUpChange}
                                     handleThumbDownChange={this.handleThumbDownChange}

@@ -7,7 +7,7 @@ import likesManagement from '../likesManagement'
 exports.getAllArticles = (req, res) => {
     dbConnect.query('SELECT * FROM articles', (error, result) => {
         if (error) {return res.status(400).json({ error })}
-        res.status(201).json(result)
+        res.status(200).json(result)
     })
 }
 
@@ -15,7 +15,7 @@ exports.getAllArticles = (req, res) => {
 exports.getOneArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(400).json({ error })}
-        res.status(201).json(result)
+        res.status(200).json(result)
     })
 }
 
