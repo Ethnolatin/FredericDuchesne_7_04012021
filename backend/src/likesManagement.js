@@ -30,6 +30,7 @@ module.exports = (item, userId, like) => {
     }
     article.usersLiked = JSON.stringify(usersLikedObject)
     article.usersDisliked = JSON.stringify(usersDislikedObject)
+    article.score = article.likes - article.dislikes
 
     return article
 }

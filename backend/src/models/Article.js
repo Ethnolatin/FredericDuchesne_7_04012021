@@ -7,6 +7,7 @@ function Article({ writerId, writerName, title, text, image }) {
     this.timeStamp = new Date()
     this.likes = 0
     this.dislikes = 0
+    this.score = 0
     this.usersLiked = '[]'
     this.usersDisliked = '[]'
 }

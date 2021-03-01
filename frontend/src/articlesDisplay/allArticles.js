@@ -96,9 +96,9 @@ export class AllArticles extends React.Component {
                 </Card.Body>
                 <Card.Footer>
                     <div className='thumbs'>
-                        <div onClick={() => this.handleThumbUpChange(likeOption)}>{thumbUp}{article.likes}{' '}</div>
-                        <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
-                        <div><b>Score : {article.likes - article.dislikes}</b></div>
+                        <div onClick={() => this.handleThumbUpChange(likeOption)}>{thumbUp}</div>
+                        <div><b>{article.score}</b></div>
+                        <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}</div>
                     </div>
                     <div className='comments-qty' onClick={this.articleModalDisplay}>
                         <i className='fas fa-comment-alt'/>

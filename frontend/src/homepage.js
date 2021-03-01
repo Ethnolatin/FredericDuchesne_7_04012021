@@ -328,10 +328,10 @@ export class Homepage extends React.Component {
                     })
                 })
                 break
-            case 'likes':
+            case 'score':
                 this.setState({
                     articlesCollection: this.state.articlesCollection.sort((a, b) => {
-                        return b.likes - a.likes
+                        return b.score - a.score
                     })
                 })
                 
@@ -354,7 +354,7 @@ export class Homepage extends React.Component {
     articlesList() {
         const {isLoading, articlesCollection, allComments} = this.state
         if (isLoading) {return <div className="App">Loading...</div>;}
-        const options = ['date', 'likes', 'auteur']
+        const options = ['date', 'score', 'auteur']
     
         return (
             <div>
