@@ -1,10 +1,8 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
-import Moment from 'react-moment'
 import { SingleArticle } from './singleArticle'
 import { DeleteAlert } from '../alerts'
-
-import 'moment/locale/fr'
+import { itemDate } from '../itemDate'
 
 export class AllArticles extends React.Component {
 	constructor(props) {
@@ -56,9 +54,12 @@ export class AllArticles extends React.Component {
         this.props.createComment()
     }
 
+    deleteComment = (Id) => {
+        this.props.deleteComment(Id)
+    }
     
     render () {
-        const { article, userId, admin} = this.props
+        const { article, userId, admin, commentsQty } = this.props
         const likeOption = (
             article.usersLiked.includes(userId) ?
                 1
@@ -70,12 +71,7 @@ export class AllArticles extends React.Component {
         const thumbDown = likeOption === 2 ? <i className='fas fa-thumbs-down'/> : <i className='far fa-thumbs-down'/>
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
-        const calendarStrings = {
-            lastDay : '[hier à] H[h]mm',
-            sameDay : '[aujourd\'hui à] H[h]mm',
-            lastWeek : 'dddd [dernier à] H[h]mm',
-            sameElse : '[le] dddd D MMMM YYYY [à] H[h]mm'
-        }
+        
         return (<>
             <Card >
                 <DeleteAlert
@@ -87,30 +83,26 @@ export class AllArticles extends React.Component {
                 <Card.Header>
                     Publié par{' '}
                     <b>{writer}{' '}</b>
-                    <Moment
-                        locale='fr'
-                        calendar={calendarStrings}
-                        date={article.timeStamp}
-                    />
+                    {itemDate(article.timeStamp)}
                 </Card.Header>
-                <Card.Body>
-                    <Card.Title>{article.title}</Card.Title>
+                <Card.Body onClick={this.articleModalDisplay}>
+                    <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
                         <Card.Img src={article.image} alt={article.title} />
                     }
                     { article.text &&
                         <Card.Text>{article.text}</Card.Text>
                     }
-                    <hr />
-                    <Button onClick={this.articleModalDisplay} >
-                        <i className='fas fa-ellipsis-h'/>
-                    </Button>
                 </Card.Body>
                 <Card.Footer>
                     <div className='thumbs'>
                         <div onClick={() => this.handleThumbUpChange(likeOption)}>{thumbUp}{article.likes}{' '}</div>
                         <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}{article.dislikes}{' '}</div>
                         <div><b>Score : {article.likes - article.dislikes}</b></div>
+                    </div>
+                    <div className='comments-qty' onClick={this.articleModalDisplay}>
+                        <i className='fas fa-comment-alt'/>
+                        {' '}{commentsQty}
                     </div>
                     <div className='card-footer-buttons'>
                         {(myArticle || admin !== 0 ) && (
@@ -130,8 +122,13 @@ export class AllArticles extends React.Component {
             <SingleArticle
                 articleModalClose={this.articleModalClose}
                 createComment={this.createComment}
+                deleteComment={this.deleteComment}
                 showArticleModal={this.state.showArticleModal}
+                showCommentModal={this.props.showCommentModal}
+                articleComments={this.props.articleComments}
                 article={this.props.article}
+                userId={this.props.userId}
+                admin={this.props.admin}
             />
         </>)
     }

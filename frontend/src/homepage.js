@@ -27,6 +27,7 @@ export class Homepage extends React.Component {
             article: {},
             showCreateModal: false,
             showAdminModal: false,
+            showCommentModal: false,
             image: '',
             currentImage: '',
             oldImage: '',
@@ -37,6 +38,7 @@ export class Homepage extends React.Component {
             like: undefined,
             filter: 'date',
             isLoading: true,
+            allComments: undefined,
         }
 
 		this.getAllArticles = this.getAllArticles.bind(this)
@@ -64,7 +66,9 @@ export class Homepage extends React.Component {
             lastName: this.context.lastName,
             admin: this.context.admin
         })
-        this.context.token && this.getAllArticles()
+        this.context.token &&
+            this.getAllArticles()
+            this.getAllComments()
     }
 
     getAllArticles = async () => {
@@ -152,42 +156,39 @@ export class Homepage extends React.Component {
         this.getAllUsers()
     }
 
-    createComment = async () => {
-        const articleId = localStorage.getItem('articleId');
-        const commentatorId = this.context.userId
-        const comment = localStorage.getItem('comment')
-        console.log('articleId: ', articleId)
-        console.log('commentatorId: ', commentatorId)
-        console.log('comment: ', comment)
-        const formData = new FormData()
-        formData.append('articleId', articleId)
-        formData.append('commentatorId', commentatorId)
-        formData.append('comment', comment)
-        await createItem('comments/', this.context.token, formData)
-        this.closeCommentsModal()
-        this.setState({comment: undefined})
-    }
-
     getAllComments = async () => {
         const list = await getAllItems('comments/', this.context.token)
-        console.log('list: ', list)
         return this.setState({
-            allComments: list.reverse(),
+            allComments: list,
             isLoading: false
         })
     }
 
-    displayCommentsModal = () => {
-        this.setState({
-            showCommentsModal: true,
-        })
+    createComment = async () => {
+        const articleId = localStorage.getItem('articleId');
+        const commentatorId = this.context.userId
+        const comment = localStorage.getItem('comment')
+        const formData = new FormData()
+        formData.append('articleId', articleId)
+        formData.append('commentatorId', commentatorId)
+        formData.append('commentatorName', this.state.firstName + ' ' + this.state.lastName)
+        formData.append('comment', comment)
+        await createItem('comments/', this.context.token, formData)
+        this.closeCommentModal()
+        this.getAllComments()
     }
 
-    closeCommentsModal = () => {
+    deleteComment = async (selectedCommentId) => {
+        await deleteItem('comments/', this.context.token, selectedCommentId)
+        this.getAllComments()
+        this.setState({showArticleModal: true})
+    }
+
+    closeCommentModal = () => {
         localStorage.removeItem('comment')
         localStorage.removeItem('articleId')
         this.setState({
-            showCommentsModal: false,
+            showCommentModal: false,
         })
     }
 
@@ -351,7 +352,7 @@ export class Homepage extends React.Component {
 
 
     articlesList() {
-        const {isLoading, articlesCollection} = this.state
+        const {isLoading, articlesCollection, allComments} = this.state
         if (isLoading) {return <div className="App">Loading...</div>;}
         const options = ['date', 'likes', 'auteur']
     
@@ -370,6 +371,9 @@ export class Homepage extends React.Component {
                 </header>
                 <main>{
                     articlesCollection.map((article) => {
+                        let articleComments
+                        if (allComments) {articleComments = allComments.filter(x => x.articleId === article.Id)}
+                        const commentsQty = articleComments ? articleComments.length : 0
                         return(
                             <div key={article.Id}>
                                 
@@ -379,9 +383,13 @@ export class Homepage extends React.Component {
                                     deleteArticle={this.deleteArticle}
                                     modifyArticle={this.modifyArticle}
                                     createComment={this.createComment}
+                                    deleteComment={this.deleteComment}
                                     article={article}
+                                    articleComments={articleComments}
+                                    commentsQty={commentsQty}
                                     userId={this.state.userId}
                                     admin={this.state.admin}
+                                    showCommentModal={this.state.showCommentModal}
                                 />
 
                                 <CreateModal

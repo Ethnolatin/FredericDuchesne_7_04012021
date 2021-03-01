@@ -2,11 +2,11 @@ import React from 'react'
 import { Button, Form } from 'react-bootstrap'
 import Modal from 'react-bootstrap/Modal'
 
-export class CommentsModal extends React.Component {
+export class CommentModal extends React.Component {
 	constructor(props) {
 		super(props)
         this.state = {
-            comment: undefined
+            comment: undefined,
         }
         this.handleInputChange = this.handleInputChange.bind(this)
 	}
@@ -18,30 +18,29 @@ export class CommentsModal extends React.Component {
         this.setState({comment: value})
     }
 
-	closeCommentsModal = () => {
+	closeCommentModal = () => {
         this.setState({
             comment: undefined,
         })
-        this.props.closeCommentsModal()
+        this.props.closeCommentModal()
     }
 
     createComment = () => {
-        localStorage.getItem('comment') ?
-            this.props.createComment()
-            : this.closeCommentsModal()
+        localStorage.getItem('comment') && this.props.createComment()
+        this.closeCommentModal()
     }
 
     render () {
-        const { showCommentsModal, article } = this.props
+        const { showCommentModal, article } = this.props
         return (<>
-            <Modal show={showCommentsModal} onHide={this.closeCommentsModal} backdrop='static' animation={false}>
+            <Modal show={showCommentModal} onHide={this.closeCommentModal} backdrop='static' animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Ajoutez un commentaire</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <Form noValidate>
                         <Form.Group controlId='title'>
-                            <Form.Label>{article.title}</Form.Label>
+                            <Form.Label>Article : "{article.title}"</Form.Label>
 						</Form.Group>
                         <hr />
                         <Form.Group controlId='text'>
