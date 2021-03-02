@@ -1,7 +1,5 @@
 import React from 'react'
-import { Button } from 'react-bootstrap'
-import Modal from 'react-bootstrap/Modal'
-import Table from 'react-bootstrap/Table'
+import { Button, Modal, Table } from 'react-bootstrap'
 import { DeleteAlert } from '../alerts'
 
 export class AdminModal extends React.Component {
@@ -10,12 +8,10 @@ export class AdminModal extends React.Component {
         this.state = {
             showAlert: false,
         }
-
-        this.adminModalClose = this.adminModalClose.bind(this)
     }
 
-    adminModalClose = () => {
-        this.props.adminModalClose()
+    closeAdminModal = () => {
+        this.props.closeAdminModal()
     }
     updateUser = (user) => {
         this.props.updateUser(user)
@@ -40,7 +36,7 @@ export class AdminModal extends React.Component {
     render () {
         const { showAdminModal, users, userId } = this.props
         return (
-            <Modal show={showAdminModal} onHide={this.adminModalClose} animation={false}>
+            <Modal show={showAdminModal} onHide={this.closeAdminModal} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>Liste des utilisateurs :</Modal.Title>
                 </Modal.Header>

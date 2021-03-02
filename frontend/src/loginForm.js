@@ -24,21 +24,16 @@ export class Login extends React.Component {
 			errorMessage: '',
 			loginPage: true,
 		}
-
-		this.handleInputChange = this.handleInputChange.bind(this)
-		this.loginSubmit = this.loginSubmit.bind(this)
-		this.signupSubmit = this.signupSubmit.bind(this)
-		this.pwSecurity = this.pwSecurity.bind(this)
 	}
 
-	handleInputChange(event) {
+	handleInputChange = (event) => {
 		const target = event.target
 		const name = target.name
 		const value = target.value
 		this.setState({[name]:value})
 	}
 
-	loginSubmit(event) {
+	loginSubmit = (event) => {
 		event && event.preventDefault()
 		axios({
             method: 'post',
@@ -48,7 +43,7 @@ export class Login extends React.Component {
                 password: this.state.password
             },
         })
-        .then((response)=> {
+        .then((response) => {
 			this.setState({...response.data})
 			})
 		.catch((err) => {
@@ -57,7 +52,7 @@ export class Login extends React.Component {
 		})
 	}
 
-	signupSubmit(event) {
+	signupSubmit = (event) => {
 		event && event.preventDefault()
 		if (this.state.password !== this.state.passwordCtrl) {
 			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
@@ -83,13 +78,13 @@ export class Login extends React.Component {
 		}
 	}
 
-	handleClick(pw) {
+	handleClick = (pw) => {
 		this.state[pw] === 'password' ? 
 			this.setState({[pw]: 'text'}) :
 			this.setState({[pw]: 'password'})
 	}
 	
-	pwSecurity() {
+	pwSecurity = () => {
 		if (!pwSchema.validate(this.state.password)) {
 			alert(`Format de mot de passe non sécurisé !
 

@@ -12,14 +12,14 @@ export class AllArticles extends React.Component {
             showAlert: false}
     }
 
-    articleModalDisplay = (selectedArticle) => {
+    displayArticleModal = (selectedArticle) => {
         this.setState({
             showArticleModal: true,
             article: selectedArticle
         })
     }
 
-    articleModalClose = () => {
+    closeArticleModal = () => {
         this.setState({
             showArticleModal: false,
             article: {}
@@ -85,7 +85,7 @@ export class AllArticles extends React.Component {
                     <b>{writer}{' '}</b>
                     {itemDate(article.timeStamp)}
                 </Card.Header>
-                <Card.Body onClick={this.articleModalDisplay}>
+                <Card.Body onClick={this.displayArticleModal}>
                     <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
                         <Card.Img src={article.image} alt={article.title} />
@@ -100,7 +100,7 @@ export class AllArticles extends React.Component {
                         <div><b>{article.score}</b></div>
                         <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}</div>
                     </div>
-                    <div className='comments-qty' onClick={this.articleModalDisplay}>
+                    <div className='comments-qty' onClick={this.displayArticleModal}>
                         <i className='fas fa-comment-alt'/>
                         {' '}{commentsQty}
                     </div>
@@ -120,7 +120,7 @@ export class AllArticles extends React.Component {
             </Card>
 
             <SingleArticle
-                articleModalClose={this.articleModalClose}
+                closeArticleModal={this.closeArticleModal}
                 createComment={this.createComment}
                 deleteComment={this.deleteComment}
                 showArticleModal={this.state.showArticleModal}

@@ -37,23 +37,8 @@ export class Homepage extends React.Component {
             imagePreviewUrl: undefined,
             articleModification: false,
             like: undefined,
-            filter: 'date',
             allComments: undefined,
         }
-
-		this.getAllArticles = this.getAllArticles.bind(this)
-        this.createArticle = this.createArticle.bind(this)
-        this.modifyArticle = this.modifyArticle.bind(this)
-        this.articlesList = this.articlesList.bind(this)
-        this.displayCreateModal = this.displayCreateModal.bind(this)
-        this.closeCreateModal = this.closeCreateModal.bind(this)
-        this.adminModalDisplay = this.adminModalDisplay.bind(this)
-        this.adminModalClose = this.adminModalClose.bind(this)
-        this.publishArticle = this.publishArticle.bind(this)
-        this.handleImageInput = this.handleImageInput.bind(this)
-        this.noImage = this.noImage.bind(this)
-        this.handleThumbUpChange = this.handleThumbUpChange.bind(this)
-        this.handleThumbDownChange = this.handleThumbDownChange.bind(this)
         this._onSelect = this._onSelect.bind(this)
     }
 
@@ -130,7 +115,7 @@ export class Homepage extends React.Component {
                 'Authorization': 'Bearer ' + this.context.token,
             }
         })
-        .then ((response) => {
+        .then (() => {
             this.getAllArticles()
         })
         .catch((err) => {
@@ -146,13 +131,14 @@ export class Homepage extends React.Component {
         })
     }
 
-    deleteUser = async (selectedUserId) => {
-        await deleteItem('admin/', this.context.token, selectedUserId)
+    updateUser = async (selectedUser) => {
+        await updateItem('admin/', this.context.token, {admin: !selectedUser.admin * 1}, selectedUser.Id)
         this.getAllUsers()
     }
 
-    updateUser = async (selectedUser) => {
-        await updateItem('admin/', this.context.token, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+    deleteUser = async (selectedUserId) => {
+        await deleteItem('admin/', this.context.token, selectedUserId)
+        this.setState({})
         this.getAllUsers()
     }
 
@@ -197,6 +183,14 @@ export class Homepage extends React.Component {
         })
     }
 
+    saveCreateModal = () => {
+        this.setState({
+            showCreateModal: false,
+            savedImagePreviewUrl: this.state.imagePreviewUrl,
+            imagePreviewUrl: undefined
+        })
+    }
+
     closeCreateModal = () => {
         if (this.state.articleModification) {
             this.setState({
@@ -221,29 +215,21 @@ export class Homepage extends React.Component {
         })
     }
 
-    saveCreateModal = () => {
-        this.setState({
-            showCreateModal: false,
-            savedImagePreviewUrl: this.state.imagePreviewUrl,
-            imagePreviewUrl: undefined
-        })
-    }
-
-    adminModalDisplay = () => {
+    displayAdminModal = () => {
         this.setState({
             showAdminModal: true
         })
         this.getAllUsers()
     }
 
-    adminModalClose = () => {
+    closeAdminModal = () => {
         this.setState({
             showAdminModal: false,
             users: []
         })
     }
 
-    modifyArticle(selectedArticle) {
+    modifyArticle = (selectedArticle) => {
         this.setState({
             articleModification: true,
             Id: selectedArticle.Id,
@@ -254,7 +240,7 @@ export class Homepage extends React.Component {
         this.displayCreateModal()
     }
 
-    handleImageInput(event) {
+    handleImageInput = (event) => {
         const file = event.target.files[0]
         const imageFile = this.state.articleModification ? {modifiedArticleImageFile: file} : {newArticleImageFile: file} 
         this.setState(imageFile)
@@ -265,7 +251,7 @@ export class Homepage extends React.Component {
         reader.readAsDataURL(file)
     }
 
-    noImage() {
+    noImage = () => {
         this.state.articleModification ?
             this.setState({
                 modifiedArticleImageFile: undefined,
@@ -282,7 +268,7 @@ export class Homepage extends React.Component {
         })
     }
 
-    handleThumbUpChange(selectedArticle, likeOption) {
+    handleThumbUpChange = (selectedArticle, likeOption) => {
         let like
         switch (likeOption) {
             case 3:
@@ -296,7 +282,7 @@ export class Homepage extends React.Component {
         this.likeArticle(selectedArticle, like)
     }
 
-    handleThumbDownChange(selectedArticle, likeOption) {
+    handleThumbDownChange =(selectedArticle, likeOption) => {
         let like
         switch (likeOption) {
             case 3:
@@ -310,7 +296,7 @@ export class Homepage extends React.Component {
         this.likeArticle(selectedArticle, like)
     }
 
-    publishArticle() {
+    publishArticle = () => {
         this.state.articleModification ?
             this.updateArticle() :
             this.createArticle()
@@ -355,7 +341,7 @@ export class Homepage extends React.Component {
     }
 
 
-    articlesList() {
+    displayArticlesList = () => {
         const {articlesCollection, allComments} = this.state
         const options = ['date', 'score', 'auteur']
 
@@ -367,7 +353,7 @@ export class Homepage extends React.Component {
                         <p>{this.state.firstName} {this.state.lastName}</p>
                         { this.state.admin === 1 && <i className='fas fa-user-cog'/> }
                         { this.state.admin === 2 && (
-                            <Button onClick={() => this.adminModalDisplay()} ><i className='fas fa-user-cog'/></Button> )}
+                            <Button onClick={() => this.displayAdminModal()} ><i className='fas fa-user-cog'/></Button> )}
                     </div>
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>
@@ -409,7 +395,7 @@ export class Homepage extends React.Component {
                                 />
 
                                 <AdminModal
-                                    adminModalClose={this.adminModalClose}
+                                    closeAdminModal={this.closeAdminModal}
                                     updateUser={this.updateUser}
                                     deleteUser={this.deleteUser}
                                     showAdminModal={this.state.showAdminModal}
@@ -425,7 +411,7 @@ export class Homepage extends React.Component {
     }
 
     render() {
-        const pageToOpen = this.context.token ? this.articlesList() : <Login/>
+        const pageToOpen = this.context.token ? this.displayArticlesList() : <Login/>
         return (<>
             {pageToOpen}
         </>)

@@ -10,11 +10,10 @@ export class SingleArticle extends React.Component {
             showCommentModal: false
         }
 
-        this.articleModalClose = this.articleModalClose.bind(this)
     }
 
-    articleModalClose = () => {
-        this.props.articleModalClose()
+    closeArticleModal = () => {
+        this.props.closeArticleModal()
     }
 
     displayCommentModal = () => {
@@ -42,7 +41,7 @@ export class SingleArticle extends React.Component {
         const {article, articleComments, userId, admin} = this.props
         
         return (<>
-            <Modal show={this.props.showArticleModal} onHide={this.articleModalClose} animation={false}>
+            <Modal show={this.props.showArticleModal} onHide={this.closeArticleModal} animation={false}>
                 <Modal.Header closeButton>
                     <Modal.Title>{article.title}</Modal.Title>
                 </Modal.Header>

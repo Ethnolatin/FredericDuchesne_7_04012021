@@ -1,8 +1,5 @@
 import React from 'react'
-import { Button, Form } from 'react-bootstrap'
-import Image from 'react-bootstrap/Image'
-import Modal from 'react-bootstrap/Modal'
-import Alert from 'react-bootstrap/Alert'
+import { Button, Form, Image, Modal, Alert } from 'react-bootstrap'
 
 export class CreateModal extends React.PureComponent {
 	constructor(props) {
@@ -16,13 +13,6 @@ export class CreateModal extends React.PureComponent {
             previewImage: undefined,
             showAlert: false,
         }
-
-        this.closeCreateModal = this.closeCreateModal.bind(this)
-        this.saveCreateModal = this.saveCreateModal.bind(this)
-        this.handleInputChange = this.handleInputChange.bind(this)
-        this.handleImageInput = this.handleImageInput.bind(this)
-        this.checkTitle = this.checkTitle.bind(this)
-        this.noImage = this.noImage.bind(this)
     }
 
     closeCreateModal = () => {
@@ -39,7 +29,7 @@ export class CreateModal extends React.PureComponent {
         this.props.saveCreateModal()
     }
 
-    handleInputChange(event) {
+    handleInputChange = (event) => {
 		const name = event.target.name
 		const value = event.target.value
         localStorage.setItem(String(name), String(value))
@@ -67,7 +57,7 @@ export class CreateModal extends React.PureComponent {
         this.props.publishArticle()
     }
 
-    checkTitle() {
+    checkTitle = () => {
         this.setState({showAlert: false})
         const articleModification = this.props.articleModification
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
