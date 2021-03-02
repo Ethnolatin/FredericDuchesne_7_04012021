@@ -23,6 +23,7 @@ export class Homepage extends React.Component {
             lastName: '',
             admin: 0,
             users: [],
+            sortOption: 'date',
             articlesCollection: [],
             article: {},
             showCreateModal: false,
@@ -37,7 +38,6 @@ export class Homepage extends React.Component {
             articleModification: false,
             like: undefined,
             filter: 'date',
-            isLoading: true,
             allComments: undefined,
         }
 
@@ -73,10 +73,10 @@ export class Homepage extends React.Component {
 
     getAllArticles = async () => {
         const list = await getAllItems('articles/', this.context.token)
-        return this.setState({
-            articlesCollection: list.reverse(),
-            isLoading: false
+        this.setState({
+            articlesCollection: list,
         })
+        this.sortArticlesList()
     }
 
     createArticle = async (event) => {
@@ -142,7 +142,6 @@ export class Homepage extends React.Component {
         console.log('list: ', list)
         return this.setState({
             users: list,
-            isLoading: false
         })
     }
 
@@ -160,7 +159,6 @@ export class Homepage extends React.Component {
         const list = await getAllItems('comments/', this.context.token)
         return this.setState({
             allComments: list,
-            isLoading: false
         })
     }
 
@@ -317,8 +315,13 @@ export class Homepage extends React.Component {
             this.createArticle()
     }
 
-    _onSelect(option) {
-        switch(option.value) {
+    async _onSelect(option) {
+        await this.setState({sortOption: option.value})
+        this.sortArticlesList()
+    }
+
+    sortArticlesList = () => {
+        switch(this.state.sortOption) {
             case 'date':
                 this.setState({
                     articlesCollection: this.state.articlesCollection.sort((a, b) => {
@@ -352,10 +355,9 @@ export class Homepage extends React.Component {
 
 
     articlesList() {
-        const {isLoading, articlesCollection, allComments} = this.state
-        if (isLoading) {return <div className="App">Loading...</div>;}
+        const {articlesCollection, allComments} = this.state
         const options = ['date', 'score', 'auteur']
-    
+
         return (
             <div>
                 <Navigation />
