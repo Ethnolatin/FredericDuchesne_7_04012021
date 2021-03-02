@@ -1,0 +1,347 @@
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+
+header {
+  display: flex;
+  position: sticky;
+  top: 3.6rem;
+  z-index: 1;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0 1rem;
+  background-color: #343a40;
+  color: white;
+}
+
+header p {
+  margin-right: 1rem;
+}
+
+.user {
+  display: flex;
+  align-items: baseline;
+  max-width: 30%;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  background-color: #282c34;
+  max-width: 640px;
+  margin: auto;
+}
+
+/*-------------------- LOGIN/SIGNUP --------------------*/
+
+.auth {
+  line-height: 1.1rem;
+  font-family: 'quicksand';
+}
+
+.homeLogo {
+  display: block;
+  max-width: 25vh;
+  margin: auto;
+  margin-bottom: -1rem;
+  pointer-events: none;
+}
+
+.logoText {
+  width: 20rem;
+  max-width: 80vw;
+  margin-top: 1rem;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .homeLogo {
+    animation: homeLogo-spin infinite 20s linear;
+  }
+}
+
+@keyframes homeLogo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+hr {
+  margin: 8px 0;
+  border: 0;
+  height: 1px;
+  opacity: .3;
+  background-image: linear-gradient(
+    to right, 
+    #282c34,
+    white,
+    #282c34
+  );
+}
+
+.loginForm {
+  margin: 10px 0;
+  padding: 1px 0;
+  background-color: #282c34;
+  max-width: 500px;
+  color: white;
+  text-align: center;
+  border-radius: 2px;
+  box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.25);
+}
+
+.loginForm h1 {
+  margin-top: 0.6rem;
+  font-size: 1.5rem;
+}
+
+.field {
+  margin: 10px 20px 10px 20px;
+  text-align: left;
+}
+
+.input {
+  margin: 5px;
+  width: calc(100% - 20px);
+  height: 1,5rem;
+  border-radius: 2px;
+  border: none;
+  font-size: 1rem;
+  padding: 5px;
+  color: #25291b;
+  background-color: rgba(255,255,255, .5);
+  box-shadow: 10px 10px 10px -10px rgba(0,0,0,0.3);
+  transition: background-color .4s ease-out;
+}
+
+.input:focus {
+  outline: none;
+  background-color: rgba(255,255,255, .8)
+}
+
+.label {
+  margin: 0 0 0 5px;
+}
+
+.submit-button {
+  margin-top: 0.6rem;
+  width: 10rem;
+  height: 2rem;
+  font-size: 1rem;
+  border: none;
+  background-color: rgba(0,0,0,.6);
+  border-radius: 2px;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 3px;
+}
+
+.submit-button:hover {
+  cursor: pointer;
+  background-color: #ffd7d7;
+  color:rgba(0,0,0, .7)
+}
+
+.submit-button:focus {
+  outline: none;
+  background-color: rgba(0,0,0,.7);
+}
+
+.in-out {
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  padding: 5px;
+}
+
+.in-out span {
+  color: rgba(0,0,0, .7);
+  background-color: white;
+  font-weight: bold;
+  text-decoration: none;
+  margin: 0 8px;
+  border: 1px solid rgba(0,0,0, .7);
+  border-radius: 2px;
+  padding: 2px;
+  /* transition: all .4s ease-out; */
+}
+
+.in-out span:hover {
+  cursor: pointer;
+  background-color: #ffd7d7;
+  /* border: 1px solid rgba(0,0,0, 1); */
+}
+
+.toggle {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  font-size: 0.8rem
+}
+
+.errorMessage {
+  height: 1.1rem;
+  background-color: white;
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: red;
+}
+
+.noErrorMessage {
+  height: 1.1rem;
+}
+
+/*-------------------- HOMEPAGE --------------------*/
+
+.card-header {
+  font-size: 0.8rem;
+}
+
+.card-body {
+  cursor: pointer;
+  background-color: #282c34;
+  color: white;
+}
+
+.card-img {
+  display: block;
+  max-width: 100%;
+  max-height: 60vw;
+  width: auto;
+  margin: auto;
+  padding-bottom: 0.5rem;
+}
+
+.card-text {
+  line-height: 1.2rem;
+  max-height: 3rem;
+  margin: 0.5rem 0;
+  overflow: hidden;
+}
+
+.card-body .btn {
+  margin: auto;
+  margin-top: -1.8rem;
+}
+
+.btn, .btn:focus, .btn::before, .btn::after, .Dropdown-control.btn {
+  display: block;
+  padding: 0 0.5rem;
+  background-color: #282c34;
+  border-color: white;
+  box-shadow: none;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.Dropdown-control.btn {
+  padding: 0 1.5rem 0 0.5rem;
+}
+
+.Dropdown-menu {
+  font-size: 0.8rem;
+}
+
+.btn:hover {
+  background-color: #ffd7d7;
+  border-color: #ffd7d7;
+  color: black;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  background-color:  #c3cfda;
+  font-size: 0.8rem;
+}
+
+.card-footer-buttons {
+  width: 5rem;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.card-footer .btn {
+  font-size: 0.8rem;
+}
+
+.thumbs {
+  width: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.thumbs i {
+  margin-right: 0.2rem;
+}
+
+.thumbs .far {
+  cursor: pointer;
+}
+
+.fas.fa-thumbs-up::before {
+  color: green;
+}
+
+.fas.fa-thumbs-down::before {
+  color: red;
+}
+
+.comments-qty {
+  cursor: pointer;
+}
+
+.navbar-brand img {
+  max-height: 2rem;
+}
+
+.navbar .btn {
+  margin-left: auto;
+}
+
+.admin {
+  width: 20%;
+  text-align: center;
+}
+
+.trash {
+  width: 10%;
+}
+
+.checkbox {
+  display: flex;
+  margin: auto;
+}
+
+.spacer {
+  background-color: lightgrey;
+  height: 1rem;
+  margin: 0.5rem 0;
+}
+
+.comment-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 0.7rem;
+}
+
+.comments {
+  font-size: 0.9rem;
+}
+
+.sticky {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding: 0 0.5rem;
+  border-top: 5px solid white;
+  border-bottom: 5px solid white;
+  text-align: center;
+  font-size: 0.8rem;
+  background-color: lightgrey;
+  cursor: pointer;
+}

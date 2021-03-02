@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
 header {
   display: flex;
   position: sticky;
@@ -29,12 +30,9 @@ body {
 }
 
 /*-------------------- LOGIN/SIGNUP --------------------*/
-
-@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
-
 .auth {
   line-height: 1.1rem;
-  font-family: 'quicksand';
+  font-family: "quicksand";
 }
 
 .homeLogo {
@@ -56,7 +54,6 @@ body {
     animation: homeLogo-spin infinite 20s linear;
   }
 }
-
 @keyframes homeLogo-spin {
   from {
     transform: rotate(0deg);
@@ -65,19 +62,12 @@ body {
     transform: rotate(360deg);
   }
 }
-
-
 hr {
   margin: 8px 0;
   border: 0;
   height: 1px;
-  opacity: .3;
-  background-image: linear-gradient(
-    to right, 
-    #282c34,
-    white,
-    #282c34
-  );
+  opacity: 0.3;
+  background-image: linear-gradient(to right, #282c34, white, #282c34);
 }
 
 .loginForm {
@@ -88,7 +78,7 @@ hr {
   color: white;
   text-align: center;
   border-radius: 2px;
-  box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.25);
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.25);
 }
 
 .loginForm h1 {
@@ -104,20 +94,20 @@ hr {
 .input {
   margin: 5px;
   width: calc(100% - 20px);
-  height: 1,5rem;
+  height: 1, 5rem;
   border-radius: 2px;
   border: none;
   font-size: 1rem;
   padding: 5px;
   color: #25291b;
-  background-color: rgba(255,255,255, .5);
-  box-shadow: 10px 10px 10px -10px rgba(0,0,0,0.3);
-  transition: background-color .4s ease-out;
+  background-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 10px 10px 10px -10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.4s ease-out;
 }
 
 .input:focus {
   outline: none;
-  background-color: rgba(255,255,255, .8)
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .label {
@@ -130,7 +120,7 @@ hr {
   height: 2rem;
   font-size: 1rem;
   border: none;
-  background-color: rgba(0,0,0,.6);
+  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 2px;
   color: white;
   font-weight: bold;
@@ -140,12 +130,12 @@ hr {
 .submit-button:hover {
   cursor: pointer;
   background-color: #ffd7d7;
-  color:rgba(0,0,0, .7)
+  color: rgba(0, 0, 0, 0.7);
 }
 
 .submit-button:focus {
   outline: none;
-  background-color: rgba(0,0,0,.7);
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .in-out {
@@ -155,12 +145,12 @@ hr {
 }
 
 .in-out span {
-  color: rgba(0,0,0, .7);
+  color: rgba(0, 0, 0, 0.7);
   background-color: white;
   font-weight: bold;
   text-decoration: none;
   margin: 0 8px;
-  border: 1px solid rgba(0,0,0, .7);
+  border: 1px solid rgba(0, 0, 0, 0.7);
   border-radius: 2px;
   padding: 2px;
   /* transition: all .4s ease-out; */
@@ -176,7 +166,7 @@ hr {
   position: relative;
   display: flex;
   justify-content: center;
-  font-size: 0.8rem
+  font-size: 0.8rem;
 }
 
 .errorMessage {
@@ -192,7 +182,6 @@ hr {
 }
 
 /*-------------------- HOMEPAGE --------------------*/
-
 .card-header {
   font-size: 0.8rem;
 }
@@ -253,7 +242,7 @@ hr {
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
-  background-color:  #c3cfda;
+  background-color: #c3cfda;
   font-size: 0.8rem;
 }
 
@@ -345,3 +334,5 @@ hr {
   background-color: lightgrey;
   cursor: pointer;
 }
+
+/*# sourceMappingURL=style.css.map */
