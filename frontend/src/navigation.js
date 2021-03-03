@@ -6,9 +6,9 @@ export default function Navigation() {
 
     return(
         <Navbar bg='dark' variant='dark' sticky='top'>
-            <Navbar.Brand href='/'>
+            <Navbar.Brand>
                 <img
-                    alt=''
+                    alt='Groupomania logo'
                     src={iconTextWhite}
                     className='d-inline-block align-top'
                 />{' '}

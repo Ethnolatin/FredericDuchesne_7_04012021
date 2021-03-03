@@ -198,11 +198,11 @@ Votre mot de passe doit contenir :
 		const toggleButton = loginPage ? 'Inscrivez-vous ici' : 'Identifiez-vous ici'
 		const headerLogo = loginPage ? (
 			 <div>
-				<img src={logo} className='homeLogo' alt='logo' />
-				<img src={groupomaniaWhite} className='logoText' alt='Groupomania' />
+				<img src={logo} className='logo-image' alt='logo' />
+				<img src={groupomaniaWhite} className='logo-text' alt='Groupomania' />
 			</div>
 		) : (
-			<img src={iconTextWhite} className='logoText' alt='logo Groupomania' />
+			<img src={iconTextWhite} className='logo-text' alt='logo Groupomania' />
 		)
 		const formFields = loginPage ? (<>
 			{emailField}
@@ -228,16 +228,16 @@ Votre mot de passe doit contenir :
 				{ contextValue.token ? (
 					<Homepage/>
 					) : (
-					<div className='auth'>
+					<div className='login-page'>
 						{headerLogo}	
-						<form onSubmit={handleSubmit} className='loginForm'>
+						<form onSubmit={handleSubmit} className='login-form'>
 							<h1>{title}</h1>
 							<hr />
 							{formFields}
 							<hr />
 							<div className={this.state.errorMessage === '' ? 'noErrorMessage' : 'errorMessage'} >{this.state.errorMessage}</div>
 							<button type='submit' className='submit-button' >Valider</button>
-							<p className='in-out'> 
+							<p className='login-form-footer'> 
 								{footerMessage}
 								<span onClick={() => this.setState({loginPage: !this.state.loginPage, errorMessage: ''})} >{toggleButton}</span>
 							</p>
