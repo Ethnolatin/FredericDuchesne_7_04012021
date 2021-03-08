@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export const createItem = (url, token, data) => {
-    axios({
+    return axios({
         method: 'post',
         url: 'http://localhost:3000/api/' + url,
         data: data,
@@ -32,7 +32,7 @@ export const getAllItems = (url, token) => {
 }
 
 export const updateItem = (url, token, data, Id) => {
-    axios({
+    return axios({
         method: 'put',
         url: 'http://localhost:3000/api/' + url + Id,
         data: data,
@@ -48,7 +48,7 @@ export const updateItem = (url, token, data, Id) => {
 }
 
 export const deleteItem = (url, token, Id) => {
-    axios({
+    return axios({
         method: 'delete',
         url: 'http://localhost:3000/api/' + url + Id,
         headers: {'Authorization': 'Bearer ' + token}

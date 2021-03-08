@@ -1,5 +1,8 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
+import { BsTrashFill } from 'react-icons/bs'
+import { RiThumbUpFill, RiThumbDownFill, RiThumbUpLine, RiThumbDownLine } from 'react-icons/ri'
+import { FaCommentAlt, FaEdit } from 'react-icons/fa'
 import { SingleArticle } from './singleArticle'
 import { DeleteAlert } from '../alerts'
 import { itemDate } from '../itemDate'
@@ -67,8 +70,8 @@ export class AllArticles extends React.Component {
                     2
                     : 3
         )
-        const thumbUp = likeOption === 1 ? <i className='fas fa-thumbs-up'/> : <i className='far fa-thumbs-up'/>
-        const thumbDown = likeOption === 2 ? <i className='fas fa-thumbs-down'/> : <i className='far fa-thumbs-down'/>
+        const thumbUp = likeOption === 1 ? <RiThumbUpFill className='thumb-up' /> : <RiThumbUpLine className='thumb-line'/>
+        const thumbDown = likeOption === 2 ? <RiThumbDownFill className='thumb-down' /> : <RiThumbDownLine className='thumb-line'/>
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
         
@@ -88,31 +91,33 @@ export class AllArticles extends React.Component {
                 <Card.Body onClick={this.displayArticleModal}>
                     <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
-                        <Card.Img src={article.image} alt={article.title} />
+                        <Card.Img src={article.image} alt='' />
                     }
                     { article.text &&
                         <Card.Text>{article.text}</Card.Text>
                     }
                 </Card.Body>
                 <Card.Footer>
-                    <div className='thumbs'>
+                    <div className='thumb'>
                         <div onClick={() => this.handleThumbUpChange(likeOption)}>{thumbUp}</div>
                         <div><b>{article.score}</b></div>
                         <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}</div>
                     </div>
                     <div className='comments-qty' onClick={this.displayArticleModal}>
-                        <i className='fas fa-comment-alt'/>
+                        <FaCommentAlt/>
                         {' '}{commentsQty}
                     </div>
                     <div className='card-footer-buttons'>
                         {(myArticle || admin !== 0 ) && (
                             <Button onClick={this.confirmDelete} >
-                                <i className='fas fa-trash-alt'/>
+                                <BsTrashFill />
+                                <span className='sr-only'>Delete</span>
                             </Button>
                         )}
                         {myArticle && (
                             <Button onClick={this.modifyArticle} >
-                                <i className='fas fa-edit'/>
+                                <FaEdit/>
+                                <span className='sr-only'>Modify</span>
                             </Button>
                         )}
                     </div>

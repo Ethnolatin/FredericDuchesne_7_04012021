@@ -1,6 +1,7 @@
 import React from 'react'
 import Dropdown from 'react-dropdown'
 import Button from 'react-bootstrap/Button'
+import { FaUserCog } from 'react-icons/fa'
 import axios from 'axios'
 import Navigation from './navigation'
 import { AuthContext } from './authContext'
@@ -51,9 +52,10 @@ export class Homepage extends React.Component {
             lastName: this.context.lastName,
             admin: this.context.admin
         })
-        this.context.token &&
+        if (this.context.token) {
             this.getAllArticles()
             this.getAllComments()
+        }
     }
 
     getAllArticles = async () => {
@@ -92,7 +94,7 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        await updateItem('articles/', this.context.token, formData, this.state.Id)
+        updateItem('articles/', this.context.token, formData, this.state.Id)
             this.closeCreateModal()
             this.getAllArticles()
     }
@@ -104,7 +106,7 @@ export class Homepage extends React.Component {
     }
 
     likeArticle = (selectedArticle, like) => {
-        axios({
+        return axios({
             method: 'post',
             url: 'http://localhost:3000/api/articles/' + selectedArticle.Id + '/like',
             data: {
@@ -351,9 +353,9 @@ export class Homepage extends React.Component {
                 <header>
                     <div className='user'>
                         <p>{this.state.firstName} {this.state.lastName}</p>
-                        { this.state.admin === 1 && <i className='fas fa-user-cog'/> }
+                        { this.state.admin === 1 && <FaUserCog/> }
                         { this.state.admin === 2 && (
-                            <Button onClick={() => this.displayAdminModal()} ><i className='fas fa-user-cog'/></Button> )}
+                            <Button onClick={() => this.displayAdminModal()} ><FaUserCog/><span className='sr-only'>Admin options</span></Button> )}
                     </div>
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>

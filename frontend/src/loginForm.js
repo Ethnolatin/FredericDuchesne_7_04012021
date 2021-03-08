@@ -99,7 +99,7 @@ Votre mot de passe doit contenir :
 	render () {
 		const nameFields = (<>
 			<div className='field'>
-				<label className='label'>Prénom</label>
+				<label htmlFor='firstName' className='label'>Prénom</label>
 				<br />
 				<input
 					className='input'
@@ -112,7 +112,7 @@ Votre mot de passe doit contenir :
 				/>
 			</div>
 			<div className='field'>
-				<label className='label'>Nom</label>
+				<label htmlFor='lastName' className='label'>Nom</label>
 				<br />
 				<input
 					className='input'
@@ -127,7 +127,7 @@ Votre mot de passe doit contenir :
 		</>)
 		const emailField = (
 			<div className='field'>
-				<label className='label'>Courriel</label>
+				<label htmlFor='email' className='label'>Courriel</label>
 				<br />
 				<input
 					className='input'
@@ -144,7 +144,7 @@ Votre mot de passe doit contenir :
 		)
 		const passwordField = (
 			<div className='field'>
-				<label className='label'>Mot de passe</label>
+				<label htmlFor='password' className='label'>Mot de passe</label>
 				<br />
 				<input
 					className='input'
@@ -168,7 +168,7 @@ Votre mot de passe doit contenir :
 		)
 		const passwordCtrlField = (
 			<div className='field'>
-				<label className='label'>Vérification du mot de passe</label>
+				<label htmlFor='passwordCtrl' className='label'>Vérification du mot de passe</label>
 				<br />
 				<input
 					className='input'
@@ -198,11 +198,11 @@ Votre mot de passe doit contenir :
 		const toggleButton = loginPage ? 'Inscrivez-vous ici' : 'Identifiez-vous ici'
 		const headerLogo = loginPage ? (
 			 <div>
-				<img src={logo} className='logo-image' alt='logo' />
-				<img src={groupomaniaWhite} className='logo-text' alt='Groupomania' />
+				<img src={logo} className='logo-image' width='150' height='150' alt='Rotating logo' />
+				<img src={groupomaniaWhite} className='logo-text' width='864' height='150' alt='Groupomania brand' />
 			</div>
 		) : (
-			<img src={iconTextWhite} className='logo-text' alt='logo Groupomania' />
+			<img src={iconTextWhite} className='logo-text' width='485' height='78' alt='logo Groupomania' />
 		)
 		const formFields = loginPage ? (<>
 			{emailField}

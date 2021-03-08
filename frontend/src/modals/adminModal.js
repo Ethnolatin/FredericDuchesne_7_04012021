@@ -1,4 +1,5 @@
 import React from 'react'
+import { BsTrashFill } from 'react-icons/bs'
 import { Button, Modal, Table } from 'react-bootstrap'
 import { DeleteAlert } from '../alerts'
 
@@ -72,7 +73,7 @@ export class AdminModal extends React.Component {
                                         </td>
                                         <td>
                                             <Button onClick={() => this.confirmDelete(user)}>
-                                                <i className='fas fa-trash-alt'/>
+                                                <BsTrashFill/>
                                             </Button>
                                         </td>
                                     </tr>

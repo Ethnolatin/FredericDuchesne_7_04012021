@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Navbar } from 'react-bootstrap'
+import { FaSignOutAlt } from 'react-icons/fa'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 
 export default function Navigation() {
@@ -13,7 +14,10 @@ export default function Navigation() {
                     className='d-inline-block align-top'
                 />{' '}
             </Navbar.Brand>
-            <Button href='/login'><i className='fas fa-sign-out-alt'></i></Button>
+            <Button href='/login'>
+                <FaSignOutAlt/>
+                <span className='sr-only'>Sign-out</span>
+            </Button>
       </Navbar>
     )
 }

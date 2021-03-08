@@ -1,11 +1,48 @@
 /*======================= GENERAL =======================*/
 
-.login-page {
-  line-height: 1.1rem;
-  font-family: 'quicksand';
-}
+$theme-colors: (
+  "primary": #ffd7d7,
+  "blue": #ffd7d7,
+);
 
-@import url(https://fonts.googleapis.com/css?family=Quicksand:300,400,700);
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";
+@import "../../../node_modules/bootstrap/scss/mixins";
+@import "../../../node_modules/bootstrap/scss/root";
+@import "../../../node_modules/bootstrap/scss/reboot";
+@import "../../../node_modules/bootstrap/scss/type";
+@import "../../../node_modules/bootstrap/scss/images";
+@import "../../../node_modules/bootstrap/scss/code";
+@import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/tables";
+@import "../../../node_modules/bootstrap/scss/forms";
+// @import "../../../node_modules/bootstrap/scss/buttons";
+@import "../../../node_modules/bootstrap/scss/transitions";
+@import "../../../node_modules/bootstrap/scss/dropdown";
+@import "../../../node_modules/bootstrap/scss/button-group";
+@import "../../../node_modules/bootstrap/scss/input-group";
+@import "../../../node_modules/bootstrap/scss/custom-forms";
+@import "../../../node_modules/bootstrap/scss/nav";
+@import "../../../node_modules/bootstrap/scss/navbar";
+@import "../../../node_modules/bootstrap/scss/card";
+// @import "../../../node_modules/bootstrap/scss/breadcrumb";
+// @import "../../../node_modules/bootstrap/scss/pagination";
+// @import "../../../node_modules/bootstrap/scss/badge";
+// @import "../../../node_modules/bootstrap/scss/jumbotron";
+@import "../../../node_modules/bootstrap/scss/alert";
+// @import "../../../node_modules/bootstrap/scss/progress";
+// @import "../../../node_modules/bootstrap/scss/media";
+// @import "../../../node_modules/bootstrap/scss/list-group";
+@import "../../../node_modules/bootstrap/scss/close";
+// @import "../../../node_modules/bootstrap/scss/toasts";
+@import "../../../node_modules/bootstrap/scss/modal";
+// @import "../../../node_modules/bootstrap/scss/tooltip";
+// @import "../../../node_modules/bootstrap/scss/popover";
+// @import "../../../node_modules/bootstrap/scss/carousel";
+// @import "../../../node_modules/bootstrap/scss/spinners";
+@import "../../../node_modules/bootstrap/scss/utilities";
+// @import "../../../node_modules/bootstrap/scss/print";
+
 
 $primary: #ffd7d7;
 $secondary: #282c34;
@@ -32,7 +69,11 @@ hr {
   );
 }
 
-.btn, .btn:focus, .btn::before, .btn::after, .Dropdown-control.btn {
+.btn svg {
+  height: 1.2rem;
+}
+
+.btn, .btn:active, .btn:focus, .btn::before, .btn::after, .Dropdown-control.btn {
   display: block;
   padding: 0 0.5rem;
   background-color: $secondary;
@@ -40,10 +81,14 @@ hr {
   box-shadow: none;
   color: white;
   font-size: 0.8rem;
+  outline: 5px auto -webkit-focus-ring-color;
+}
+
+.btn, .Dropdown-control.btn {
   &:hover {
-    background-color: $primary;
-    border-color: $primary;
-    color: black;
+    background-color: $primary !important;
+    border-color: $primary !important;
+    color: black !important;
   }
 }
 
@@ -51,7 +96,6 @@ hr {
 
 .login-page {
   line-height: 1.1rem;
-  font-family: 'quicksand';
 }
 
 /*-------------------- HEADER'S LOGO --------------------*/
@@ -66,6 +110,7 @@ hr {
 
 .logo-text {
   width: 20rem;
+  height: auto;
   max-width: 80vw;
   margin-top: 1rem;
 }
@@ -209,6 +254,7 @@ hr {
 /*-------------------- PAGE HEADER --------------------*/
 
 header {
+  cursor: default;
   display: flex;
   position: sticky;
   top: 3.6rem;
@@ -216,7 +262,7 @@ header {
   justify-content: space-between;
   align-items: baseline;
   padding: 0 1rem;
-  background-color: #343a40; //same as navbar's default background-color
+  background-color: $secondary;
   color: white;
 }
 
@@ -242,6 +288,7 @@ header p {
 
 .card-header {
   font-size: 0.8rem;
+  cursor: default;
 }
 
 /*-------------------- CARD BODY --------------------*/
@@ -293,24 +340,20 @@ header p {
   justify-content: space-between;
 }
 
-.thumbs {
+.thumb {
+  cursor: default;
   width: 3.5rem;
   display: flex;
   justify-content: space-between;
-  i {
-    margin-right: 0.2rem;
-  }
-  .far {
+  &-line {
     cursor: pointer;
   }
-}
-
-.fas.fa-thumbs-up::before {
-  color: green;
-}
-
-.fas.fa-thumbs-down::before {
-  color: red;
+  &-up {
+    fill: green;
+  }
+  &-down {
+    fill: red;
+  }
 }
 
 .comments-qty {
