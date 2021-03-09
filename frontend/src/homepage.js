@@ -78,9 +78,9 @@ export class Homepage extends React.Component {
         formData.append('title', newArticleTitle)
         newArticleText && formData.append('text', newArticleText)
         await createItem('articles/', this.context.token, formData)
-            this.closeCreateModal()
-            this.setState({savedImagePreviewUrl: undefined})
-            this.getAllArticles()
+        this.closeCreateModal()
+        this.setState({savedImagePreviewUrl: undefined})
+        this.getAllArticles()
     }
 
     updateArticle = async (event) => {
@@ -244,7 +244,10 @@ export class Homepage extends React.Component {
 
     handleImageInput = (event) => {
         const file = event.target.files[0]
-        const imageFile = this.state.articleModification ? {modifiedArticleImageFile: file} : {newArticleImageFile: file} 
+        const imageFile = this.state.articleModification ?
+            {modifiedArticleImageFile: file}
+            : {newArticleImageFile: file}
+        console.log(imageFile)
         this.setState(imageFile)
         const reader = new FileReader()
         reader.onloadend = () => {
