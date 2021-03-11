@@ -94,7 +94,7 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        updateItem('articles/', this.context.token, formData, this.state.Id)
+        await updateItem('articles/', this.context.token, formData, this.state.Id)
             this.closeCreateModal()
             this.getAllArticles()
     }
