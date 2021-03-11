@@ -249,6 +249,7 @@ export class Homepage extends React.Component {
             : {newArticleImageFile: file}
         console.log(imageFile)
         this.setState(imageFile)
+        this.setState({oldImage: this.state.currentImage})
         const reader = new FileReader()
         reader.onloadend = () => {
             this.setState({imagePreviewUrl: [reader.result]})
