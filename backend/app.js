@@ -41,7 +41,7 @@ app.use('/api/articles', articlesRoutes)
 app.use('/api/comments', commentsRoutes)
 // route par défaut pour l'admin'
 app.use('/api/admin', adminRoutes)
-// renforce l'authentification sur les routes relatives au user
-app.use('/api/auth', userRoutes)
+// route par défaut pour le user
+app.use('/api/user', userRoutes)
   
 module.exports = app

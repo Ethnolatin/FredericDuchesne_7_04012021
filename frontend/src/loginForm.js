@@ -37,7 +37,7 @@ export class Login extends React.Component {
 		event && event.preventDefault()
 		axios({
             method: 'post',
-            url: 'http://localhost:3000/api/auth/login',
+            url: 'http://localhost:3000/api/user/login',
             data: {
                 email: this.state.email,
                 password: this.state.password
@@ -59,7 +59,7 @@ export class Login extends React.Component {
 		} else {
 			axios({
 				method: 'post',
-				url: 'http://localhost:3000/api/auth/signup',
+				url: 'http://localhost:3000/api/user/signup',
 				data: {
 					firstName: this.state.firstName,
 					lastName: this.state.lastName,
