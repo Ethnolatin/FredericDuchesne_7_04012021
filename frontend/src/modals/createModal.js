@@ -10,7 +10,6 @@ export class CreateModal extends React.PureComponent {
             modifiedArticleText: undefined,
             newArticleTitle: undefined,
             newArticleText: undefined,
-            previewImage: undefined,
             showAlert: false,
         }
     }
@@ -49,7 +48,6 @@ export class CreateModal extends React.PureComponent {
                     saved ?
                         saved :
                         undefined
-        this.setState({previewImage: previewImage})
         return previewImage
     }
 
@@ -75,6 +73,7 @@ export class CreateModal extends React.PureComponent {
     
     render () {
         const { showCreateModal, articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl } = this.props
+        const previewImage = this.definePreviewImage(articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl)
         return (<>
             <Modal show={showCreateModal} onHide={this.closeCreateModal} backdrop='static' animation={false}>
                 <Modal.Header closeButton>
@@ -100,9 +99,9 @@ export class CreateModal extends React.PureComponent {
                         <Form.Group>
                             <Form.Label>Image :</Form.Label>
                             <br />
-                            <Image src={this.definePreviewImage(articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl)} width='50%' height='50%' />
-                            {this.state.previewImage && <>
-                            <br />
+                            {previewImage && <>
+                                <Image src={previewImage} width='50%' height='50%' />
+                                <br />
                                 <Button onClick={this.noImage}>Supprimer l'image</Button>
                             </>}
                             <Form.File
