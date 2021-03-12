@@ -101,7 +101,7 @@ export class Homepage extends React.Component {
 
     deleteArticle = async (selectedArticle) => {
         await deleteItem('articles/', this.context.token, selectedArticle.Id)
-        this.setState({})
+        await deleteItem('comments/', this.context.token, selectedArticle.Id + '/deleted')
         this.getAllArticles()
     }
 

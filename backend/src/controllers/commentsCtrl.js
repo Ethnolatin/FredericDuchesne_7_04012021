@@ -6,7 +6,6 @@ exports.createComment = (req, res) => {
     const newComment = new Comment({
         ...req.body,
     })
-    console.log('newComment: ',newComment)
     // ajoute le commentaire à la base de données
     dbConnect.query('INSERT INTO comments SET ?', newComment, (error, result) => {
         if (error) {return res.status(400).json({ error })}
@@ -32,13 +31,16 @@ exports.getAllComments = (req, res) => {
 
 // supprime un commentaire en fonction de son Id
 exports.deleteComment = (req, res) => {
-    // cherche le commentaire dans la base
-    dbConnect.query('SELECT * FROM comments WHERE Id = ?', [req.params.id], (error, result) => {
-        if (error) {return res.status(500).json({ error })}
-        // supprime le commentaire
-        dbConnect.query('DELETE FROM comments WHERE Id = ?', [req.params.id], (error, result) => {
-            if (error) {return res.status(400).json({ error })}
-            res.status(201).json({ message: 'Commentaire supprimé !' })
-        })
+    dbConnect.query('DELETE FROM comments WHERE Id = ?', [req.params.id], (error, result) => {
+        if (error) {return res.status(400).json({ error })}
+        res.status(201).json({ message: 'Commentaire supprimé !' })
+    })
+}
+
+// supprime les commentaires correspondant à un article
+exports.deleteArticleComments = (req, res) => {
+    dbConnect.query('DELETE FROM comments WHERE articleId = ?', [req.params.id], (error, result) => {
+        if (error) {return res.status(400).json({ error })}
+        res.status(201).json({ message: 'Commentaires associés supprimés !' })
     })
 }

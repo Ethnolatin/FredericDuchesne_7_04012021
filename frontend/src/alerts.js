@@ -15,7 +15,7 @@ export class DeleteAlert extends React.Component {
     render() {
         const {show, item} = this.props
         return (
-            <Alert show={show} variant='warning'>
+            <Alert show={show} variant='danger'>
                 <Alert.Heading>
                     Supprimer {item} ?
                 </Alert.Heading>
