@@ -14,7 +14,7 @@ export default function Navigation() {
                     className='d-inline-block align-top'
                 />{' '}
             </Navbar.Brand>
-            <Button href='/login'>
+            <Button href='/'>
                 <FaSignOutAlt/>
                 <span className='sr-only'>Sign-out</span>
             </Button>
