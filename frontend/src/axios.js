@@ -1,10 +1,11 @@
 import axios from 'axios'
 
-export const createItem = async (url, token, data) => {
+export const createItem = async (url, token, userId, data) => {
     try {
         const response = await axios({
             method: 'post',
             url: 'http://localhost:3000/api/' + url,
+            params: { userId },
             data: data,
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -15,11 +16,12 @@ export const createItem = async (url, token, data) => {
     }
 }
 
-export const getAllItems = async (url, token) => {
+export const getAllItems = async (url, token, userId) => {
     try {
         const response = await axios({
             method: 'get',
             url: 'http://localhost:3000/api/' + url,
+            params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
         return response.data
@@ -29,12 +31,13 @@ export const getAllItems = async (url, token) => {
 
 }
 
-export const updateItem = async (url, token, data, Id) => {
+export const updateItem = async (url, token, userId, data, Id) => {
     try {
         const response = await axios({
             method: 'put',
             url: 'http://localhost:3000/api/' + url + Id,
             data: data,
+            params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
         console.log(response.data.message)
@@ -44,11 +47,12 @@ export const updateItem = async (url, token, data, Id) => {
     }
 }
 
-export const deleteItem = async (url, token, Id) => {
+export const deleteItem = async (url, token, userId, Id) => {
     try {
         const response = await axios({
             method: 'delete',
             url: 'http://localhost:3000/api/' + url + Id,
+            params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
         console.log(response.data.message)

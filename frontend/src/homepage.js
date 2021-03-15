@@ -59,7 +59,7 @@ export class Homepage extends React.Component {
     }
 
     getAllArticles = async () => {
-        const list = await getAllItems('articles/', this.context.token)
+        const list = await getAllItems('articles/', this.context.token, this.context.userId)
         this.setState({
             articlesCollection: list,
         })
@@ -77,7 +77,7 @@ export class Homepage extends React.Component {
         formData.append('writerName', this.state.firstName + ' ' + this.state.lastName)
         formData.append('title', newArticleTitle)
         newArticleText && formData.append('text', newArticleText)
-        await createItem('articles/', this.context.token, formData)
+        await createItem('articles/', this.context.token, this.context.userId, formData)
         this.closeCreateModal()
         this.setState({savedImagePreviewUrl: undefined})
         this.getAllArticles()
@@ -94,14 +94,14 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        await updateItem('articles/', this.context.token, formData, this.state.Id)
+        await updateItem('articles/', this.context.token, this.context.userId, formData, this.state.Id)
             this.closeCreateModal()
             this.getAllArticles()
     }
 
     deleteArticle = async (selectedArticle) => {
-        await deleteItem('articles/', this.context.token, selectedArticle.Id)
-        await deleteItem('comments/', this.context.token, selectedArticle.Id + '/deleted')
+        await deleteItem('articles/', this.context.token, this.context.userId, selectedArticle.Id)
+        await deleteItem('comments/', this.context.token, this.context.userId, selectedArticle.Id + '/deleted')
         this.getAllArticles()
     }
 
@@ -113,6 +113,7 @@ export class Homepage extends React.Component {
                 userId: this.state.userId,
                 like: like
             },
+            params: this.context.userId,
             headers: {
                 'Authorization': 'Bearer ' + this.context.token,
             }
@@ -126,26 +127,25 @@ export class Homepage extends React.Component {
     }
 
     getAllUsers = async () => {
-        const list = await getAllItems('admin/', this.context.token)
-        console.log('list: ', list)
+        const list = await getAllItems('admin/', this.context.token, this.context.userId)
         return this.setState({
             users: list,
         })
     }
 
     updateUser = async (selectedUser) => {
-        await updateItem('admin/', this.context.token, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
         this.getAllUsers()
     }
 
     deleteUser = async (selectedUserId) => {
-        await deleteItem('admin/', this.context.token, selectedUserId)
+        await deleteItem('admin/', this.context.token, this.context.userId, selectedUserId)
         this.setState({})
         this.getAllUsers()
     }
 
     getAllComments = async () => {
-        const list = await getAllItems('comments/', this.context.token)
+        const list = await getAllItems('comments/', this.context.token, this.context.userId)
         return this.setState({
             allComments: list,
         })
@@ -160,13 +160,13 @@ export class Homepage extends React.Component {
         formData.append('commentatorId', commentatorId)
         formData.append('commentatorName', this.state.firstName + ' ' + this.state.lastName)
         formData.append('comment', comment)
-        await createItem('comments/', this.context.token, formData)
+        await createItem('comments/', this.context.token, this.context.userId, formData)
         this.closeCommentModal()
         this.getAllComments()
     }
 
     deleteComment = async (selectedCommentId) => {
-        await deleteItem('comments/', this.context.token, selectedCommentId)
+        await deleteItem('comments/', this.context.token, this.context.userId, selectedCommentId)
         this.getAllComments()
         this.setState({showArticleModal: true})
     }
