@@ -85,7 +85,6 @@ export class Homepage extends React.Component {
 
     updateArticle = async (event) => {
         event && event.preventDefault()
-        console.log(this.state.oldImage)
         const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
         const modifiedArticleText = localStorage.getItem('modifiedArticleText')
         const modifiedArticleImage = this.state.modifiedArticleImageFile || this.state.currentImage
@@ -247,7 +246,6 @@ export class Homepage extends React.Component {
         const imageFile = this.state.articleModification ?
             {modifiedArticleImageFile: file}
             : {newArticleImageFile: file}
-        console.log(imageFile)
         this.setState(imageFile)
         this.setState({oldImage: this.state.currentImage})
         const reader = new FileReader()

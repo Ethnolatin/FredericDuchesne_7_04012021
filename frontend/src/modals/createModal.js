@@ -25,6 +25,7 @@ export class CreateModal extends React.PureComponent {
     }
 
     saveCreateModal = () => {
+        this.setState({showAlert: false})
         this.props.saveCreateModal()
     }
 
