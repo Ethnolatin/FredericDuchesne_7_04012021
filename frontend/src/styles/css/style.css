@@ -8479,6 +8479,13 @@ header p {
 .comments-qty {
   cursor: pointer;
 }
+.comments-qty:hover {
+  background-color: #282c34;
+  color: #ffd7d7;
+  padding: 0.5px 2px;
+  border: 0.5px solid #ffd7d7;
+  border-radius: 5px;
+}
 
 /*-------------------- ADMIN MODAL --------------------*/
 .admin {
@@ -8502,8 +8509,10 @@ header p {
 
 .spacer {
   background-color: #c3cfda;
-  height: 1rem;
+  height: 1.2rem;
   margin: 0.5rem 0;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 .comment-header {
@@ -8517,12 +8526,6 @@ header p {
   position: sticky;
   bottom: 0;
   width: 100%;
-  padding: 0 0.5rem;
-  border-top: 5px solid white;
-  border-bottom: 5px solid white;
-  text-align: center;
-  font-size: 0.8rem;
-  background-color: #c3cfda;
   cursor: pointer;
 }
 

@@ -103,10 +103,11 @@ export class AllArticles extends React.Component {
                         <div><b>{article.score}</b></div>
                         <div onClick={() => this.handleThumbDownChange(likeOption)}>{thumbDown}</div>
                     </div>
-                    <div className='comments-qty' onClick={this.displayArticleModal}>
-                        <FaCommentAlt/>
-                        {' '}{commentsQty}
-                    </div>
+                    {commentsQty !== 0 &&
+                        <div className='comments-qty' onClick={this.displayArticleModal}>
+                            <FaCommentAlt/>
+                            {' '}{commentsQty}
+                        </div>}
                     <div className='card-footer-buttons'>
                         {(myArticle || admin !== 0 ) && (
                             <Button onClick={this.confirmDelete} >
@@ -131,6 +132,7 @@ export class AllArticles extends React.Component {
                 showArticleModal={this.state.showArticleModal}
                 showCommentModal={this.props.showCommentModal}
                 articleComments={this.props.articleComments}
+                commentsQty={commentsQty}
                 article={this.props.article}
                 userId={this.props.userId}
                 admin={this.props.admin}

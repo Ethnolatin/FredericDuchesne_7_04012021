@@ -358,6 +358,13 @@ header p {
 
 .comments-qty {
   cursor: pointer;
+  &:hover {
+    background-color: $secondary;
+    color: $primary;
+    padding: 0.5px 2px;
+    border: 0.5px solid $primary;
+    border-radius: 5px;
+  }
 }
 
 /*-------------------- ADMIN MODAL --------------------*/
@@ -383,8 +390,10 @@ header p {
 
 .spacer {
   background-color: $tertiary;
-  height: 1rem;
+  height: 1.2rem;
   margin: 0.5rem 0;
+  font-size: 0.8rem;
+  text-align: center;
 }
 
 .comment-header {
@@ -398,11 +407,5 @@ header p {
   position: sticky;
   bottom: 0;
   width: 100%;
-  padding: 0 0.5rem;
-  border-top: 5px solid white;
-  border-bottom: 5px solid white;
-  text-align: center;
-  font-size: 0.8rem;
-  background-color: $tertiary;
   cursor: pointer;
 }
