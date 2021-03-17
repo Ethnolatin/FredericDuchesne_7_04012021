@@ -1,8 +1,8 @@
 import React from 'react'
-import { BsTrashFill } from 'react-icons/bs'
-import { Button, Modal, Image } from 'react-bootstrap'
+import { Modal, Image } from 'react-bootstrap'
 import { CommentModal } from '../modals/commentModal'
 import { itemDate } from '../itemDate'
+import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
 
 export class SingleArticle extends React.Component {
@@ -79,10 +79,10 @@ export class SingleArticle extends React.Component {
                                             - {itemDate(thisComment.timeStamp)}
                                         </div>
                                         {(myComment || admin !== 0 ) && (
-                                            <Button onClick={() => this.confirmDelete(thisComment.Id)}>
-                                                <BsTrashFill/>
-                                                <span className='sr-only'>Delete</span>
-                                            </Button>
+                                            <DeleteButton
+                                                confirmDelete={this.confirmDelete}
+                                                item={thisComment.Id}
+                                            />
                                         )}
                                     </div>
                                     {thisComment.comment}

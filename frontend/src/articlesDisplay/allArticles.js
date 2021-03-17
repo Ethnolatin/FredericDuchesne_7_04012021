@@ -1,9 +1,9 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
-import { BsTrashFill } from 'react-icons/bs'
 import { RiThumbUpFill, RiThumbDownFill, RiThumbUpLine, RiThumbDownLine } from 'react-icons/ri'
 import { FaCommentAlt, FaEdit } from 'react-icons/fa'
 import { SingleArticle } from './singleArticle'
+import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
 import { itemDate } from '../itemDate'
 
@@ -110,10 +110,9 @@ export class AllArticles extends React.Component {
                         </div>}
                     <div className='card-footer-buttons'>
                         {(myArticle || admin !== 0 ) && (
-                            <Button onClick={this.confirmDelete} >
-                                <BsTrashFill />
-                                <span className='sr-only'>Delete</span>
-                            </Button>
+                            <DeleteButton
+                                confirmDelete={this.confirmDelete}
+                            />
                         )}
                         {myArticle && (
                             <Button onClick={this.modifyArticle} >

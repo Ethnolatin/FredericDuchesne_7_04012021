@@ -1,6 +1,6 @@
 import React from 'react'
-import { BsTrashFill } from 'react-icons/bs'
-import { Button, Modal, Table } from 'react-bootstrap'
+import { Modal, Table } from 'react-bootstrap'
+import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
 
 export class AdminModal extends React.Component {
@@ -72,9 +72,10 @@ export class AdminModal extends React.Component {
                                             />
                                         </td>
                                         <td>
-                                            <Button onClick={() => this.confirmDelete(user)}>
-                                                <BsTrashFill/>
-                                            </Button>
+                                            <DeleteButton
+                                                confirmDelete={this.confirmDelete}
+                                                item={user}
+                                            />
                                         </td>
                                     </tr>
                                 )
