@@ -61,3 +61,22 @@ export const deleteItem = async (url, token, userId, Id) => {
         console.log({ err })
     }
 }
+
+export const likeItem = async (url, token, userId, item, like) => {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/' + url + item.Id + '/like',
+            data: {
+                userId: userId,
+                like: like
+            },
+            params: userId,
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        console.log(response.data.message)
+        return response.data
+    } catch (err) {
+        console.log({ err })
+    }
+}

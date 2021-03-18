@@ -2,14 +2,13 @@ import React from 'react'
 import Dropdown from 'react-dropdown'
 import Button from 'react-bootstrap/Button'
 import { FaUserCog } from 'react-icons/fa'
-import axios from 'axios'
 import Navigation from './navigation'
 import { AuthContext } from './authContext'
 import { Login } from './loginForm'
 import { AllArticles } from './articlesDisplay/allArticles'
 import { CreateModal } from './modals/createModal'
 import { AdminModal } from './modals/adminModal'
-import { getAllItems, createItem, updateItem, deleteItem } from './axios'
+import { getAllItems, createItem, updateItem, deleteItem, likeItem } from './axios'
 import 'react-dropdown/style.css'
 
 export class Homepage extends React.Component {
@@ -104,25 +103,9 @@ export class Homepage extends React.Component {
         this.getAllArticles()
     }
 
-    likeArticle = (selectedArticle, like) => {
-        return axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/articles/' + selectedArticle.Id + '/like',
-            data: {
-                userId: this.state.userId,
-                like: like
-            },
-            params: this.context.userId,
-            headers: {
-                'Authorization': 'Bearer ' + this.context.token,
-            }
-        })
-        .then (() => {
-            this.getAllArticles()
-        })
-        .catch((err) => {
-            console.log({err})
-        })
+    likeArticle = async (selectedArticle, like) => {
+        await likeItem('articles/', this.context.token, this.context.userId, selectedArticle, like)
+        this.getAllArticles()
     }
 
     getAllUsers = async () => {
