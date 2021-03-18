@@ -16,27 +16,18 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-            Id: '',
-            userId: '',
-            token: '',
-            firstName: '',
-            lastName: '',
-            admin: 0,
             users: [],
             sortOption: 'date',
             articlesCollection: [],
-            article: {},
             showCreateModal: false,
             showAdminModal: false,
             showCommentModal: false,
-            image: '',
             currentImage: '',
             oldImage: '',
             modifiedArticleImageFile: undefined,
             newArticleImageFile: undefined,
             imagePreviewUrl: undefined,
             articleModification: false,
-            like: undefined,
             allComments: undefined,
         }
         this._onSelect = this._onSelect.bind(this)
@@ -44,13 +35,6 @@ export class Homepage extends React.Component {
 
 
     componentDidMount() {
-        this.setState({
-            userId: this.context.userId,
-            token: this.context.token,
-            firstName: this.context.firstName,
-            lastName: this.context.lastName,
-            admin: this.context.admin
-        })
         if (this.context.token) {
             this.getAllArticles()
             this.getAllComments()
@@ -72,8 +56,8 @@ export class Homepage extends React.Component {
         const newArticleImageFile = this.state.newArticleImageFile
         const formData = new FormData()
         newArticleImageFile && formData.append('image', newArticleImageFile)
-        formData.append('writerId', this.state.userId)
-        formData.append('writerName', this.state.firstName + ' ' + this.state.lastName)
+        formData.append('writerId', this.context.userId)
+        formData.append('writerName', this.context.firstName + ' ' + this.context.lastName)
         formData.append('title', newArticleTitle)
         newArticleText && formData.append('text', newArticleText)
         await createItem('articles/', this.context.token, this.context.userId, formData)
@@ -92,7 +76,7 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        await updateItem('articles/', this.context.token, this.context.userId, formData, this.state.Id)
+        await updateItem('articles/', this.context.token, this.context.userId, formData, localStorage.getItem('modifiedArticleId'))
             this.closeCreateModal()
             this.getAllArticles()
     }
@@ -140,7 +124,7 @@ export class Homepage extends React.Component {
         const formData = new FormData()
         formData.append('articleId', articleId)
         formData.append('commentatorId', commentatorId)
-        formData.append('commentatorName', this.state.firstName + ' ' + this.state.lastName)
+        formData.append('commentatorName', this.context.firstName + ' ' + this.context.lastName)
         formData.append('comment', comment)
         await createItem('comments/', this.context.token, this.context.userId, formData)
         this.closeCommentModal()
@@ -184,6 +168,7 @@ export class Homepage extends React.Component {
             })
             localStorage.removeItem('modifiedArticleTitle')
             localStorage.removeItem('modifiedArticleText')
+            localStorage.removeItem('modifiedArticleId')
         } else {
             this.setState({
                 newArticleImageFile: undefined,
@@ -216,10 +201,10 @@ export class Homepage extends React.Component {
     modifyArticle = (selectedArticle) => {
         this.setState({
             articleModification: true,
-            Id: selectedArticle.Id,
             currentImage: selectedArticle.image
         })
         localStorage.setItem('modifiedArticleTitle', selectedArticle.title)
+        localStorage.setItem('modifiedArticleId', selectedArticle.Id)
         selectedArticle.text && localStorage.setItem('modifiedArticleText', selectedArticle.text)
         this.displayCreateModal()
     }
@@ -337,9 +322,9 @@ export class Homepage extends React.Component {
                 <Navigation />
                 <header>
                     <div className='user'>
-                        <p>{this.state.firstName} {this.state.lastName}</p>
-                        { this.state.admin === 1 && <FaUserCog/> }
-                        { this.state.admin === 2 && (
+                        <p>{this.context.firstName} {this.context.lastName}</p>
+                        { this.context.admin === 1 && <FaUserCog/> }
+                        { this.context.admin === 2 && (
                             <Button onClick={() => this.displayAdminModal()} ><FaUserCog/><span className='sr-only'>Admin options</span></Button> )}
                     </div>
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
@@ -363,8 +348,8 @@ export class Homepage extends React.Component {
                                     article={article}
                                     articleComments={articleComments}
                                     commentsQty={commentsQty}
-                                    userId={this.state.userId}
-                                    admin={this.state.admin}
+                                    userId={this.context.userId}
+                                    admin={this.context.admin}
                                     showCommentModal={this.state.showCommentModal}
                                 />
 
@@ -387,7 +372,7 @@ export class Homepage extends React.Component {
                                     deleteUser={this.deleteUser}
                                     showAdminModal={this.state.showAdminModal}
                                     users={this.state.users}
-                                    userId={this.state.userId}
+                                    userId={this.context.userId}
                                 />
                             </div>
                         )
