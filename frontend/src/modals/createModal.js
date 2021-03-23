@@ -40,18 +40,6 @@ export class CreateModal extends React.PureComponent {
         this.props.handleImageInput(event)
     }
 
-    definePreviewImage = (articleModification, current, preview, saved) => {
-        const previewImage =
-            preview ? 
-                preview :
-                articleModification ?
-                    current :
-                    saved ?
-                        saved :
-                        undefined
-        return previewImage
-    }
-
     publishArticle = () => {
         this.props.publishArticle()
     }
@@ -73,8 +61,7 @@ export class CreateModal extends React.PureComponent {
     }
     
     render () {
-        const { showCreateModal, articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl } = this.props
-        const previewImage = this.definePreviewImage(articleModification, currentImage, imagePreviewUrl, savedImagePreviewUrl)
+        const { showCreateModal, articleModification, previewImage } = this.props
         return (<>
             <Modal show={showCreateModal} onHide={this.closeCreateModal} backdrop='static' animation={false}>
                 <Modal.Header closeButton>

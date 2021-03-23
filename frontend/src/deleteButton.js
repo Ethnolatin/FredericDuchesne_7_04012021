@@ -4,13 +4,15 @@ import { Button } from 'react-bootstrap'
 
 export class DeleteButton extends React.Component {
 
-    confirmDelete = (item) => {
-        this.props.confirmDelete(item)
+    confirmDelete = () => {
+        localStorage.setItem('toBeDeleted', this.props.toBeDeleted)
+        localStorage.setItem('userName', this.props.userName)
+        this.props.confirmDelete()
     }
 
     render() {
         return (
-            <Button onClick={() => this.confirmDelete(this.props.item)}>
+            <Button onClick={() => this.confirmDelete()}>
                 <BsTrashFill/>
                 <span className='sr-only'>Delete</span>
             </Button>

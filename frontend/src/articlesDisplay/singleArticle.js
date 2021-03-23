@@ -4,14 +4,28 @@ import { CommentModal } from '../modals/commentModal'
 import { itemDate } from '../itemDate'
 import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
+import { deleteItem } from '../axios'
+import { AuthContext } from '../authContext'
+import { getSomeItems } from '../axios'
 
 export class SingleArticle extends React.Component {
+    static contextType = AuthContext
     constructor(props) {
 		super(props)
         this.state = {
+            articleComments: undefined,
             showCommentModal: false,
             showAlert: false
         }
+    }
+
+    componentDidMount() {
+        this.getArticleComments()
+    }
+
+    getArticleComments = async () => {
+        const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
+        return this.setState({articleComments: list})
     }
 
     closeArticleModal = () => {
@@ -25,32 +39,32 @@ export class SingleArticle extends React.Component {
     }
     
     closeCommentModal = () => {
+        this.getArticleComments()
         this.setState({
             showCommentModal: false,
         })
     }
 
-    createComment = () => {
-        this.props.createComment()
-    }
-
-    confirmDelete = (Id) => {
-        localStorage.setItem('thisCommentId', Id)
+    confirmDelete = () => {
         this.setState({showAlert: true})
     }
 
-    deleteItem = () => {
-        this.props.deleteComment(localStorage.getItem('thisCommentId'))
+    deleteComment = async () => {
+        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        this.getArticleComments()
     }
 
     hideAlert = () => {
-        localStorage.removeItem('thisCommentId')
+        localStorage.removeItem('toBeDeleted')
         this.setState({showAlert: false})
+        this.getArticleComments()
     }
 
     
     render () {
-        const {article, articleComments, commentsQty, userId, admin} = this.props
+        const { userId, admin } = this.context
+        const { article, commentsQty } = this.props
+        const articleComments = this.state.articleComments
 
         return (<>
             <Modal show={this.props.showArticleModal} onHide={this.closeArticleModal} animation={false}>
@@ -62,34 +76,36 @@ export class SingleArticle extends React.Component {
                     {article.text}
                     {commentsQty !== 0 && <>
                         <div className='comments spacer'>Commentaires</div>
-                        {articleComments.map(thisComment => {
-                            const myComment = thisComment.commentatorId === userId
-                            const commentator = myComment ? 'moi' : thisComment.commentatorName
-                            return(
-                                <div key={thisComment.Id} className='comments'>
-                                    <DeleteAlert
-                                        show={thisComment.Id === parseInt(localStorage.getItem('thisCommentId')) && this.state.showAlert}
-                                        item={`ce commentaire`}
-                                        deleteItem={this.deleteItem}
-                                        hideAlert={this.hideAlert}
-                                    />
-                                    <div className='comment-header'>
-                                        <div>
-                                            <b>{commentator} </b>
-                                            - {itemDate(thisComment.timeStamp)}
+                        {articleComments && 
+                            articleComments.map(thisComment => {
+                                const myComment = thisComment.commentatorId === userId
+                                const commentator = myComment ? 'moi' : thisComment.commentatorName
+                                return(
+                                    <div key={thisComment.Id} className='comments'>
+                                        <DeleteAlert
+                                            show={thisComment.Id === parseInt(localStorage.getItem('toBeDeleted')) && this.state.showAlert}
+                                            item={`ce commentaire`}
+                                            hideAlert={this.hideAlert}
+                                            deleteItem={this.deleteComment}
+                                        />
+                                        <div className='comment-header'>
+                                            <div>
+                                                <b>{commentator} </b>
+                                                - {itemDate(thisComment.timeStamp)}
+                                            </div>
+                                            {(myComment || admin !== 0 ) && (
+                                                <DeleteButton
+                                                    confirmDelete={this.confirmDelete}
+                                                    toBeDeleted={thisComment.Id}
+                                                />
+                                            )}
                                         </div>
-                                        {(myComment || admin !== 0 ) && (
-                                            <DeleteButton
-                                                confirmDelete={this.confirmDelete}
-                                                item={thisComment.Id}
-                                            />
-                                        )}
+                                        {thisComment.comment}
+                                        <hr />
                                     </div>
-                                    {thisComment.comment}
-                                    <hr />
-                                </div>
-                            )
-                        })}
+                                )
+                            })
+                        }
                     </>}
                 <div className='sticky spacer' onClick={this.displayCommentModal}>
                     <div >Ajouter un commentaire...</div>
@@ -100,7 +116,6 @@ export class SingleArticle extends React.Component {
             <CommentModal
                 closeCommentModal={this.closeCommentModal}
                 showCommentModal={this.state.showCommentModal}
-                createComment={this.createComment}
                 article={article}
             />
                                 

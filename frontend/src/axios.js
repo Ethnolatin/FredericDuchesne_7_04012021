@@ -31,6 +31,20 @@ export const getAllItems = async (url, token, userId) => {
 
 }
 
+export const getSomeItems = async (url, token, userId, Id) => {
+    try {
+        const response = await axios({
+            method: 'get',
+            url: 'http://localhost:3000/api/' + url + Id,
+            params: { userId },
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        return response.data
+    } catch (err) {
+        console.log('erreur: ', { err })
+    }
+}
+
 export const updateItem = async (url, token, userId, data, Id) => {
     try {
         const response = await axios({

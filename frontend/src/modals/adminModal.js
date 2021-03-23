@@ -2,40 +2,56 @@ import React from 'react'
 import { Modal, Table } from 'react-bootstrap'
 import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
+import { AuthContext } from '../authContext'
+import { getAllItems, updateItem, deleteItem } from '../axios'
 
 export class AdminModal extends React.Component {
+    static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
             showAlert: false,
+            users: [],
         }
+    }
+
+    componentDidMount() {
+        this.getAllUsers()
+    }
+
+    getAllUsers = async () => {
+        const list = await getAllItems('admin/', this.context.token, this.context.userId)
+        return this.setState({
+            users: list,
+        })
+    }
+
+    updateUser = async (selectedUser) => {
+        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+        this.getAllUsers()
+    }
+
+    deleteUser = async () => {
+        await deleteItem('admin/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        this.getAllUsers()
     }
 
     closeAdminModal = () => {
         this.props.closeAdminModal()
     }
-    updateUser = (user) => {
-        this.props.updateUser(user)
-    }
-
-    confirmDelete = (user) => {
-        localStorage.setItem('userId', user.Id)
-        localStorage.setItem('userName', user.firstName + ' ' + user.lastName)
+    
+    confirmDelete = () => {
         this.setState({showAlert: true})
     }
 
-    deleteItem = () => {
-        this.props.deleteUser(localStorage.getItem('userId'))
-    }
-
     hideAlert = () => {
-        localStorage.removeItem('userId')
+        localStorage.removeItem('toBeDeleted')
         localStorage.removeItem('userName')
         this.setState({showAlert: false})
     }
 
     render () {
-        const { showAdminModal, users, userId } = this.props
+        const { showAdminModal } = this.props
         return (
             <Modal show={showAdminModal} onHide={this.closeAdminModal} animation={false}>
                 <Modal.Header closeButton>
@@ -44,8 +60,8 @@ export class AdminModal extends React.Component {
                 <DeleteAlert
                     show={this.state.showAlert}
                     item={localStorage.getItem('userName')}
-                    deleteItem={this.deleteItem}
                     hideAlert={this.hideAlert}
+                    deleteItem={this.deleteUser}
                 />
                 <Modal.Body>
                     <Table striped hover size='sm'>
@@ -58,8 +74,8 @@ export class AdminModal extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map(user => {
-                                return (user.Id !== userId &&
+                            {this.state.users.map(user => {
+                                return (user.Id !== this.context.userId &&
                                     <tr key={user.Id}>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
@@ -74,7 +90,8 @@ export class AdminModal extends React.Component {
                                         <td>
                                             <DeleteButton
                                                 confirmDelete={this.confirmDelete}
-                                                item={user}
+                                                toBeDeleted={user.Id}
+                                                userName={user.firstName + ' ' + user.lastName}
                                             />
                                         </td>
                                     </tr>

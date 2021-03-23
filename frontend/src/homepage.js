@@ -16,19 +16,16 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-            users: [],
             sortOption: 'date',
             articlesCollection: [],
             showCreateModal: false,
             showAdminModal: false,
-            showCommentModal: false,
             currentImage: '',
             oldImage: '',
             modifiedArticleImageFile: undefined,
             newArticleImageFile: undefined,
             imagePreviewUrl: undefined,
             articleModification: false,
-            allComments: undefined,
         }
         this._onSelect = this._onSelect.bind(this)
     }
@@ -37,7 +34,6 @@ export class Homepage extends React.Component {
     componentDidMount() {
         if (this.context.token) {
             this.getAllArticles()
-            this.getAllComments()
         }
     }
 
@@ -81,68 +77,15 @@ export class Homepage extends React.Component {
             this.getAllArticles()
     }
 
-    deleteArticle = async (selectedArticle) => {
-        await deleteItem('articles/', this.context.token, this.context.userId, selectedArticle.Id)
-        await deleteItem('comments/', this.context.token, this.context.userId, selectedArticle.Id + '/deleted')
+    deleteArticle = async () => {
+        await deleteItem('articles/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted') + '/deleted')
         this.getAllArticles()
     }
 
     likeArticle = async (selectedArticle, like) => {
         await likeItem('articles/', this.context.token, this.context.userId, selectedArticle, like)
         this.getAllArticles()
-    }
-
-    getAllUsers = async () => {
-        const list = await getAllItems('admin/', this.context.token, this.context.userId)
-        return this.setState({
-            users: list,
-        })
-    }
-
-    updateUser = async (selectedUser) => {
-        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
-        this.getAllUsers()
-    }
-
-    deleteUser = async (selectedUserId) => {
-        await deleteItem('admin/', this.context.token, this.context.userId, selectedUserId)
-        this.setState({})
-        this.getAllUsers()
-    }
-
-    getAllComments = async () => {
-        const list = await getAllItems('comments/', this.context.token, this.context.userId)
-        return this.setState({
-            allComments: list,
-        })
-    }
-
-    createComment = async () => {
-        const articleId = localStorage.getItem('articleId');
-        const commentatorId = this.context.userId
-        const comment = localStorage.getItem('comment')
-        const formData = new FormData()
-        formData.append('articleId', articleId)
-        formData.append('commentatorId', commentatorId)
-        formData.append('commentatorName', this.context.firstName + ' ' + this.context.lastName)
-        formData.append('comment', comment)
-        await createItem('comments/', this.context.token, this.context.userId, formData)
-        this.closeCommentModal()
-        this.getAllComments()
-    }
-
-    deleteComment = async (selectedCommentId) => {
-        await deleteItem('comments/', this.context.token, this.context.userId, selectedCommentId)
-        this.getAllComments()
-        this.setState({showArticleModal: true})
-    }
-
-    closeCommentModal = () => {
-        localStorage.removeItem('comment')
-        localStorage.removeItem('articleId')
-        this.setState({
-            showCommentModal: false,
-        })
     }
 
     displayCreateModal = () => {
@@ -188,13 +131,11 @@ export class Homepage extends React.Component {
         this.setState({
             showAdminModal: true
         })
-        this.getAllUsers()
     }
 
     closeAdminModal = () => {
         this.setState({
             showAdminModal: false,
-            users: []
         })
     }
 
@@ -238,6 +179,18 @@ export class Homepage extends React.Component {
             imagePreviewUrl: undefined,
             savedImagePreviewUrl: undefined,
         })
+    }
+
+    definePreviewImage = () => {
+        const previewImage =
+            this.state.imagePreviewUrl ? 
+                this.state.imagePreviewUrl :
+                this.state.articleModification ?
+                    this.state.currentImage :
+                    this.state.savedImagePreviewUrl ?
+                        this.state.savedImagePreviewUrl :
+                        undefined
+        return previewImage
     }
 
     handleThumbUpChange = (selectedArticle, likeOption) => {
@@ -314,7 +267,6 @@ export class Homepage extends React.Component {
 
 
     displayArticlesList = () => {
-        const {articlesCollection, allComments} = this.state
         const options = ['date', 'score', 'auteur']
 
         return (
@@ -325,16 +277,16 @@ export class Homepage extends React.Component {
                         <p>{this.context.firstName} {this.context.lastName}</p>
                         { this.context.admin === 1 && <FaUserCog/> }
                         { this.context.admin === 2 && (
-                            <Button onClick={() => this.displayAdminModal()} ><FaUserCog/><span className='sr-only'>Admin options</span></Button> )}
+                            <Button onClick={() => this.displayAdminModal()} >
+                                <FaUserCog/><span className='sr-only'>Options admin</span>
+                            </Button> )}
                     </div>
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>
                 </header>
                 <main>{
-                    articlesCollection.map((article) => {
-                        let articleComments
-                        if (allComments) {articleComments = allComments.filter(x => x.articleId === article.Id)}
-                        const commentsQty = articleComments ? articleComments.length : 0
+                    this.state.articlesCollection.map((article) => {
+                        const previewImage = this.definePreviewImage()
                         return(
                             <div key={article.Id}>
                                 
@@ -343,14 +295,7 @@ export class Homepage extends React.Component {
                                     handleThumbDownChange={this.handleThumbDownChange}
                                     deleteArticle={this.deleteArticle}
                                     modifyArticle={this.modifyArticle}
-                                    createComment={this.createComment}
-                                    deleteComment={this.deleteComment}
                                     article={article}
-                                    articleComments={articleComments}
-                                    commentsQty={commentsQty}
-                                    userId={this.context.userId}
-                                    admin={this.context.admin}
-                                    showCommentModal={this.state.showCommentModal}
                                 />
 
                                 <CreateModal
@@ -359,20 +304,17 @@ export class Homepage extends React.Component {
                                     handleImageInput={this.handleImageInput}
                                     publishArticle={this.publishArticle}
                                     noImage={this.noImage}
+                                    previewImage={previewImage}
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
-                                    currentImage={this.state.currentImage}
-                                    imagePreviewUrl={this.state.imagePreviewUrl}
-                                    savedImagePreviewUrl={this.state.savedImagePreviewUrl}
+                                    // currentImage={this.state.currentImage}
+                                    // imagePreviewUrl={this.state.imagePreviewUrl}
+                                    // savedImagePreviewUrl={this.state.savedImagePreviewUrl}
                                 />
 
                                 <AdminModal
                                     closeAdminModal={this.closeAdminModal}
-                                    updateUser={this.updateUser}
-                                    deleteUser={this.deleteUser}
                                     showAdminModal={this.state.showAdminModal}
-                                    users={this.state.users}
-                                    userId={this.context.userId}
                                 />
                             </div>
                         )

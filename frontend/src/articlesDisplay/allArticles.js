@@ -3,30 +3,38 @@ import { Card, Button } from 'react-bootstrap'
 import { RiThumbUpFill, RiThumbDownFill, RiThumbUpLine, RiThumbDownLine } from 'react-icons/ri'
 import { FaCommentAlt, FaEdit } from 'react-icons/fa'
 import { SingleArticle } from './singleArticle'
+import { AuthContext } from '../authContext'
 import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
 import { itemDate } from '../itemDate'
+import { getSomeItems } from '../axios'
 
 export class AllArticles extends React.Component {
+    static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
             showArticleModal: false,
-            showAlert: false}
+            showAlert: false,
+            commentsQty: 0,
+        }
+    }
+
+    componentDidMount() {
+        this.getArticleCommentsQty()
     }
 
     displayArticleModal = (selectedArticle) => {
         this.setState({
             showArticleModal: true,
-            article: selectedArticle
         })
     }
 
     closeArticleModal = () => {
         this.setState({
             showArticleModal: false,
-            article: {}
         })
+        this.getArticleCommentsQty()
     }
 
     handleThumbUpChange = (likeOption) => {
@@ -41,8 +49,8 @@ export class AllArticles extends React.Component {
         this.setState({showAlert: true})
     }
 
-    deleteItem = () => {
-        this.props.deleteArticle(this.props.article)
+    deleteArticle = () => {
+        this.props.deleteArticle()
     }
 
     modifyArticle = () => {
@@ -51,6 +59,12 @@ export class AllArticles extends React.Component {
 
     hideAlert = () => {
         this.setState({showAlert: false})
+    }
+
+    getArticleCommentsQty = async () => {
+        const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
+        const commentsQty = list ? list.length : 0
+        return this.setState({commentsQty: commentsQty})
     }
 
     createComment = () => {
@@ -62,7 +76,9 @@ export class AllArticles extends React.Component {
     }
     
     render () {
-        const { article, userId, admin, commentsQty } = this.props
+        const { userId, admin } = this.context
+        const { article } = this.props
+        const { commentsQty } = this.state
         const likeOption = (
             article.usersLiked.includes(userId) ?
                 1
@@ -80,8 +96,8 @@ export class AllArticles extends React.Component {
                 <DeleteAlert
                     show={this.state.showAlert}
                     item={`l'article "${article.title}"`}
-                    deleteItem={this.deleteItem}
                     hideAlert={this.hideAlert}
+                    deleteItem={this.deleteArticle}
                 />
                 <Card.Header>
                     Publié par{' '}
@@ -112,6 +128,7 @@ export class AllArticles extends React.Component {
                         {(myArticle || admin !== 0 ) && (
                             <DeleteButton
                                 confirmDelete={this.confirmDelete}
+                                toBeDeleted={article.Id}
                             />
                         )}
                         {myArticle && (
@@ -126,15 +143,9 @@ export class AllArticles extends React.Component {
 
             <SingleArticle
                 closeArticleModal={this.closeArticleModal}
-                createComment={this.createComment}
-                deleteComment={this.deleteComment}
                 showArticleModal={this.state.showArticleModal}
-                showCommentModal={this.props.showCommentModal}
-                articleComments={this.props.articleComments}
                 commentsQty={commentsQty}
-                article={this.props.article}
-                userId={this.props.userId}
-                admin={this.props.admin}
+                article={article}
             />
         </>)
     }

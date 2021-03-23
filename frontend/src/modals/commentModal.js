@@ -1,7 +1,10 @@
 import React from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
+import { AuthContext } from '../authContext'
+import { createItem } from '../axios'
 
 export class CommentModal extends React.Component {
+	static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
@@ -11,7 +14,6 @@ export class CommentModal extends React.Component {
 
     handleInputChange = (event) => {
         const value = event.target.value
-		localStorage.setItem('comment', String(value))
         localStorage.setItem('articleId',this.props.article.Id)
         this.setState({comment: value})
     }
@@ -23,8 +25,13 @@ export class CommentModal extends React.Component {
         this.props.closeCommentModal()
     }
 
-    createComment = () => {
-        localStorage.getItem('comment') && this.props.createComment()
+    createComment = async () => {
+        const formData = new FormData()
+        formData.append('articleId', this.props.article.Id)
+        formData.append('commentatorId', this.context.userId)
+        formData.append('commentatorName', this.context.firstName + ' ' + this.context.lastName)
+        formData.append('comment', this.state.comment)
+        await createItem('comments/', this.context.token, this.context.userId, formData)
         this.closeCommentModal()
     }
 
@@ -44,18 +51,21 @@ export class CommentModal extends React.Component {
                         <Form.Group controlId='text'>
                             <Form.Label>Votre commentaire :</Form.Label>
                             <Form.Control as='textarea'
+                                autoFocus
                                 className='input'
                                 type='text'
                                 name='comment'
-                                value={localStorage.getItem('comment') || ''}
+                                value={this.state.comment}
                                 onChange={this.handleInputChange}
                             />
                         </Form.Group> 
                     </Form>
                 </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.createComment}>Publier</Button>
-                </Modal.Footer>
+                {this.state.comment &&
+                    <Modal.Footer>
+                        <Button onClick={this.createComment}>Publier</Button>
+                    </Modal.Footer>
+                }
             </Modal>
         </>)
 	}
