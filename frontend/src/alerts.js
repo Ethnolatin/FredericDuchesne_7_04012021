@@ -23,13 +23,15 @@ export class DeleteAlert extends React.Component {
         )
     }
 
-    deleteItem = () => {
-        this.props.deleteItem()
-        this.props.hideAlert()
+    deleteItem = async () => {
+        await this.props.deleteItem()
+        this.hideAlert()
     }
 
     hideAlert = () => {
+        localStorage.removeItem('toBeDeleted')
+        localStorage.removeItem('userName')
         this.props.hideAlert()
     }
 
-    }
+}

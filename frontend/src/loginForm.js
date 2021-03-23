@@ -214,8 +214,8 @@ export class Login extends React.Component {
 				method: 'post',
 				url: 'http://localhost:3000/api/user/signup',
 				data: {
-					firstName: this.state.contextItems.firstName,
-					lastName: this.state.contextItems.lastName,
+					firstName: this.state.firstName,
+					lastName: this.state.lastName,
 					email: this.state.email,
 					password: this.state.password
 				},

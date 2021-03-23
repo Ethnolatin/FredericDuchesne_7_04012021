@@ -51,7 +51,7 @@ export class CommentModal extends React.Component {
 
     handleInputChange = (event) => {
         const value = event.target.value
-        localStorage.setItem('articleId',this.props.article.Id)
+        // localStorage.setItem('articleId',this.props.article.Id)
         this.setState({comment: value})
     }
 

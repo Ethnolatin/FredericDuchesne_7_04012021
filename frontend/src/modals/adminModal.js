@@ -101,8 +101,6 @@ export class AdminModal extends React.Component {
     }
 
     hideAlert = () => {
-        localStorage.removeItem('toBeDeleted')
-        localStorage.removeItem('userName')
         this.setState({showAlert: false})
     }
 

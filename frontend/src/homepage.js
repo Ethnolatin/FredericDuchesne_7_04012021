@@ -182,8 +182,9 @@ export class Homepage extends React.Component {
     }
 
     deleteArticle = async () => {
-        await deleteItem('articles/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
-        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted') + '/deleted')
+        const toBeDeleted = localStorage.getItem('toBeDeleted')
+        await deleteItem('articles/', this.context.token, this.context.userId, toBeDeleted)
+        await deleteItem('comments/', this.context.token, this.context.userId, toBeDeleted + '/deleted')
         this.getAllArticles()
     }
 

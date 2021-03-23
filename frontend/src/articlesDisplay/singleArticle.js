@@ -14,6 +14,7 @@ export class SingleArticle extends React.Component {
 		super(props)
         this.state = {
             articleComments: undefined,
+            commentsQty: 0,
             showCommentModal: false,
             showAlert: false
         }
@@ -25,13 +26,17 @@ export class SingleArticle extends React.Component {
 
     getArticleComments = async () => {
         const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
-        return this.setState({articleComments: list})
+        const commentsQty = list ? list.length : 0
+        return this.setState({
+            articleComments: list,
+            commentsQty: commentsQty
+        })
     }
 
 
     render () {
         const { userId, admin } = this.context
-        const { article, commentsQty } = this.props
+        const { article } = this.props
         const articleComments = this.state.articleComments
 
         return (<>
@@ -42,7 +47,7 @@ export class SingleArticle extends React.Component {
                 <Modal.Body>
                     {article.image && <Image src={article.image} width='100%' height='100%' alt={article.title}/>}
                     {article.text}
-                    {commentsQty !== 0 && <>
+                    {this.state.commentsQty !== 0 && <>
                         <div className='comments spacer'>Commentaires</div>
                         {articleComments && 
                             articleComments.map(thisComment => {
@@ -117,7 +122,6 @@ export class SingleArticle extends React.Component {
     }
 
     hideAlert = () => {
-        localStorage.removeItem('toBeDeleted')
         this.setState({showAlert: false})
         this.getArticleComments()
     }
