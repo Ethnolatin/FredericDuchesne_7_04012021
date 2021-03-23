@@ -98,7 +98,7 @@ hr {
   line-height: 1.1rem;
 }
 
-/*-------------------- HEADER'S LOGO --------------------*/
+/*-------------------- LOADING SPINNER & HEADER'S LOGO --------------------*/
 
 .logo-image {
   display: block;
@@ -115,6 +115,32 @@ hr {
   margin-top: 1rem;
 }
 
+.loader {
+  z-index: 100;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $secondary;
+  & .logo-image {
+    z-index: 101;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    &__spinner {
+      border: 3px solid transparent;
+      border-top-color: $primary;
+      border-bottom-color: $tertiary;
+      border-radius: 50%;
+      animation: spin 2s linear infinite;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .logo-image {
     animation: logo-image-spin infinite 20s linear;
@@ -127,6 +153,15 @@ hr {
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
   }
 }
 

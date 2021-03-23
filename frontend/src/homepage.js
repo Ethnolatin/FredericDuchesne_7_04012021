@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import { FaUserCog } from 'react-icons/fa'
 import Navigation from './navigation'
 import { AuthContext } from './authContext'
+import { Loader } from './loader'
 import { Login } from './loginForm'
 import { AllArticles } from './articlesDisplay/allArticles'
 import { CreateModal } from './modals/createModal'
@@ -16,6 +17,7 @@ export class Homepage extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
+            loading: true,
             sortOption: 'date',
             articlesCollection: [],
             showCreateModal: false,
@@ -41,6 +43,7 @@ export class Homepage extends React.Component {
         const list = await getAllItems('articles/', this.context.token, this.context.userId)
         this.setState({
             articlesCollection: list,
+            loading: false
         })
         this.sortArticlesList()
     }
@@ -267,6 +270,7 @@ export class Homepage extends React.Component {
 
 
     displayArticlesList = () => {
+        if(this.state.loading) {return <Loader />}
         const options = ['date', 'score', 'auteur']
 
         return (
@@ -307,9 +311,6 @@ export class Homepage extends React.Component {
                                     previewImage={previewImage}
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
-                                    // currentImage={this.state.currentImage}
-                                    // imagePreviewUrl={this.state.imagePreviewUrl}
-                                    // savedImagePreviewUrl={this.state.savedImagePreviewUrl}
                                 />
 
                                 <AdminModal
@@ -325,7 +326,7 @@ export class Homepage extends React.Component {
     }
 
     render() {
-        const pageToOpen = this.context.token ? this.displayArticlesList() : <Login/>
+        const pageToOpen = this.context.token ? this.displayArticlesList() : <Login />
         return (<>
             {pageToOpen}
         </>)
