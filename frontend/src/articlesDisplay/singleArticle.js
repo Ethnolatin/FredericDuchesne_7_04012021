@@ -28,39 +28,7 @@ export class SingleArticle extends React.Component {
         return this.setState({articleComments: list})
     }
 
-    closeArticleModal = () => {
-        this.props.closeArticleModal()
-    }
 
-    displayCommentModal = () => {
-        this.setState({
-            showCommentModal: true
-        })
-    }
-    
-    closeCommentModal = () => {
-        this.getArticleComments()
-        this.setState({
-            showCommentModal: false,
-        })
-    }
-
-    confirmDelete = () => {
-        this.setState({showAlert: true})
-    }
-
-    deleteComment = async () => {
-        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
-        this.getArticleComments()
-    }
-
-    hideAlert = () => {
-        localStorage.removeItem('toBeDeleted')
-        this.setState({showAlert: false})
-        this.getArticleComments()
-    }
-
-    
     render () {
         const { userId, admin } = this.context
         const { article, commentsQty } = this.props
@@ -118,7 +86,40 @@ export class SingleArticle extends React.Component {
                 showCommentModal={this.state.showCommentModal}
                 article={article}
             />
-                                
         </>)
     }
+
+
+    closeArticleModal = () => {
+        this.props.closeArticleModal()
+    }
+
+    displayCommentModal = () => {
+        this.setState({
+            showCommentModal: true
+        })
+    }
+    
+    closeCommentModal = () => {
+        this.getArticleComments()
+        this.setState({
+            showCommentModal: false,
+        })
+    }
+
+    confirmDelete = () => {
+        this.setState({showAlert: true})
+    }
+
+    deleteComment = async () => {
+        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        this.getArticleComments()
+    }
+
+    hideAlert = () => {
+        localStorage.removeItem('toBeDeleted')
+        this.setState({showAlert: false})
+        this.getArticleComments()
+    }
+
 }

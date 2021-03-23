@@ -14,52 +14,6 @@ export class CreateModal extends React.PureComponent {
         }
     }
 
-    closeCreateModal = () => {
-        this.setState({
-            modifiedArticleTitle: undefined,
-            modifiedArticleText: undefined,
-            newArticleTitle: undefined,
-            newArticleText: undefined,
-        })
-        this.props.closeCreateModal()
-    }
-
-    saveCreateModal = () => {
-        this.setState({showAlert: false})
-        this.props.saveCreateModal()
-    }
-
-    handleInputChange = (event) => {
-		const name = event.target.name
-		const value = event.target.value
-        localStorage.setItem(String(name), String(value))
-        this.setState({[name]:value})
-    }
-
-    handleImageInput = (event) => {
-        this.props.handleImageInput(event)
-    }
-
-    publishArticle = () => {
-        this.props.publishArticle()
-    }
-
-    checkTitle = () => {
-        this.setState({showAlert: false})
-        const articleModification = this.props.articleModification
-        const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
-        const newArticleTitle = localStorage.getItem('newArticleTitle')
-        if ((articleModification && !modifiedArticleTitle) ||
-        (!articleModification && !newArticleTitle)) {
-            this.setState({showAlert: true})
-            return
-        } else this.publishArticle()
-    }
-
-    noImage = () => {
-        this.props.noImage()
-    }
-    
     render () {
         const { showCreateModal, articleModification, previewImage } = this.props
         return (<>
@@ -121,4 +75,52 @@ export class CreateModal extends React.PureComponent {
             </Modal>
         </>)
     }
+
+
+    closeCreateModal = () => {
+        this.setState({
+            modifiedArticleTitle: undefined,
+            modifiedArticleText: undefined,
+            newArticleTitle: undefined,
+            newArticleText: undefined,
+        })
+        this.props.closeCreateModal()
+    }
+
+    saveCreateModal = () => {
+        this.setState({showAlert: false})
+        this.props.saveCreateModal()
+    }
+
+    handleInputChange = (event) => {
+		const name = event.target.name
+		const value = event.target.value
+        localStorage.setItem(String(name), String(value))
+        this.setState({[name]:value})
+    }
+
+    handleImageInput = (event) => {
+        this.props.handleImageInput(event)
+    }
+
+    checkTitle = () => {
+        this.setState({showAlert: false})
+        const articleModification = this.props.articleModification
+        const modifiedArticleTitle = localStorage.getItem('modifiedArticleTitle')
+        const newArticleTitle = localStorage.getItem('newArticleTitle')
+        if ((articleModification && !modifiedArticleTitle) ||
+        (!articleModification && !newArticleTitle)) {
+            this.setState({showAlert: true})
+            return
+        } else this.publishArticle()
+    }
+
+    publishArticle = () => {
+        this.props.publishArticle()
+    }
+
+    noImage = () => {
+        this.props.noImage()
+    }
+    
 }

@@ -26,29 +26,6 @@ export class AdminModal extends React.Component {
         })
     }
 
-    updateUser = async (selectedUser) => {
-        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
-        this.getAllUsers()
-    }
-
-    deleteUser = async () => {
-        await deleteItem('admin/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
-        this.getAllUsers()
-    }
-
-    closeAdminModal = () => {
-        this.props.closeAdminModal()
-    }
-    
-    confirmDelete = () => {
-        this.setState({showAlert: true})
-    }
-
-    hideAlert = () => {
-        localStorage.removeItem('toBeDeleted')
-        localStorage.removeItem('userName')
-        this.setState({showAlert: false})
-    }
 
     render () {
         const { showAdminModal } = this.props
@@ -103,4 +80,30 @@ export class AdminModal extends React.Component {
             </Modal>
         )
     }
+
+
+    updateUser = async (selectedUser) => {
+        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+        this.getAllUsers()
+    }
+
+    deleteUser = async () => {
+        await deleteItem('admin/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        this.getAllUsers()
+    }
+
+    closeAdminModal = () => {
+        this.props.closeAdminModal()
+    }
+    
+    confirmDelete = () => {
+        this.setState({showAlert: true})
+    }
+
+    hideAlert = () => {
+        localStorage.removeItem('toBeDeleted')
+        localStorage.removeItem('userName')
+        this.setState({showAlert: false})
+    }
+
 }

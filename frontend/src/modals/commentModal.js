@@ -12,29 +12,7 @@ export class CommentModal extends React.Component {
         }
 	}
 
-    handleInputChange = (event) => {
-        const value = event.target.value
-        localStorage.setItem('articleId',this.props.article.Id)
-        this.setState({comment: value})
-    }
-
-	closeCommentModal = () => {
-        this.setState({
-            comment: undefined,
-        })
-        this.props.closeCommentModal()
-    }
-
-    createComment = async () => {
-        const formData = new FormData()
-        formData.append('articleId', this.props.article.Id)
-        formData.append('commentatorId', this.context.userId)
-        formData.append('commentatorName', this.context.firstName + ' ' + this.context.lastName)
-        formData.append('comment', this.state.comment)
-        await createItem('comments/', this.context.token, this.context.userId, formData)
-        this.closeCommentModal()
-    }
-
+    
     render () {
         const { showCommentModal, article } = this.props
         return (<>
@@ -69,4 +47,29 @@ export class CommentModal extends React.Component {
             </Modal>
         </>)
 	}
+
+
+    handleInputChange = (event) => {
+        const value = event.target.value
+        localStorage.setItem('articleId',this.props.article.Id)
+        this.setState({comment: value})
+    }
+
+	closeCommentModal = () => {
+        this.setState({
+            comment: undefined,
+        })
+        this.props.closeCommentModal()
+    }
+
+    createComment = async () => {
+        const formData = new FormData()
+        formData.append('articleId', this.props.article.Id)
+        formData.append('commentatorId', this.context.userId)
+        formData.append('commentatorName', this.context.firstName + ' ' + this.context.lastName)
+        formData.append('comment', this.state.comment)
+        await createItem('comments/', this.context.token, this.context.userId, formData)
+        this.closeCommentModal()
+    }
+
 }

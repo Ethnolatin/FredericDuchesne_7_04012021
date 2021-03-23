@@ -4,12 +4,6 @@ import { Button } from 'react-bootstrap'
 
 export class DeleteButton extends React.Component {
 
-    confirmDelete = () => {
-        localStorage.setItem('toBeDeleted', this.props.toBeDeleted)
-        localStorage.setItem('userName', this.props.userName)
-        this.props.confirmDelete()
-    }
-
     render() {
         return (
             <Button onClick={() => this.confirmDelete()}>
@@ -17,5 +11,11 @@ export class DeleteButton extends React.Component {
                 <span className='sr-only'>Delete</span>
             </Button>
         )
+    }
+
+    confirmDelete = () => {
+        localStorage.setItem('toBeDeleted', this.props.toBeDeleted)
+        localStorage.setItem('userName', this.props.userName)
+        this.props.confirmDelete()
     }
 }

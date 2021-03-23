@@ -3,15 +3,6 @@ import { Alert, Button} from 'react-bootstrap'
 
 export class DeleteAlert extends React.Component {
     
-    deleteItem = () => {
-        this.props.deleteItem()
-        this.props.hideAlert()
-    }
-
-    hideAlert = () => {
-        this.props.hideAlert()
-    }
-
     render() {
         const {show, item} = this.props
         return (
@@ -32,4 +23,13 @@ export class DeleteAlert extends React.Component {
         )
     }
 
-}
+    deleteItem = () => {
+        this.props.deleteItem()
+        this.props.hideAlert()
+    }
+
+    hideAlert = () => {
+        this.props.hideAlert()
+    }
+
+    }

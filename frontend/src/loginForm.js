@@ -26,76 +26,6 @@ export class Login extends React.Component {
 		}
 	}
 
-	handleInputChange = (event) => {
-		const target = event.target
-		const name = target.name
-		const value = target.value
-		this.setState({[name]:value})
-	}
-
-	loginSubmit = (event) => {
-		event && event.preventDefault()
-		axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/user/login',
-            data: {
-                email: this.state.email,
-                password: this.state.password
-            },
-        })
-        .then((response) => {
-			this.setState({...response.data})
-			})
-		.catch((err) => {
-			this.setState({errorMessage: 'Identifiants non reconnus'})
-			console.log({err})
-		})
-	}
-
-	signupSubmit = (event) => {
-		event && event.preventDefault()
-		if (this.state.password !== this.state.passwordCtrl) {
-			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
-		} else {
-			axios({
-				method: 'post',
-				url: 'http://localhost:3000/api/user/signup',
-				data: {
-					firstName: this.state.firstName,
-					lastName: this.state.lastName,
-					email: this.state.email,
-					password: this.state.password
-				},
-			})
-			.then((response)=> {
-				this.setState({...response.data})
-				this.loginSubmit()
-				})
-			.catch((err) => {
-				this.setState({errorMessage: 'Erreur - Utilisateur non créé...'})
-				console.log(err)
-			})
-		}
-	}
-
-	handleClick = (pw) => {
-		this.state[pw] === 'password' ? 
-			this.setState({[pw]: 'text'}) :
-			this.setState({[pw]: 'password'})
-	}
-	
-	pwSecurity = () => {
-		if (!pwSchema.validate(this.state.password)) {
-			alert(`Format de mot de passe non sécurisé !
-
-Votre mot de passe doit contenir :
-- au moins 8 caractères
-- au moins une majuscule
-- au moins une minuscule
-- au moins un chiffre`)
-		}
-	}
-
 	render () {
 		const nameFields = (<>
 			<div className='field'>
@@ -247,4 +177,76 @@ Votre mot de passe doit contenir :
 			</AuthContext.Provider>
 		)
 	}
+
+
+	handleInputChange = (event) => {
+		const target = event.target
+		const name = target.name
+		const value = target.value
+		this.setState({[name]:value})
+	}
+
+	loginSubmit = (event) => {
+		event && event.preventDefault()
+		axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/user/login',
+            data: {
+                email: this.state.email,
+                password: this.state.password
+            },
+        })
+        .then((response) => {
+			this.setState({...response.data})
+			})
+		.catch((err) => {
+			this.setState({errorMessage: 'Identifiants non reconnus'})
+			console.log({err})
+		})
+	}
+
+	signupSubmit = (event) => {
+		event && event.preventDefault()
+		if (this.state.password !== this.state.passwordCtrl) {
+			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
+		} else {
+			axios({
+				method: 'post',
+				url: 'http://localhost:3000/api/user/signup',
+				data: {
+					firstName: this.state.contextItems.firstName,
+					lastName: this.state.contextItems.lastName,
+					email: this.state.email,
+					password: this.state.password
+				},
+			})
+			.then((response)=> {
+				this.setState({...response.data})
+				this.loginSubmit()
+				})
+			.catch((err) => {
+				this.setState({errorMessage: 'Erreur - Inscription impossible'})
+				console.log(err)
+			})
+		}
+	}
+
+	handleClick = (pw) => {
+		this.state[pw] === 'password' ? 
+			this.setState({[pw]: 'text'}) :
+			this.setState({[pw]: 'password'})
+	}
+	
+	pwSecurity = () => {
+		if (!pwSchema.validate(this.state.password)) {
+			alert(`Format de mot de passe non sécurisé !
+
+Votre mot de passe doit contenir :
+- au moins 8 caractères
+- au moins une majuscule
+- au moins une minuscule
+- au moins un chiffre`)
+		}
+	}
+
 }

@@ -24,57 +24,13 @@ export class AllArticles extends React.Component {
         this.getArticleCommentsQty()
     }
 
-    displayArticleModal = (selectedArticle) => {
-        this.setState({
-            showArticleModal: true,
-        })
-    }
-
-    closeArticleModal = () => {
-        this.setState({
-            showArticleModal: false,
-        })
-        this.getArticleCommentsQty()
-    }
-
-    handleThumbUpChange = (likeOption) => {
-        this.props.handleThumbUpChange(this.props.article, likeOption)
-    }
-
-    handleThumbDownChange = (likeOption) => {
-        this.props.handleThumbDownChange(this.props.article, likeOption)
-    }
-
-    confirmDelete = () => {
-        this.setState({showAlert: true})
-    }
-
-    deleteArticle = () => {
-        this.props.deleteArticle()
-    }
-
-    modifyArticle = () => {
-        this.props.modifyArticle(this.props.article)
-    }
-
-    hideAlert = () => {
-        this.setState({showAlert: false})
-    }
-
     getArticleCommentsQty = async () => {
         const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
         const commentsQty = list ? list.length : 0
         return this.setState({commentsQty: commentsQty})
     }
 
-    createComment = () => {
-        this.props.createComment()
-    }
 
-    deleteComment = (Id) => {
-        this.props.deleteComment(Id)
-    }
-    
     render () {
         const { userId, admin } = this.context
         const { article } = this.props
@@ -86,8 +42,12 @@ export class AllArticles extends React.Component {
                     2
                     : 3
         )
-        const thumbUp = likeOption === 1 ? <RiThumbUpFill className='thumb-up' /> : <RiThumbUpLine className='thumb-line'/>
-        const thumbDown = likeOption === 2 ? <RiThumbDownFill className='thumb-down' /> : <RiThumbDownLine className='thumb-line'/>
+        const thumbUp = likeOption === 1 ?
+            <RiThumbUpFill className='thumb-up' />
+            : <RiThumbUpLine className='thumb-line'/>
+        const thumbDown = likeOption === 2 ?
+            <RiThumbDownFill className='thumb-down' />
+            : <RiThumbDownLine className='thumb-line'/>
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
         
@@ -149,4 +109,42 @@ export class AllArticles extends React.Component {
             />
         </>)
     }
+
+    displayArticleModal = () => {
+        this.setState({
+            showArticleModal: true,
+        })
+    }
+
+    closeArticleModal = () => {
+        this.setState({
+            showArticleModal: false,
+        })
+        this.getArticleCommentsQty()
+    }
+
+    handleThumbUpChange = (likeOption) => {
+        this.props.handleThumbUpChange(this.props.article, likeOption)
+    }
+
+    handleThumbDownChange = (likeOption) => {
+        this.props.handleThumbDownChange(this.props.article, likeOption)
+    }
+
+    confirmDelete = () => {
+        this.setState({showAlert: true})
+    }
+
+    deleteArticle = () => {
+        this.props.deleteArticle()
+    }
+
+    modifyArticle = () => {
+        this.props.modifyArticle(this.props.article)
+    }
+
+    hideAlert = () => {
+        this.setState({showAlert: false})
+    }
+           
 }
