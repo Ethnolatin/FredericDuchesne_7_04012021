@@ -3,7 +3,7 @@ function User({ firstName, lastName, email, password }) {
     this.lastName = lastName
     this.email = email
     this.password = password
-    this.admin = false
+    this.admin = 0
 }
 
 module.exports = User

@@ -15,7 +15,7 @@ export class Login extends React.Component {
 			token: '',
 			firstName: '',
 			lastName: '',
-			admin: false,
+			admin: 0,
 			email: '',
 			password:'',
             passwordCtrl: '',
@@ -193,7 +193,7 @@ export class Login extends React.Component {
             url: 'http://localhost:3000/api/user/login',
             data: {
                 email: this.state.email,
-                password: this.state.password
+                password: this.state.password,
             },
         })
         .then((response) => {
@@ -214,15 +214,14 @@ export class Login extends React.Component {
 				method: 'post',
 				url: 'http://localhost:3000/api/user/signup',
 				data: {
+					email: this.state.email,
+					password: this.state.password,
 					firstName: this.state.firstName,
 					lastName: this.state.lastName,
-					email: this.state.email,
-					password: this.state.password
 				},
 			})
 			.then((response)=> {
 				this.setState({...response.data})
-				this.loginSubmit()
 				})
 			.catch((err) => {
 				this.setState({errorMessage: 'Erreur - Inscription impossible'})

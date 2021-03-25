@@ -8,16 +8,25 @@ exports.signup = (req, res) => {
     // utilise la fonction de hachage 'bcrypt' pour chiffrer le mot de passe
     bcrypt.hash(req.body.password, 10)
     .then((hash) => {
-        const user = new User({
+        const newUser = new User({
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             email: req.body.email,
             password: hash,
         })
         // ajoute l'utilisateur à la base de données
-        dbConnect.query('INSERT INTO users SET ?', user, (error, result) => {
+        dbConnect.query('INSERT INTO users SET ?', newUser, (error, result) => {
             if (error) {return res.status(400).json({ error })}
-            return res.status(201).json({ message: 'Utilisateur créé !' })
+            const user = JSON.parse(JSON.stringify(newUser))
+            const Id = result.insertId
+            return res.status(201).json({
+                message: 'Utilisateur créé !',
+                userId: Id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                admin: user.admin,
+                token: jwt.sign({ userId: Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' })
+            })
         })
     })
     .catch((error) => res.status(500).json({ error }))
