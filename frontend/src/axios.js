@@ -1,5 +1,21 @@
 import axios from 'axios'
 
+export const logUser = async (url, data) => {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: 'http://localhost:3000/api/user/' + url,
+            data: data,
+        })
+        return response.data
+    } catch (err) {
+        const message = (url === 'login') ? 
+            {errorMessage: 'Identifiants non reconnus'}
+            : {errorMessage: 'Erreur - Inscription impossible'}
+        return message
+    }
+}
+
 export const createItem = async (url, token, userId, data) => {
     try {
         const response = await axios({

@@ -1,10 +1,10 @@
 import React from 'react'
-import { AuthContext } from './authContext'
-import axios from 'axios'
 import logo from './images/logo.svg'
 import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
 import groupomaniaWhite from './images/groupomaniaWhite.png'
+import { AuthContext } from './authContext'
 import { Homepage } from './homepage'
+import { logUser } from './axios'
 import { pwSchema } from './pwSchema'
 
 export class Login extends React.Component {
@@ -143,7 +143,6 @@ export class Login extends React.Component {
 			{passwordField}
 			{passwordCtrlField}
 		</>)
-		const handleSubmit = loginPage ? this.loginSubmit : this.signupSubmit
 
 		const contextValue = {
 			userId: this.state.userId,
@@ -160,7 +159,7 @@ export class Login extends React.Component {
 					) : (
 					<div className='login-page'>
 						{headerLogo}	
-						<form onSubmit={handleSubmit} className='login-form'>
+						<form onSubmit={this.loginSubmit} className='login-form'>
 							<h1>{title}</h1>
 							<hr />
 							{formFields}
@@ -186,47 +185,19 @@ export class Login extends React.Component {
 		this.setState({[name]:value})
 	}
 
-	loginSubmit = (event) => {
+	loginSubmit = async (event) => {
 		event && event.preventDefault()
-		axios({
-            method: 'post',
-            url: 'http://localhost:3000/api/user/login',
-            data: {
-                email: this.state.email,
-                password: this.state.password,
-            },
-        })
-        .then((response) => {
-			this.setState({...response.data})
-			})
-		.catch((err) => {
-			this.setState({errorMessage: 'Identifiants non reconnus'})
-			console.log({err})
-		})
-	}
-
-	signupSubmit = (event) => {
-		event && event.preventDefault()
-		if (this.state.password !== this.state.passwordCtrl) {
+		if (!this.state.loginPage && this.state.password !== this.state.passwordCtrl) {
 			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
 		} else {
-			axios({
-				method: 'post',
-				url: 'http://localhost:3000/api/user/signup',
-				data: {
-					email: this.state.email,
-					password: this.state.password,
-					firstName: this.state.firstName,
-					lastName: this.state.lastName,
-				},
-			})
-			.then((response)=> {
-				this.setState({...response.data})
-				})
-			.catch((err) => {
-				this.setState({errorMessage: 'Erreur - Inscription impossible'})
-				console.log(err)
-			})
+			const data = {
+				email: this.state.email,
+				password: this.state.password,
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
+			}
+			const response = await logUser ('signup', data)
+			this.setState({...response})
 		}
 	}
 
