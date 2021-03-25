@@ -190,13 +190,14 @@ export class Login extends React.Component {
 		if (!this.state.loginPage && this.state.password !== this.state.passwordCtrl) {
 			this.setState({errorMessage: 'Les deux mots de passe sont différents'})
 		} else {
+			const url = this.state.loginPage ? 'login' : 'signup'
 			const data = {
 				email: this.state.email,
 				password: this.state.password,
 				firstName: this.state.firstName,
 				lastName: this.state.lastName,
 			}
-			const response = await logUser ('signup', data)
+			const response = await logUser (url, data)
 			this.setState({...response})
 		}
 	}
