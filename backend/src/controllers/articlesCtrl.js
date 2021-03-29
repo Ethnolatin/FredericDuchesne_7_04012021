@@ -2,6 +2,7 @@ import fs from 'fs'
 import Article from '../models/Article'
 import dbConnect from '../models/dbConnect'
 import likesManagement from '../likesManagement'
+import resizeImage from '../resizeImage'
 
 // récupère tous les articles
 exports.getAllArticles = (req, res) => {
@@ -26,7 +27,10 @@ exports.createArticle = (req, res) => {
         ...articleObject,
     })
     // gère l'éventuelle image
-    if (req.file) {article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`}
+    if (req.file) {
+        resizeImage(req.file)
+        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    }
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
         if (error) {return res.status(400).json({ error })}
@@ -45,13 +49,14 @@ exports.modifyArticle = (req, res) => {
             else {console.log('Image supprimée...')}
         })
     }
-    // ajoute l'éventuelle nouvelle image dans backend/images
+    // ajoute l'éventuelle nouvelle image dans backend/images après l'avoir redimensionnée
     if (req.file) {
-            articleObject = {
-            ...req.body,
-            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-            }
-        } else {
+        resizeImage(req.file)
+        articleObject = {
+        ...req.body,
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        }
+    } else {
         articleObject = { ...req.body }
     }
     // met l'article à jour
