@@ -3,6 +3,7 @@ import Article from '../models/Article'
 import dbConnect from '../models/dbConnect'
 import likesManagement from '../likesManagement'
 import resizeImage from '../resizeImage'
+import deleteImages from '../deleteImages'
 
 // récupère tous les articles
 exports.getAllArticles = (req, res) => {
@@ -44,17 +45,14 @@ exports.modifyArticle = (req, res) => {
     // supprime l'éventuelle image antérieure de backend/images
     if (req.body.oldImage) {
         const imageName = req.body.oldImage.split('/images/')[1]
-        fs.unlink(`images/${imageName}`, (err) => {
-            if (err) {return res.status(402).json({ err })}
-            else {console.log('Image supprimée...')}
-        })
+        deleteImages(imageName)
     }
-    // ajoute l'éventuelle nouvelle image dans backend/images après l'avoir redimensionnée
+    // gère l'éventuelle nouvelle image
     if (req.file) {
         resizeImage(req.file)
         articleObject = {
         ...req.body,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}.webp`
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
         }
     } else {
         articleObject = { ...req.body }
@@ -74,13 +72,10 @@ exports.modifyArticle = (req, res) => {
 exports.deleteArticle = (req, res) => {
     dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
         if (error) {return res.status(500).json({ error })}
-        // détecte et supprime l'éventuelle image
-        if (result[0].image) {
+    // gère les éventuelles images
+    if (result[0].image) {
             const filename = result[0].image.split('/images/')[1]
-            fs.unlink(`images/${filename}`, (err) => {
-                if (err) {return res.status(402).json({ err })}
-                else {console.log('Image supprimée...')}
-            })
+            deleteImages(filename)
         }
         // supprime l'article
         dbConnect.query('DELETE FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
