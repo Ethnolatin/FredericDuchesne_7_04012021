@@ -8,6 +8,7 @@ import { DeleteButton } from '../deleteButton'
 import { DeleteAlert } from '../alerts'
 import { itemDate } from '../itemDate'
 import { getSomeItems } from '../axios'
+import { generateImageName } from '../generateImageName'
 
 export class AllArticles extends React.Component {
     static contextType = AuthContext
@@ -30,7 +31,7 @@ export class AllArticles extends React.Component {
         return this.setState({commentsQty: commentsQty})
     }
 
-
+    
     render () {
         const { userId, admin } = this.context
         const { article } = this.props
@@ -50,6 +51,7 @@ export class AllArticles extends React.Component {
             : <RiThumbDownLine className='thumb-line'/>
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
+        const resizedImage = generateImageName(article.image)
         
         return (<>
             <Card >
@@ -67,7 +69,13 @@ export class AllArticles extends React.Component {
                 <Card.Body onClick={this.displayArticleModal}>
                     <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
-                        <Card.Img src={article.image} maxwidth='100%' maxheight='100%' alt='' />
+                        <Card.Img
+                            src={article.image}
+                            srcSet={`${resizedImage.xs} 300w, ${resizedImage.s} 500w, ${article.image} 800w`}
+                            sizes='100vw'
+                            maxwidth='100%' maxheight='100%'
+                            alt=''
+                        />
                     }
                     { article.text &&
                         <Card.Text>{article.text}</Card.Text>

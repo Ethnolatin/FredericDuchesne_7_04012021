@@ -7,6 +7,7 @@ import { DeleteAlert } from '../alerts'
 import { deleteItem } from '../axios'
 import { AuthContext } from '../authContext'
 import { getSomeItems } from '../axios'
+import { generateImageName } from '../generateImageName'
 
 export class SingleArticle extends React.Component {
     static contextType = AuthContext
@@ -38,6 +39,7 @@ export class SingleArticle extends React.Component {
         const { userId, admin } = this.context
         const { article } = this.props
         const articleComments = this.state.articleComments
+        const resizedImage = generateImageName(article.image)
 
         return (<>
             <Modal show={this.props.showArticleModal} onHide={this.closeArticleModal} animation={false}>
@@ -45,7 +47,12 @@ export class SingleArticle extends React.Component {
                     <Modal.Title>{article.title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {article.image && <Image src={article.image} width='100%' height='100%' alt={article.title}/>}
+                    {article.image && <Image 
+                        src={article.image}
+                        srcSet={`${resizedImage.xs} 300w, ${resizedImage.s} 500w, ${article.image} 800w`}
+                        sizes='100vw'
+                        width='100%' height='100%' alt={article.title}
+                    />}
                     {article.text}
                     {this.state.commentsQty !== 0 && <>
                         <div className='comments spacer'>Commentaires</div>
