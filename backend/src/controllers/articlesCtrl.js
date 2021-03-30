@@ -29,7 +29,7 @@ exports.createArticle = (req, res) => {
     // gère l'éventuelle image
     if (req.file) {
         resizeImage(req.file)
-        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}.webp`
     }
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
@@ -54,7 +54,7 @@ exports.modifyArticle = (req, res) => {
         resizeImage(req.file)
         articleObject = {
         ...req.body,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}.webp`
         }
     } else {
         articleObject = { ...req.body }

@@ -8,7 +8,8 @@ export default (file) => {
             fit: sharp.fit.inside,
             withoutEnlargement: true
         })
-        .toFile(path.resolve('images', file.filename))
+        .toFormat('webp')
+        .toFile(path.resolve('images', file.filename.split('.')[0] + '.webp'))
             .then(() => {fs.unlinkSync(file.path)})
             .catch(err => {console.log(err)})
 }
