@@ -4,7 +4,7 @@ import fs from 'fs'
 
 export default (file) => {
     sharp(file.path)
-        .resize(500, 500, {
+        .resize(800, 800, {
             fit: sharp.fit.inside,
             withoutEnlargement: true
         })

@@ -12,6 +12,7 @@ export default function Navigation() {
                     alt='Groupomania logo'
                     src={iconTextWhite}
                     className='d-inline-block align-top'
+                    width='200' height='32' 
                 />{' '}
             </Navbar.Brand>
             <Button href='/'>

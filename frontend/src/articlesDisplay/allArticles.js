@@ -67,7 +67,7 @@ export class AllArticles extends React.Component {
                 <Card.Body onClick={this.displayArticleModal}>
                     <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
-                        <Card.Img src={article.image} alt='' />
+                        <Card.Img src={article.image} maxwidth='100%' maxheight='100%' alt='' />
                     }
                     { article.text &&
                         <Card.Text>{article.text}</Card.Text>
