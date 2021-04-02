@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Navbar } from 'react-bootstrap'
 import { FaSignOutAlt } from 'react-icons/fa'
-import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
+import iconTextWhite from '../images/icon-left-font-monochrome-white.svg'
 
 export default function Navigation() {
 

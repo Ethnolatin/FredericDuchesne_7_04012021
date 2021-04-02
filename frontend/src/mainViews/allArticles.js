@@ -3,12 +3,12 @@ import { Card, Button } from 'react-bootstrap'
 import { RiThumbUpFill, RiThumbDownFill, RiThumbUpLine, RiThumbDownLine } from 'react-icons/ri'
 import { FaCommentAlt, FaEdit } from 'react-icons/fa'
 import { SingleArticle } from './singleArticle'
-import { AuthContext } from '../authContext'
-import { DeleteButton } from '../deleteButton'
-import { DeleteAlert } from '../alerts'
-import { itemDate } from '../itemDate'
+import { DeleteAlert } from './alerts'
 import { getSomeItems } from '../axios'
-import { generateImageName } from '../generateImageName'
+import { AuthContext } from '../components/authContext'
+import { DeleteButton } from '../components/deleteButton'
+import { generateImageName } from '../components/generateImageName'
+import { itemDate } from '../components/itemDate'
 
 export class AllArticles extends React.Component {
     static contextType = AuthContext

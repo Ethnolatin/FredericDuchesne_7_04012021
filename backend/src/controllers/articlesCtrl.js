@@ -1,9 +1,9 @@
 import fs from 'fs'
 import Article from '../models/Article'
 import dbConnect from '../models/dbConnect'
-import likesManagement from '../likesManagement'
-import resizeImage from '../resizeImage'
-import deleteImages from '../deleteImages'
+import likesManagement from '../components/likesManagement'
+import resizeImage from '../components/resizeImage'
+import deleteImages from '../components/deleteImages'
 
 // récupère tous les articles
 exports.getAllArticles = (req, res) => {

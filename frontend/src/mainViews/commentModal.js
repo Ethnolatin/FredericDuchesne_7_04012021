@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
-import { AuthContext } from '../authContext'
 import { createItem } from '../axios'
+import { AuthContext } from '../components/authContext'
 
 export class CommentModal extends React.Component {
 	static contextType = AuthContext

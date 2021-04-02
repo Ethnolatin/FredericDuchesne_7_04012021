@@ -10,7 +10,6 @@ export const itemDate = (timeStamp) => {
             date={timeStamp}
         />
     )
-        
 }
 
 const calendarStrings = {

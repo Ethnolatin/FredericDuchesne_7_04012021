@@ -1,4 +1,4 @@
-import logo from './images/logo.svg'
+import logo from '../images/logo.svg'
 
 export const Loader = () => {
     return (
@@ -8,4 +8,3 @@ export const Loader = () => {
 		</div>
     )
 }
-

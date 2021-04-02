@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import articlesCtrl from '../controllers/articlesCtrl'
-import auth from '../middleware/auth'
-import multer from '../middleware/multer-config'
+import auth from '../middlewares/auth'
+import multer from '../middlewares/multer-config'
 
 const router = Router()
 

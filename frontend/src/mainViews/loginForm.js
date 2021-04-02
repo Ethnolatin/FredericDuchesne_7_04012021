@@ -1,11 +1,11 @@
 import React from 'react'
-import logo from './images/logo.svg'
-import iconTextWhite from './images/icon-left-font-monochrome-white.svg'
-import groupomaniaWhite from './images/groupomaniaWhite.png'
-import { AuthContext } from './authContext'
 import { Homepage } from './homepage'
-import { logUser } from './axios'
-import { pwSchema } from './pwSchema'
+import { logUser } from '../axios'
+import { AuthContext } from '../components/authContext'
+import { pwSchema } from '../components/pwSchema'
+import groupomaniaWhite from '../images/groupomaniaWhite.png'
+import iconTextWhite from '../images/icon-left-font-monochrome-white.svg'
+import logo from '../images/logo.svg'
 
 export class Login extends React.Component {
 	constructor(props) {
@@ -26,6 +26,7 @@ export class Login extends React.Component {
 		}
 	}
 
+	
 	render () {
 		const nameFields = (<>
 			<div className='field'>

@@ -2,8 +2,6 @@ import sharp from 'sharp'
 import path from 'path'
 import fs from 'fs'
 
-
-
 export default (file) => {
     const filename = file.filename.split('.')[0]
     const imgSizes = [300, 500, 800]

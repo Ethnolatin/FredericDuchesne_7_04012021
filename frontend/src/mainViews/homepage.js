@@ -2,14 +2,14 @@ import React from 'react'
 import Dropdown from 'react-dropdown'
 import Button from 'react-bootstrap/Button'
 import { FaUserCog } from 'react-icons/fa'
-import Navigation from './navigation'
-import { AuthContext } from './authContext'
-import { Loader } from './loader'
+import { AdminModal } from './adminModal'
+import { AllArticles } from './allArticles'
+import { CreateModal } from './createModal'
 import { Login } from './loginForm'
-import { AllArticles } from './articlesDisplay/allArticles'
-import { CreateModal } from './modals/createModal'
-import { AdminModal } from './modals/adminModal'
-import { getAllItems, createItem, updateItem, deleteItem, likeItem } from './axios'
+import { getAllItems, createItem, updateItem, deleteItem, likeItem } from '../axios'
+import { AuthContext } from '../components/authContext'
+import { Loader } from '../components/loader'
+import Navigation from '../components/navigation'
 import 'react-dropdown/style.css'
 
 export class Homepage extends React.Component {
@@ -91,7 +91,6 @@ export class Homepage extends React.Component {
         }
     }
 
-
     displayArticlesList = () => {
         if(this.state.loading) {return <Loader />}
         const options = ['date', 'score', 'auteur']
@@ -147,7 +146,6 @@ export class Homepage extends React.Component {
             </div>
         )
     }
-
 
     createArticle = async (event) => {
         event && event.preventDefault()

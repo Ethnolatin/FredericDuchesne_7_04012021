@@ -1,13 +1,12 @@
 import React from 'react'
 import { Modal, Image } from 'react-bootstrap'
-import { CommentModal } from '../modals/commentModal'
-import { itemDate } from '../itemDate'
-import { DeleteButton } from '../deleteButton'
-import { DeleteAlert } from '../alerts'
-import { deleteItem } from '../axios'
-import { AuthContext } from '../authContext'
-import { getSomeItems } from '../axios'
-import { generateImageName } from '../generateImageName'
+import { DeleteAlert } from './alerts'
+import { CommentModal } from './commentModal'
+import { deleteItem, getSomeItems } from '../axios'
+import { AuthContext } from '../components/authContext'
+import { DeleteButton } from '../components/deleteButton'
+import { generateImageName } from '../components/generateImageName'
+import { itemDate } from '../components/itemDate'
 
 export class SingleArticle extends React.Component {
     static contextType = AuthContext

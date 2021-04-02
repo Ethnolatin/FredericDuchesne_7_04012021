@@ -1,8 +1,8 @@
 import React from 'react'
 import { Modal, Table } from 'react-bootstrap'
-import { DeleteButton } from '../deleteButton'
-import { DeleteAlert } from '../alerts'
-import { AuthContext } from '../authContext'
+import { DeleteAlert } from './alerts'
+import { DeleteButton } from '../components/deleteButton'
+import { AuthContext } from '../components/authContext'
 import { getAllItems, updateItem, deleteItem } from '../axios'
 
 export class AdminModal extends React.Component {
