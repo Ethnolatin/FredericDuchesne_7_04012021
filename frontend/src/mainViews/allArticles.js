@@ -67,7 +67,7 @@ export class AllArticles extends React.Component {
                     {itemDate(article.timeStamp)}
                 </Card.Header>
                 <Card.Body onClick={this.displayArticleModal}>
-                    <Card.Title>{article.Id}-{article.title}</Card.Title>
+                    <Card.Title>{article.title}</Card.Title>
                     { article.image &&
                         <Card.Img
                             src={article.image}

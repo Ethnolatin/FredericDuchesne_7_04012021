@@ -8441,6 +8441,12 @@ header p {
   font-size: 0.8rem;
 }
 
+/*-------------------- CARD --------------------*/
+.card {
+  border: 4px solid #ffd7d7;
+  border-radius: 0.5rem;
+}
+
 /*-------------------- CARD HEADER --------------------*/
 .card-header {
   font-size: 0.8rem;
