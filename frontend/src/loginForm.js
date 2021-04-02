@@ -159,7 +159,7 @@ export class Login extends React.Component {
 					) : (
 					<div className='login-page'>
 						{headerLogo}	
-						<form onSubmit={this.loginSubmit} className='login-form'>
+						<form onSubmit={this.loginSubmit} name='loginForm' className='login-form'>
 							<h1>{title}</h1>
 							<hr />
 							{formFields}
@@ -210,6 +210,7 @@ export class Login extends React.Component {
 	
 	pwSecurity = () => {
 		if (!pwSchema.validate(this.state.password)) {
+			document.loginForm.password.focus()
 			alert(`Format de mot de passe non sécurisé !
 
 Votre mot de passe doit contenir :
