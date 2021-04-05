@@ -1,5 +1,4 @@
 import express from 'express'
-import bodyParser from 'body-parser'
 import path from 'path'
 import articlesRoutes from './src/routes/articlesRoutes'
 import commentsRoutes from './src/routes/commentsRoutes'
@@ -28,10 +27,10 @@ app.use((req, res, next) => {
 })
 
 // utilise body-parser pour exploiter le corps d'une requête de type application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 // utilise body-parser pour transformer le corps de la requête en json exploitable
-app.use(bodyParser.json())
+app.use(express.json())
 
 // gère la ressource 'images' de manière statique
 app.use('/images', express.static(path.join(__dirname, 'images')))
