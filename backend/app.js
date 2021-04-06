@@ -4,7 +4,7 @@ import articlesRoutes from './src/routes/articlesRoutes'
 import commentsRoutes from './src/routes/commentsRoutes'
 import userRoutes from './src/routes/userRoutes'
 import adminRoutes from './src/routes/adminRoutes'
-import dbConnect from './src/models/dbConnect'
+import dbConnect from './src/dbConnect'
 
 // se connecte à la base 'groupomania' sur mysql
 // grâce à l'identifiant et au mot de passe fournis dans un fichier .env

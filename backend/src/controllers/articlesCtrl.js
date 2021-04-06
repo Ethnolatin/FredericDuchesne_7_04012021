@@ -1,6 +1,6 @@
 import fs from 'fs'
 import Article from '../models/Article'
-import dbConnect from '../models/dbConnect'
+import dbConnect from '../dbConnect'
 import likesManagement from '../components/likesManagement'
 import resizeImage from '../components/resizeImage'
 import deleteImages from '../components/deleteImages'

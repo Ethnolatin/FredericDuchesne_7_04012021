@@ -1,5 +1,5 @@
 import Comment from '../models/Comment'
-import dbConnect from '../models/dbConnect'
+import dbConnect from '../dbConnect'
 
 // crée un nouveau commentaire
 exports.createComment = (req, res) => {

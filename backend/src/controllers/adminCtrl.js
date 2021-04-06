@@ -1,4 +1,4 @@
-import dbConnect from '../models/dbConnect'
+import dbConnect from '../dbConnect'
 
 // récupère le nom de tous les utilisateurs
 exports.getAllUsers = (req, res) => {
