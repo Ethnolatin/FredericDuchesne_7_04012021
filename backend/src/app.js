@@ -1,10 +1,9 @@
 import express from 'express'
-import path from 'path'
-import articlesRoutes from './src/routes/articlesRoutes'
-import commentsRoutes from './src/routes/commentsRoutes'
-import userRoutes from './src/routes/userRoutes'
-import adminRoutes from './src/routes/adminRoutes'
-import dbConnect from './src/dbConnect'
+import articlesRoutes from './routes/articlesRoutes'
+import commentsRoutes from './routes/commentsRoutes'
+import userRoutes from './routes/userRoutes'
+import adminRoutes from './routes/adminRoutes'
+import dbConnect from './dbConnect'
 
 // se connecte à la base 'groupomania' sur mysql
 // grâce à l'identifiant et au mot de passe fournis dans un fichier .env
@@ -33,7 +32,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // gère la ressource 'images' de manière statique
-app.use('/images', express.static(path.join(__dirname, 'images')))
+app.use('/images', express.static('./images'))
+// app.use('/images', express.static(path.join(__dirname, 'images')))
 // route par défaut pour les articles
 app.use('/api/articles', articlesRoutes)
 // route par défaut pour les commentaires

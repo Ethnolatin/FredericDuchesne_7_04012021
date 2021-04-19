@@ -7,7 +7,7 @@ const app = require('./app')
 
 const server = http.createServer(app)
 
-// renvoie un port valide (3000 par défaut)
+// renvoie un port valide (3002 par défaut)
 const normalizePort = (val) => {
     const port = parseInt(val, 10)
     if (Number.isNaN(port)) {
@@ -18,7 +18,7 @@ const normalizePort = (val) => {
     }
     return false
 }
-const port = normalizePort(process.env.PORT || '3000')
+const port = normalizePort(process.env.DB_PORT || '3002')
 app.set('port', port)
 
 // recherche et gère les erreurs

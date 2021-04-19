@@ -1,10 +1,11 @@
 import axios from 'axios'
+const hostName = (process.env.REACT_APP_BACK_HOST || 'localhost') + ':' + (process.env.REACT_APP_BACK_PORT || 3002)
 
 export const logUser = async (url, data) => {
     try {
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/user/' + url,
+            url: 'http://' + hostName + '/api/user/' + url,
             data: data,
         })
         return response.data
@@ -20,7 +21,7 @@ export const createItem = async (url, token, userId, data) => {
     try {
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/' + url,
+            url: 'http://' + hostName + '/api/' + url,
             params: { userId },
             data: data,
             headers: { 'Authorization': 'Bearer ' + token }
@@ -36,7 +37,7 @@ export const getAllItems = async (url, token, userId) => {
     try {
         const response = await axios({
             method: 'get',
-            url: 'http://localhost:3000/api/' + url,
+            url: 'http://' + hostName + '/api/' + url,
             params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -51,7 +52,7 @@ export const getSomeItems = async (url, token, userId, Id) => {
     try {
         const response = await axios({
             method: 'get',
-            url: 'http://localhost:3000/api/' + url + Id,
+            url: 'http://' + hostName + '/api/' + url + Id,
             params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -65,7 +66,7 @@ export const updateItem = async (url, token, userId, data, Id) => {
     try {
         const response = await axios({
             method: 'put',
-            url: 'http://localhost:3000/api/' + url + Id,
+            url: 'http://' + hostName + '/api/' + url + Id,
             data: data,
             params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
@@ -81,7 +82,7 @@ export const deleteItem = async (url, token, userId, Id) => {
     try {
         const response = await axios({
             method: 'delete',
-            url: 'http://localhost:3000/api/' + url + Id,
+            url: 'http://' + hostName + '/api/' + url + Id,
             params: { userId },
             headers: { 'Authorization': 'Bearer ' + token }
         })
@@ -96,7 +97,7 @@ export const likeItem = async (url, token, userId, item, like) => {
     try {
         const response = await axios({
             method: 'post',
-            url: 'http://localhost:3000/api/' + url + item.Id + '/like',
+            url: 'http://' + hostName + '/api/' + url + item.Id + '/like',
             data: {
                 userId: userId,
                 like: like

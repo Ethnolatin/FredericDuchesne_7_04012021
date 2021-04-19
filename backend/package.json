@@ -5,8 +5,8 @@
   "main": "server.js",
   "license": "ISC",
   "scripts": {
-    "build": "babel ./src --out-dir ./build",
-    "start": "nodemon --exec babel-node server.js",
+    "start": "babel ./src --out-dir ./build && mkdirp images/temp && babel-node build/server.js",
+    "dev": "nodemon --exec babel-node src/server.js",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
