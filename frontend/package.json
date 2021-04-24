@@ -21,8 +21,8 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
-    "build": "react-scripts build && serve -s build",
-    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "start": "serve -s build",
     "dev": "react-scripts start",
     "sass": "sass --watch src/styles/sass/style.scss:src/styles/css/style.css",
     "test": "react-scripts test",
