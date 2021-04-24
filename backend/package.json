@@ -5,13 +5,19 @@
   "main": "server.js",
   "license": "ISC",
   "scripts": {
-    "start": "babel ./src --out-dir ./build && mkdirp images/temp && babel-node build/server.js",
+    "build": "babel ./src --out-dir ./build && mkdirp images/temp && npm start",
+    "start": "babel-node build/server.js",
     "dev": "nodemon --exec babel-node src/server.js",
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Frederic Duchesne",
   "dependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/runtime": "^7.12.5",
     "@mysql/xdevapi": "8.0.22",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
@@ -27,11 +33,6 @@
     "standard": "^16.0.3"
   },
   "devDependencies": {
-    "@babel/cli": "^7.12.10",
-    "@babel/core": "^7.12.10",
-    "@babel/node": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@babel/runtime": "^7.12.5",
     "@types/jsonwebtoken": "^8.5.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.16.0",
