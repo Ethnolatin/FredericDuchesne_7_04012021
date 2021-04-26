@@ -18,10 +18,10 @@
     ```
     PORT='votre_port'
     ```
-   - créer un fichier `.env` à la racine du dossier `frontend/` et y renseigner la variables suivante :
+   - créer un fichier `.env` à la racine du dossier `frontend/` et y renseigner la variable suivante :
     ```
     REACT_APP_SERVER_PORT=votre_port
     ```
-5. Depuis le terminal du dossier `backend/`, exécuter `npm install` puis `npm run build`.
-6. Depuis le terminal du dossier `frontend/`, exécuter `npm install` puis `npm run build`.
+5. Depuis le terminal du dossier `backend/`, exécuter `npm install` puis `npm run build` et enfin `npm start`.
+6. Depuis le terminal du dossier `frontend/`, exécuter `npm install` puis `npm run build` et enfin `npx serve -s build`.
 7. L'appli est disponible sur `http://localhost:5000`.
