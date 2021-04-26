@@ -94,6 +94,7 @@ export class Homepage extends React.Component {
     displayArticlesList = () => {
         if(this.state.loading) {return <Loader />}
         const options = ['date', 'score', 'auteur']
+        const previewImage = this.definePreviewImage()
 
         return (
             <div>
@@ -110,20 +111,6 @@ export class Homepage extends React.Component {
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>
                 </header>
-                <main>{
-                    this.state.articlesCollection.map((article) => {
-                        const previewImage = this.definePreviewImage()
-                        return(
-                            <div key={article.Id}>
-                                
-                                <AllArticles
-                                    handleThumbUpChange={this.handleThumbUpChange}
-                                    handleThumbDownChange={this.handleThumbDownChange}
-                                    deleteArticle={this.deleteArticle}
-                                    modifyArticle={this.modifyArticle}
-                                    article={article}
-                                />
-
                                 <CreateModal
                                     closeCreateModal={this.closeCreateModal}
                                     saveCreateModal={this.saveCreateModal}
@@ -134,10 +121,20 @@ export class Homepage extends React.Component {
                                     showCreateModal={this.state.showCreateModal}
                                     articleModification={this.state.articleModification}
                                 />
-
                                 <AdminModal
                                     closeAdminModal={this.closeAdminModal}
                                     showAdminModal={this.state.showAdminModal}
+                                />
+                <main>{
+                    this.state.articlesCollection.map((article) => {
+                        return(
+                            <div key={article.Id}>
+                                <AllArticles
+                                    handleThumbUpChange={this.handleThumbUpChange}
+                                    handleThumbDownChange={this.handleThumbDownChange}
+                                    deleteArticle={this.deleteArticle}
+                                    modifyArticle={this.modifyArticle}
+                                    article={article}
                                 />
                             </div>
                         )
