@@ -111,20 +111,20 @@ export class Homepage extends React.Component {
                     <Dropdown controlClassName='btn' options={options} onChange={this._onSelect} placeholder="Trier par :" />
                     <Button onClick={() => this.displayCreateModal()} >Ecrire un article</Button>
                 </header>
-                                <CreateModal
-                                    closeCreateModal={this.closeCreateModal}
-                                    saveCreateModal={this.saveCreateModal}
-                                    handleImageInput={this.handleImageInput}
-                                    publishArticle={this.publishArticle}
-                                    noImage={this.noImage}
-                                    previewImage={previewImage}
-                                    showCreateModal={this.state.showCreateModal}
-                                    articleModification={this.state.articleModification}
-                                />
-                                <AdminModal
-                                    closeAdminModal={this.closeAdminModal}
-                                    showAdminModal={this.state.showAdminModal}
-                                />
+                <CreateModal
+                    closeCreateModal={this.closeCreateModal}
+                    saveCreateModal={this.saveCreateModal}
+                    handleImageInput={this.handleImageInput}
+                    publishArticle={this.publishArticle}
+                    noImage={this.noImage}
+                    previewImage={previewImage}
+                    showCreateModal={this.state.showCreateModal}
+                    articleModification={this.state.articleModification}
+                />
+                <AdminModal
+                    closeAdminModal={this.closeAdminModal}
+                    showAdminModal={this.state.showAdminModal}
+                />
                 <main>{
                     this.state.articlesCollection.map((article) => {
                         return(

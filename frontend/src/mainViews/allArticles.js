@@ -67,7 +67,7 @@ export class AllArticles extends React.Component {
                     {itemDate(article.timeStamp)}
                 </Card.Header>
                 <Card.Body onClick={this.displayArticleModal}>
-                    <Card.Title>{article.title}</Card.Title>
+                    <Card.Title>{article.Id}-{article.title}</Card.Title>
                     { article.image &&
                         <Card.Img
                             src={article.image}
@@ -75,6 +75,7 @@ export class AllArticles extends React.Component {
                             sizes='100vw'
                             maxwidth='100%' maxheight='100%'
                             alt=''
+                            onLoad={this.onLoad} 
                         />
                     }
                     { article.text &&
@@ -116,6 +117,10 @@ export class AllArticles extends React.Component {
                 article={article}
             />
         </>)
+    }
+
+    onLoad = (event) => {
+        console.log(this.props.article.Id, event.target.currentSrc)
     }
 
     displayArticleModal = () => {
