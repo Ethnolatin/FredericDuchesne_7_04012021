@@ -22,41 +22,31 @@ exports.getOneArticle = (req, res) => {
 }
 
 // crée un nouvel article
-exports.createArticle = (req, res) => {
+exports.createArticle = async (req, res) => {
     const articleObject = req.body
     const article = new Article({
         ...articleObject,
     })
     // gère l'éventuelle image
-    if (req.file) {
-        resizeImage(req.file)
-        article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
-    }
+    await manageImage()
     // ajoute l'article à la base de données
     dbConnect.query('INSERT INTO articles SET ?', article, (error, result) => {
         if (error) {return res.status(400).json({ error })}
         res.status(201).json({ message: 'Article enregistré !' })
     })
+    async function manageImage() {
+        if (req.file) {
+            resizeImage(req.file)
+            article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
+        }
+    }
 }
 
 // modifie un article en fonction de son Id
-exports.modifyArticle = (req, res) => {
+exports.modifyArticle = async (req, res) => {
     let articleObject
-    // supprime l'éventuelle image antérieure de backend/images
-    if (req.body.oldImage) {
-        const imageName = req.body.oldImage.split('/images/')[1]
-        deleteImages(imageName)
-    }
-    // gère l'éventuelle nouvelle image
-    if (req.file) {
-        resizeImage(req.file)
-        articleObject = {
-        ...req.body,
-        image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
-        }
-    } else {
-        articleObject = { ...req.body }
-    }
+    // gère l'éventuelle image
+    await manageImage()
     // met l'article à jour
     dbConnect.query(
         'UPDATE articles SET title = ?, text = ?, image = ? WHERE id = ?',
@@ -66,6 +56,24 @@ exports.modifyArticle = (req, res) => {
             res.status(201).json({ message: 'Article modifié !' })
         }
     )
+    async function manageImage() {
+        // supprime l'éventuelle image antérieure de backend/images
+        if (req.body.oldImage) {
+            const imageName = req.body.oldImage.split('/images/')[1]
+            deleteImages(imageName)
+        }
+        // gère l'éventuelle nouvelle image
+        if (req.file) {
+            resizeImage(req.file)
+            articleObject = {
+            ...req.body,
+            image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
+            }
+        } else {
+            articleObject = { ...req.body }
+        }
+        return
+    }
 }
 
 // supprime un article en fonction de son Id

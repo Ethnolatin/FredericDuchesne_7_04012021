@@ -52,6 +52,7 @@ export class AllArticles extends React.Component {
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
         const resizedImage = generateImageName(article.image)
+        const {sImage, xsImage} = resizedImage || {}
         
         return (<>
             <Card >
@@ -71,7 +72,7 @@ export class AllArticles extends React.Component {
                     { article.image &&
                         <Card.Img
                             src={article.image}
-                            srcSet={`${resizedImage.xs} 300w, ${resizedImage.s} 500w, ${article.image} 800w`}
+                            srcSet={`${xsImage} 300w, ${sImage} 500w, ${article.image} 800w`}
                             sizes='100vw'
                             maxwidth='100%' maxheight='100%'
                             alt=''
