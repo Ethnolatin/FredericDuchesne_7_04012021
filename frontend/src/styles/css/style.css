@@ -8474,6 +8474,7 @@ header p {
 }
 
 .card-text {
+  white-space: pre-wrap;
   line-height: 1.2rem;
   max-height: 3rem;
   margin: 0.5rem 0;
@@ -8543,6 +8544,10 @@ header p {
 }
 
 /*-------------------- COMMENTS --------------------*/
+.modal-body {
+  white-space: pre-wrap;
+}
+
 .comments {
   font-size: 0.9rem;
 }
