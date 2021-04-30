@@ -7,7 +7,7 @@ import { DeleteAlert } from './alerts'
 import { getSomeItems } from '../axios'
 import { AuthContext } from '../components/authContext'
 import { DeleteButton } from '../components/deleteButton'
-import { generateImageName } from '../components/generateImageName'
+// import { generateImageName } from '../components/generateImageName'
 import { itemDate } from '../components/itemDate'
 
 export class AllArticles extends React.Component {
@@ -51,8 +51,8 @@ export class AllArticles extends React.Component {
             : <RiThumbDownLine className='thumb-line'/>
         const myArticle = article.writerId === userId.toString()
         const writer = myArticle ? 'moi' : article.writerName
-        const resizedImage = generateImageName(article.image)
-        const {sImage, xsImage} = resizedImage || {}
+        // const resizedImage = generateImageName(article.image)
+        // const {sImage, xsImage} = resizedImage || {}
         
         return (<>
             <Card >
@@ -72,7 +72,7 @@ export class AllArticles extends React.Component {
                     { article.image &&
                         <Card.Img
                             src={article.image}
-                            srcSet={`${xsImage} 300w, ${sImage} 500w, ${article.image} 800w`}
+                            // srcSet={`${xsImage} 300w, ${sImage} 500w, ${article.image} 800w`}
                             sizes='100vw'
                             maxwidth='100%' maxheight='100%'
                             alt=''

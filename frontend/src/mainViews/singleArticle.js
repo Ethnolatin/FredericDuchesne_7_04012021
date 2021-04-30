@@ -5,7 +5,7 @@ import { CommentModal } from './commentModal'
 import { deleteItem, getSomeItems } from '../axios'
 import { AuthContext } from '../components/authContext'
 import { DeleteButton } from '../components/deleteButton'
-import { generateImageName } from '../components/generateImageName'
+// import { generateImageName } from '../components/generateImageName'
 import { itemDate } from '../components/itemDate'
 
 export class SingleArticle extends React.Component {
@@ -38,7 +38,8 @@ export class SingleArticle extends React.Component {
         const { userId, admin } = this.context
         const { article } = this.props
         const articleComments = this.state.articleComments
-        const resizedImage = generateImageName(article.image)
+        // const resizedImage = generateImageName(article.image)
+        // const {sImage, xsImage} = resizedImage || {}
 
         return (<>
             <Modal show={this.props.showArticleModal} onHide={this.closeArticleModal} animation={false}>
@@ -48,7 +49,7 @@ export class SingleArticle extends React.Component {
                 <Modal.Body>
                     {article.image && <Image 
                         src={article.image}
-                        srcSet={`${resizedImage.xs} 300w, ${resizedImage.s} 500w, ${article.image} 800w`}
+                        // srcSet={`${xsImage} 300w, ${sImage} 500w, ${article.image} 800w`}
                         sizes='100vw'
                         width='100%' height='100%' alt={article.title}
                     />}

@@ -2,7 +2,7 @@ import fs from 'fs'
 import Article from '../models/Article'
 import dbConnect from '../dbConnect'
 import likesManagement from '../components/likesManagement'
-import resizeImage from '../components/resizeImage'
+import declineImage from '../components/declineImage'
 import deleteImages from '../components/deleteImages'
 
 // récupère tous les articles
@@ -36,7 +36,7 @@ exports.createArticle = async (req, res) => {
     })
     async function manageImage() {
         if (req.file) {
-            resizeImage(req.file)
+            declineImage(req.file)
             article.image = `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
         }
     }
@@ -64,7 +64,7 @@ exports.modifyArticle = async (req, res) => {
         }
         // gère l'éventuelle nouvelle image
         if (req.file) {
-            resizeImage(req.file)
+            declineImage(req.file)
             articleObject = {
             ...req.body,
             image: `${req.protocol}://${req.get('host')}/images/${req.file.filename.split('.')[0]}-800.webp`
