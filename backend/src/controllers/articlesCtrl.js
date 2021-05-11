@@ -7,18 +7,13 @@ import deleteImages from '../components/deleteImages'
 
 // récupère tous les articles
 exports.getAllArticles = (req, res) => {
-    dbConnect.query('SELECT * FROM articles', (error, result) => {
-        if (error) {return res.status(400).json({ error })}
-        res.status(200).json(result)
-    })
-}
-
-// récupère un article en fonction de son Id
-exports.getOneArticle = (req, res) => {
-    dbConnect.query('SELECT * FROM articles WHERE Id = ?', [req.params.id], (error, result) => {
-        if (error) {return res.status(400).json({ error })}
-        res.status(200).json(result)
-    })
+    dbConnect.query(
+        'SELECT articles.*, CONCAT(users.firstName, " ", users.lastName) AS writerName FROM users JOIN articles ON users.Id = articles.writerId',
+        (error, result) => {
+            if (error) {return res.status(400).json({ error })}
+            res.status(200).json(result)
+        }
+    )
 }
 
 // crée un nouvel article

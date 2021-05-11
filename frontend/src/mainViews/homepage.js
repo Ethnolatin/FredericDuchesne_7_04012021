@@ -152,7 +152,6 @@ export class Homepage extends React.Component {
         const formData = new FormData()
         newArticleImageFile && formData.append('image', newArticleImageFile)
         formData.append('writerId', this.context.userId)
-        formData.append('writerName', this.context.firstName + ' ' + this.context.lastName)
         formData.append('title', newArticleTitle)
         newArticleText && formData.append('text', newArticleText)
         await createItem('articles/', this.context.token, this.context.userId, formData)

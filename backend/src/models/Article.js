@@ -1,6 +1,5 @@
-function Article({ writerId, writerName, title, text, image }) {
+function Article({ writerId, title, text, image }) {
     this.writerId = writerId
-    this.writerName = writerName
     this.title = title
     this.text = text
     this.image = image

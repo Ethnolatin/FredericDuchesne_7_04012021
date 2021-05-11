@@ -12,7 +12,6 @@ router.post('/:id/like', auth, articlesCtrl.likeArticle)
 router.post('/', auth, multer, articlesCtrl.createArticle)
 router.put('/:id', auth, multer, articlesCtrl.modifyArticle)
 router.delete('/:id', auth, articlesCtrl.deleteArticle)
-router.get('/:id', auth, articlesCtrl.getOneArticle)
 router.get('/', auth, articlesCtrl.getAllArticles)
 
 module.exports = router

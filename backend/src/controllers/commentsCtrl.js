@@ -15,18 +15,14 @@ exports.createComment = (req, res) => {
 
 // récupère les commentaires correspondant à un article
 exports.getArticleComments = (req, res) => {
-    dbConnect.query('SELECT * FROM comments WHERE articleId = ?', [req.params.id], (error, result) => {
-        if (error) {return res.status(400).json({ error })}
-        res.status(200).json(result)
-    })
-}
-
-// récupère tous les commentaires
-exports.getAllComments = (req, res) => {
-    dbConnect.query('SELECT * FROM comments', (error, result) => {
-        if (error) {return res.status(400).json({ error })}
-        res.status(200).json(result)
-    })
+    dbConnect.query(
+        'SELECT comments.*, CONCAT(users.firstName, " ", users.lastName) AS commentatorName FROM users JOIN comments ON users.Id = comments.commentatorId WHERE articleId = ?',
+        [req.params.id],
+        (error, result) => {
+            if (error) {return res.status(400).json({ error })}
+            res.status(200).json(result)
+        }
+    )
 }
 
 // supprime un commentaire en fonction de son Id
