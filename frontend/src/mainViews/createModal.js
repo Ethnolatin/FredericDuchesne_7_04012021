@@ -47,7 +47,6 @@ export class CreateModal extends React.PureComponent {
                                 <Button onClick={this.noImage}>Supprimer l'image</Button>
                             </>}
                             <Form.File
-                                className='input'
                                 type='file'
                                 name='image'
                                 onChange={this.handleImageInput}

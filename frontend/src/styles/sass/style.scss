@@ -1,9 +1,9 @@
-/*======================= GENERAL =======================*/
+/*======================= BOOTSTRAP =======================*/
 
-$theme-colors: (
-  "primary": #ffd7d7,
-  "blue": #ffd7d7,
-);
+// $theme-colors: (
+//   "primary": #ffd7d7,
+//   "blue": #ffd7d7,
+// );
 
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
@@ -16,7 +16,6 @@ $theme-colors: (
 @import "../../../node_modules/bootstrap/scss/grid";
 @import "../../../node_modules/bootstrap/scss/tables";
 @import "../../../node_modules/bootstrap/scss/forms";
-// @import "../../../node_modules/bootstrap/scss/buttons";
 @import "../../../node_modules/bootstrap/scss/transitions";
 @import "../../../node_modules/bootstrap/scss/dropdown";
 @import "../../../node_modules/bootstrap/scss/button-group";
@@ -25,24 +24,13 @@ $theme-colors: (
 @import "../../../node_modules/bootstrap/scss/nav";
 @import "../../../node_modules/bootstrap/scss/navbar";
 @import "../../../node_modules/bootstrap/scss/card";
-// @import "../../../node_modules/bootstrap/scss/breadcrumb";
-// @import "../../../node_modules/bootstrap/scss/pagination";
-// @import "../../../node_modules/bootstrap/scss/badge";
-// @import "../../../node_modules/bootstrap/scss/jumbotron";
 @import "../../../node_modules/bootstrap/scss/alert";
-// @import "../../../node_modules/bootstrap/scss/progress";
-// @import "../../../node_modules/bootstrap/scss/media";
-// @import "../../../node_modules/bootstrap/scss/list-group";
 @import "../../../node_modules/bootstrap/scss/close";
-// @import "../../../node_modules/bootstrap/scss/toasts";
 @import "../../../node_modules/bootstrap/scss/modal";
-// @import "../../../node_modules/bootstrap/scss/tooltip";
-// @import "../../../node_modules/bootstrap/scss/popover";
-// @import "../../../node_modules/bootstrap/scss/carousel";
-// @import "../../../node_modules/bootstrap/scss/spinners";
 @import "../../../node_modules/bootstrap/scss/utilities";
-// @import "../../../node_modules/bootstrap/scss/print";
 
+
+/*======================= GENERAL =======================*/
 
 $primary: #ffd7d7;
 $secondary: #282c34;
@@ -91,6 +79,7 @@ hr {
     color: black !important;
   }
 }
+
 
 /*======================= LOGIN/SIGNUP PAGE =======================*/
 
@@ -165,7 +154,6 @@ hr {
   }
 }
 
-
 /*-------------------- FORM --------------------*/
 
 .login-form {
@@ -191,7 +179,7 @@ hr {
 .input {
   margin: 5px;
   width: calc(100% - 20px);
-  height: 1,5rem;
+  height: 1.5rem;
   border-radius: 2px;
   border: none;
   font-size: 1rem;
@@ -271,7 +259,6 @@ hr {
 .noErrorMessage {
   height: 1.1rem;
 }
-
 
 
 /*======================= HOMEPAGE =======================*/
