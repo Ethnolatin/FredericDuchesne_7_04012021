@@ -65,18 +65,18 @@ hr {
   display: block;
   padding: 0 0.5rem;
   background-color: $secondary;
-  border-color: white;
+  border-color: black;
   box-shadow: none;
   color: white;
   font-size: 0.8rem;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: 5px auto $primary;
 }
 
 .btn, .Dropdown-control.btn {
   &:hover {
     background-color: $primary !important;
-    border-color: $primary !important;
     color: black !important;
+    outline: 5px auto black;
   }
 }
 
@@ -95,6 +95,7 @@ hr {
   margin: auto;
   margin-bottom: -1rem;
   pointer-events: none;
+  animation: logo-image-spin infinite 20s linear;
 }
 
 .logo-text {
@@ -127,12 +128,6 @@ hr {
       border-radius: 50%;
       animation: spin 2s linear infinite;
     }
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .logo-image {
-    animation: logo-image-spin infinite 20s linear;
   }
 }
 
