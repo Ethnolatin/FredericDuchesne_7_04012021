@@ -1,10 +1,8 @@
 import React from 'react'
 import { Button, Form, Modal } from 'react-bootstrap'
 import { createItem } from '../axios'
-import { AuthContext } from '../components/authContext'
 
 export class CommentModal extends React.Component {
-	static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
@@ -65,9 +63,9 @@ export class CommentModal extends React.Component {
     createComment = async () => {
         const formData = new FormData()
         formData.append('articleId', this.props.article.Id)
-        formData.append('commentatorId', this.context.userId)
+        formData.append('commentatorId', sessionStorage.getItem('userId'))
         formData.append('comment', this.state.comment)
-        await createItem('comments/', this.context.token, this.context.userId, formData)
+        await createItem('comments/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), formData)
         this.closeCommentModal()
     }
 

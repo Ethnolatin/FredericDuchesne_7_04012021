@@ -15,7 +15,10 @@ export default function Navigation() {
                     width='200' height='32' 
                 />{' '}
             </Navbar.Brand>
-            <Button href='/'>
+            <Button
+                href='/'
+                onClick= {() => {sessionStorage.clear()}}
+            >
                 <FaSignOutAlt/>
                 <span className='sr-only'>Sign-out</span>
             </Button>

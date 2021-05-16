@@ -7,13 +7,11 @@ import { AllArticles } from './allArticles'
 import { CreateModal } from './createModal'
 import { Login } from './loginForm'
 import { getAllItems, createItem, updateItem, deleteItem, likeItem } from '../axios'
-import { AuthContext } from '../components/authContext'
 import { Loader } from '../components/loader'
 import Navigation from '../components/navigation'
 import 'react-dropdown/style.css'
 
 export class Homepage extends React.Component {
-    static contextType = AuthContext
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -34,7 +32,7 @@ export class Homepage extends React.Component {
 
 
     render() {
-        const pageToOpen = this.context.token ?
+        const pageToOpen = sessionStorage.getItem('token') ?
             this.displayArticlesList()
             : <Login />
         return (<>
@@ -44,13 +42,13 @@ export class Homepage extends React.Component {
 
 
     componentDidMount() {
-        if (this.context.token) {
+        if (sessionStorage.getItem("token")) {
             this.getAllArticles()
         }
     }
 
     getAllArticles = async () => {
-        const list = await getAllItems('articles/', this.context.token, this.context.userId)
+        const list = await getAllItems('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"))
         this.setState({
             articlesCollection: list,
             loading: false
@@ -101,9 +99,9 @@ export class Homepage extends React.Component {
                 <Navigation />
                 <header>
                     <div className='user'>
-                        <p>{this.context.firstName} {this.context.lastName}</p>
-                        { this.context.admin === 1 && <FaUserCog/> }
-                        { this.context.admin === 2 && (
+                        <p>{sessionStorage.getItem("firstName")} {sessionStorage.getItem("lastName")}</p>
+                        { sessionStorage.getItem("admin") === 1 && <FaUserCog/> }
+                        { sessionStorage.getItem("admin") === 2 && (
                             <Button onClick={() => this.displayAdminModal()} >
                                 <FaUserCog/><span className='sr-only'>Options admin</span>
                             </Button> )}
@@ -151,10 +149,10 @@ export class Homepage extends React.Component {
         const newArticleImageFile = this.state.newArticleImageFile
         const formData = new FormData()
         newArticleImageFile && formData.append('image', newArticleImageFile)
-        formData.append('writerId', this.context.userId)
+        formData.append('writerId', sessionStorage.getItem("userId"))
         formData.append('title', newArticleTitle)
         newArticleText && formData.append('text', newArticleText)
-        await createItem('articles/', this.context.token, this.context.userId, formData)
+        await createItem('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), formData)
         this.closeCreateModal()
         this.setState({savedImagePreviewUrl: undefined})
         this.getAllArticles()
@@ -170,20 +168,20 @@ export class Homepage extends React.Component {
         modifiedArticleText && formData.append('text', modifiedArticleText)
         modifiedArticleImage && formData.append('image', modifiedArticleImage)
         this.state.oldImage && formData.append('oldImage', this.state.oldImage)
-        await updateItem('articles/', this.context.token, this.context.userId, formData, localStorage.getItem('modifiedArticleId'))
+        await updateItem('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), formData, localStorage.getItem('modifiedArticleId'))
             this.closeCreateModal()
             this.getAllArticles()
     }
 
     deleteArticle = async () => {
         const toBeDeleted = localStorage.getItem('toBeDeleted')
-        await deleteItem('articles/', this.context.token, this.context.userId, toBeDeleted)
-        await deleteItem('comments/', this.context.token, this.context.userId, toBeDeleted + '/deleted')
+        await deleteItem('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), toBeDeleted)
+        await deleteItem('comments/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), toBeDeleted + '/deleted')
         this.getAllArticles()
     }
 
     likeArticle = async (selectedArticle, like) => {
-        await likeItem('articles/', this.context.token, this.context.userId, selectedArticle, like)
+        await likeItem('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), selectedArticle, like)
         this.getAllArticles()
     }
 

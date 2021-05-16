@@ -2,11 +2,9 @@ import React from 'react'
 import { Modal, Table } from 'react-bootstrap'
 import { DeleteAlert } from './alerts'
 import { DeleteButton } from '../components/deleteButton'
-import { AuthContext } from '../components/authContext'
 import { getAllItems, updateItem, deleteItem } from '../axios'
 
 export class AdminModal extends React.Component {
-    static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
@@ -20,7 +18,7 @@ export class AdminModal extends React.Component {
     }
 
     getAllUsers = async () => {
-        const list = await getAllItems('admin/', this.context.token, this.context.userId)
+        const list = await getAllItems('admin/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'))
         return this.setState({
             users: list,
         })
@@ -52,7 +50,7 @@ export class AdminModal extends React.Component {
                         </thead>
                         <tbody>
                             {this.state.users.map(user => {
-                                return (user.Id !== this.context.userId &&
+                                return (user.Id !== sessionStorage.getItem('userId') &&
                                     <tr key={user.Id}>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>
@@ -83,12 +81,12 @@ export class AdminModal extends React.Component {
 
 
     updateUser = async (selectedUser) => {
-        await updateItem('admin/', this.context.token, this.context.userId, {admin: !selectedUser.admin * 1}, selectedUser.Id)
+        await updateItem('admin/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), {admin: !selectedUser.admin * 1}, selectedUser.Id)
         this.getAllUsers()
     }
 
     deleteUser = async () => {
-        await deleteItem('admin/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        await deleteItem('admin/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), localStorage.getItem('toBeDeleted'))
         this.getAllUsers()
     }
 

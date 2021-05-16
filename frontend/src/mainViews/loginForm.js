@@ -1,7 +1,6 @@
 import React from 'react'
 import { Homepage } from './homepage'
 import { logUser } from '../axios'
-import { AuthContext } from '../components/authContext'
 import { pwSchema } from '../components/pwSchema'
 import groupomaniaWhite from '../images/groupomaniaWhite.png'
 import iconTextWhite from '../images/icon-left-font-monochrome-white.svg'
@@ -145,19 +144,21 @@ export class Login extends React.Component {
 			{passwordCtrlField}
 		</>)
 
-		const contextValue = {
-			userId: this.state.userId,
-			token: this.state.token,
-			firstName: this.state.firstName,
-			lastName: this.state.lastName,
-			admin: this.state.admin
+		const goToHomepage = () => {
+			sessionStorage.setItem('userId', this.state.userId)
+			sessionStorage.setItem('token', this.state.token)
+			sessionStorage.setItem('firstName', this.state.firstName)
+			sessionStorage.setItem('lastName', this.state.lastName)
+			sessionStorage.setItem('admin', this.state.admin)
+			return <Homepage/>
 		}
+		
 
 		return (
-			<AuthContext.Provider value={contextValue}>
-				{ contextValue.token ? (
-					<Homepage/>
-					) : (
+			<>
+				{ this.state.token ?
+					goToHomepage()
+					: (
 					<div className='login-page'>
 						{headerLogo}	
 						<form onSubmit={this.loginSubmit} name='loginForm' className='login-form'>
@@ -174,7 +175,7 @@ export class Login extends React.Component {
 						</form>
 					</div>
 				)}
-			</AuthContext.Provider>
+			</>
 		)
 	}
 

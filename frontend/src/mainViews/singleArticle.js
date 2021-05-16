@@ -3,13 +3,11 @@ import { Modal, Image } from 'react-bootstrap'
 import { DeleteAlert } from './alerts'
 import { CommentModal } from './commentModal'
 import { deleteItem, getSomeItems } from '../axios'
-import { AuthContext } from '../components/authContext'
 import { DeleteButton } from '../components/deleteButton'
 // import { generateImageName } from '../components/generateImageName'
 import { itemDate } from '../components/itemDate'
 
 export class SingleArticle extends React.Component {
-    static contextType = AuthContext
     constructor(props) {
 		super(props)
         this.state = {
@@ -25,7 +23,7 @@ export class SingleArticle extends React.Component {
     }
 
     getArticleComments = async () => {
-        const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
+        const list = await getSomeItems('comments/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), this.props.article.Id)
         const commentsQty = list ? list.length : 0
         return this.setState({
             articleComments: list,
@@ -35,7 +33,8 @@ export class SingleArticle extends React.Component {
 
 
     render () {
-        const { userId, admin } = this.context
+        const userId = sessionStorage.getItem('userId')
+        const admin = sessionStorage.getItem('admin')
         const { article } = this.props
         const articleComments = this.state.articleComments
         // const resizedImage = generateImageName(article.image)
@@ -124,7 +123,7 @@ export class SingleArticle extends React.Component {
     }
 
     deleteComment = async () => {
-        await deleteItem('comments/', this.context.token, this.context.userId, localStorage.getItem('toBeDeleted'))
+        await deleteItem('comments/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), localStorage.getItem('toBeDeleted'))
         this.getArticleComments()
     }
 

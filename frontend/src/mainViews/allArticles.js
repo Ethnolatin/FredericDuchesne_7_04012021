@@ -5,13 +5,11 @@ import { FaCommentAlt, FaEdit } from 'react-icons/fa'
 import { SingleArticle } from './singleArticle'
 import { DeleteAlert } from './alerts'
 import { getSomeItems } from '../axios'
-import { AuthContext } from '../components/authContext'
 import { DeleteButton } from '../components/deleteButton'
 // import { generateImageName } from '../components/generateImageName'
 import { itemDate } from '../components/itemDate'
 
 export class AllArticles extends React.Component {
-    static contextType = AuthContext
 	constructor(props) {
 		super(props)
         this.state = {
@@ -26,14 +24,15 @@ export class AllArticles extends React.Component {
     }
 
     getArticleCommentsQty = async () => {
-        const list = await getSomeItems('comments/', this.context.token, this.context.userId, this.props.article.Id)
+        const list = await getSomeItems('comments/', sessionStorage.getItem('token'), sessionStorage.getItem('userId'), this.props.article.Id)
         const commentsQty = list ? list.length : 0
         return this.setState({commentsQty: commentsQty})
     }
 
     
     render () {
-        const { userId, admin } = this.context
+        const userId = sessionStorage.getItem('userId')
+        const admin = sessionStorage.getItem('admin')
         const { article } = this.props
         const { commentsQty } = this.state
         const likeOption = (
