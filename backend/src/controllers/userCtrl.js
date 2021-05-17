@@ -19,6 +19,8 @@ exports.signup = (req, res) => {
             if (error) {return res.status(400).json({ error })}
             const user = JSON.parse(JSON.stringify(newUser))
             const Id = result.insertId
+            // confirme la création et renvoie l'Id, le prénom, le nom et le niveau admin
+            // ainsi qu'un jeton Web JSON signé et encodé à l'aide d'une clé secrète
             return res.status(201).json({
                 message: 'Utilisateur créé !',
                 userId: Id,
@@ -43,8 +45,8 @@ exports.login = (req, res) => {
         .then(valid => {
             // si non valide, renvoie une erreur
             if (!valid) {return res.status(401).json({ message: 'Mot de passe non valide...' })}
-            // si valide, renvoie l'Id, le prénom et le nom depuis la base de données
-            // et un jeton Web JSON signé et encodé à l'aide d'une clé secrète
+            // si valide, renvoie l'Id, le prénom, le nom et le niveau admin depuis la base de données
+            // ainsi qu'un jeton Web JSON signé et encodé à l'aide d'une clé secrète
             return (res.status(200).json({
                 userId: resultUser.Id,
                 firstName: resultUser.firstName,

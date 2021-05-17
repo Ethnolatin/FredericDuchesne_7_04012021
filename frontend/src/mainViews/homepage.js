@@ -53,7 +53,8 @@ export class Homepage extends React.Component {
             articlesCollection: list,
             loading: false
         })
-        this.sortArticlesList()
+        if (list) {this.sortArticlesList()}
+        else {<Login />}
     }
 
     sortArticlesList = () => {
@@ -90,6 +91,7 @@ export class Homepage extends React.Component {
     }
 
     displayArticlesList = () => {
+        if(!sessionStorage.getItem("token")) {<Login/>}
         if(this.state.loading) {return <Loader />}
         const options = ['date', 'score', 'auteur']
         const previewImage = this.definePreviewImage()
@@ -181,7 +183,7 @@ export class Homepage extends React.Component {
     }
 
     likeArticle = async (selectedArticle, like) => {
-        await likeItem('articles/', sessionStorage.getItem("token"), sessionStorage.getItem("userId"), selectedArticle, like)
+        await likeItem('articles/', sessionStorage.getItem("token"), parseInt(sessionStorage.getItem("userId")), selectedArticle, like)
         this.getAllArticles()
     }
 

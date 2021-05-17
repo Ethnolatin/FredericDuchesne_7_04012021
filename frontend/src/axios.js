@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { logout } from './components/logout'
+
 const port = process.env.REACT_APP_SERVER_PORT || 3002
 const urlPrefix = 'http://localhost:' + port
 
@@ -30,7 +32,8 @@ export const createItem = async (url, token, userId, data) => {
         console.log(response.data.message)
         return response.data
     } catch (err) {
-        console.log({ err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 }
 
@@ -44,7 +47,8 @@ export const getAllItems = async (url, token, userId) => {
         })
         return response.data
     } catch (err) {
-        console.log('erreur: ', { err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 
 }
@@ -59,7 +63,8 @@ export const getSomeItems = async (url, token, userId, Id) => {
         })
         return response.data
     } catch (err) {
-        console.log('erreur: ', { err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 }
 
@@ -75,7 +80,8 @@ export const updateItem = async (url, token, userId, data, Id) => {
         console.log(response.data.message)
         return response.data
     } catch (err) {
-        console.log({ err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 }
 
@@ -90,7 +96,8 @@ export const deleteItem = async (url, token, userId, Id) => {
         console.log(response.data.message)
         return response.data
     } catch (err) {
-        console.log({ err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 }
 
@@ -109,6 +116,7 @@ export const likeItem = async (url, token, userId, item, like) => {
         console.log(response.data.message)
         return response.data
     } catch (err) {
-        console.log({ err })
+        if (err.response.status === 401) { logout() }
+        else {console.log({ err })}
     }
 }

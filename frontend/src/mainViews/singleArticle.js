@@ -34,7 +34,7 @@ export class SingleArticle extends React.Component {
 
     render () {
         const userId = sessionStorage.getItem('userId')
-        const admin = sessionStorage.getItem('admin')
+        const admin = parseInt(sessionStorage.getItem('admin'))
         const { article } = this.props
         const articleComments = this.state.articleComments
         // const resizedImage = generateImageName(article.image)
