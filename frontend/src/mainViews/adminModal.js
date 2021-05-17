@@ -50,7 +50,7 @@ export class AdminModal extends React.Component {
                         </thead>
                         <tbody>
                             {this.state.users.map(user => {
-                                return (user.Id !== sessionStorage.getItem('userId') &&
+                                return (user.Id.toString() !== sessionStorage.getItem('userId') &&
                                     <tr key={user.Id}>
                                         <td>{user.firstName}</td>
                                         <td>{user.lastName}</td>

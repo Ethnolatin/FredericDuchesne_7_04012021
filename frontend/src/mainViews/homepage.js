@@ -100,8 +100,8 @@ export class Homepage extends React.Component {
                 <header>
                     <div className='user'>
                         <p>{sessionStorage.getItem("firstName")} {sessionStorage.getItem("lastName")}</p>
-                        { sessionStorage.getItem("admin") === 1 && <FaUserCog/> }
-                        { sessionStorage.getItem("admin") === 2 && (
+                        { sessionStorage.getItem("admin") === "1" && <FaUserCog/> }
+                        { sessionStorage.getItem("admin") === "2" && (
                             <Button onClick={() => this.displayAdminModal()} >
                                 <FaUserCog/><span className='sr-only'>Options admin</span>
                             </Button> )}
