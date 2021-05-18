@@ -33,7 +33,7 @@ export class SingleArticle extends React.Component {
 
 
     render () {
-        const userId = sessionStorage.getItem('userId')
+        const userId = parseInt(sessionStorage.getItem('userId'))
         const admin = parseInt(sessionStorage.getItem('admin'))
         const { article } = this.props
         const articleComments = this.state.articleComments
