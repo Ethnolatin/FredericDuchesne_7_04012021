@@ -1,10 +1,5 @@
 /*======================= BOOTSTRAP =======================*/
 
-// $theme-colors: (
-//   "primary": #ffd7d7,
-//   "blue": #ffd7d7,
-// );
-
 @import "../../../node_modules/bootstrap/scss/functions";
 @import "../../../node_modules/bootstrap/scss/variables";
 @import "../../../node_modules/bootstrap/scss/mixins";
@@ -305,7 +300,7 @@ header p {
 /*-------------------- CARD --------------------*/
 
 .card {
-  border: 4px solid $primary ;
+  border: 4px solid $primary;
   border-radius: 0.5rem;
 }
 
