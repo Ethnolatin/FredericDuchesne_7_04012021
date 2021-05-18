@@ -25,3 +25,5 @@
 5. Depuis le terminal du dossier `backend/`, exécuter `npm install` puis `npm run build` et enfin `npm start`.
 6. Depuis le terminal du dossier `frontend/`, exécuter `npm install` puis `npm run build` et enfin `npx serve -s build`.
 7. L'appli est disponible sur `http://localhost:5000`.
+
+***Note*** : l'attribution du rôle de super-administrateur à un utilisateur se fait en accédant directement à la table `users` et en donnant la valeur `2` à la colonne `admin` pour l'utilisateur concerné.
