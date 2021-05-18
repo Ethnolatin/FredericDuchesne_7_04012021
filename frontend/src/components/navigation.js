@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button, Navbar } from 'react-bootstrap'
 import { FaSignOutAlt } from 'react-icons/fa'
+import { logout } from './logout'
 import iconTextWhite from '../images/icon-left-font-monochrome-white.svg'
 
 export default function Navigation() {
@@ -17,7 +18,7 @@ export default function Navigation() {
             </Navbar.Brand>
             <Button
                 href='/'
-                onClick= {() => {sessionStorage.clear()}}
+                onClick= {() => {logout()}}
             >
                 <FaSignOutAlt/>
                 <span className='sr-only'>Sign-out</span>
