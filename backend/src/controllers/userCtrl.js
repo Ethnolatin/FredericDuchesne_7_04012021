@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken'
 import User from '../models/User'
 import dbConnect from '../dbConnect'
 
+const secretKey = process.env.SECRET_KEY
+
 // ajoute un nouvel utilisateur à la base de données
 exports.signup = (req, res) => {
     // utilise la fonction de hachage 'bcrypt' pour chiffrer le mot de passe
@@ -27,7 +29,7 @@ exports.signup = (req, res) => {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 admin: user.admin,
-                token: jwt.sign({ userId: Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' })
+                token: jwt.sign({ userId: Id }, secretKey, { expiresIn: '24h' })
             })
         })
     })
@@ -52,7 +54,7 @@ exports.login = (req, res) => {
                 firstName: resultUser.firstName,
                 lastName: resultUser.lastName,
                 admin: resultUser.admin,
-                token: jwt.sign({ userId: resultUser.Id }, 'RANDOM_TOKEN_SECRET', { expiresIn: '24h' })
+                token: jwt.sign({ userId: resultUser.Id }, secretKey, { expiresIn: '24h' })
             }))
         })
         .catch((err) => res.status(500).json({ err }))
