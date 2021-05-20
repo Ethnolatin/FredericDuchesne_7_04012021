@@ -36,7 +36,6 @@ CREATE TABLE `articles` (
   `timeStamp` datetime DEFAULT NULL,
   `likes` int unsigned DEFAULT '0',
   `dislikes` int unsigned DEFAULT '0',
-  `score` int DEFAULT NULL,
   `usersLiked` json DEFAULT NULL,
   `usersDisliked` json DEFAULT NULL,
   PRIMARY KEY (`Id`),

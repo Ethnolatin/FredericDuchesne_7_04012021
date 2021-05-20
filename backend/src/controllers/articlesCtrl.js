@@ -97,8 +97,8 @@ exports.likeArticle = (req, res) => {
         const likedArticle = likesManagement(result, req.body.userId, req.body.like)
         // enregistre les modifications dans la table
         dbConnect.query(
-            'UPDATE articles SET likes = ?, dislikes = ?, score = ?, usersLiked = ?, usersDisliked = ? WHERE id = ?',
-            [likedArticle.likes, likedArticle.dislikes, likedArticle.score, likedArticle.usersLiked, likedArticle.usersDisliked, likedArticle.Id],
+            'UPDATE articles SET likes = ?, dislikes = ?, usersLiked = ?, usersDisliked = ? WHERE id = ?',
+            [likedArticle.likes, likedArticle.dislikes, likedArticle.usersLiked, likedArticle.usersDisliked, likedArticle.Id],
             (err) => {
                 if (err) {return res.status(400).json({ err })}
                 res.status(201).json({ message: 'Vote enregistré !' })

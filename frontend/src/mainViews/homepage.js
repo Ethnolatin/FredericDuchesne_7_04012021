@@ -127,6 +127,7 @@ export class Homepage extends React.Component {
                 />
                 <main>{
                     this.state.articlesCollection.map((article) => {
+                        article.score = article.likes - article.dislikes
                         return(
                             <div key={article.Id}>
                                 <AllArticles
