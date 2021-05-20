@@ -13,9 +13,13 @@ export const logUser = async (url, data) => {
         })
         return response.data
     } catch (err) {
-        const message = (url === 'login') ? 
-            {errorMessage: 'Identifiants non reconnus'}
-            : {errorMessage: 'Erreur - Inscription impossible'}
+        const message = err.response.status === 412 ?
+            {errorMessage: err.response.data.error}
+            : err.response.data.error && err.response.data.error.errno === 1062 ?
+                {errorMessage: 'Courriel déjà utilisé'}
+                : url === 'login' ? 
+                    {errorMessage: 'Identifiants non reconnus'}
+                    : {errorMessage: 'Erreur - Inscription impossible'}
         return message
     }
 }
